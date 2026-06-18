@@ -1,0 +1,52 @@
+---
+import { resolve } from "../i18n";
+import { Language } from "../lib/constants";
+
+const t = (key: string): string => resolve(key, Language.EN);
+const base = import.meta.env.BASE_URL;
+---
+
+<header class="site-header">
+  <a class="brand" href={base}>
+    <span class="brand-mark" aria-hidden="true">{"</>"}</span>
+    <span class="brand-name" data-i18n="app.title">{t("app.title")}</span>
+  </a>
+
+  <nav class="site-nav" aria-label="Main">
+    <a href={base} data-i18n="nav.home">{t("nav.home")}</a>
+    <a href={`${base}library`} data-i18n="nav.library">{t("nav.library")}</a>
+  </nav>
+
+  <div class="header-controls">
+    <select
+      class="lang-select"
+      data-role="language-select"
+      data-i18n-aria="settings.language"
+      aria-label={t("settings.language")}
+    >
+      <option value={Language.EN}>EN</option>
+      <option value={Language.ES}>ES</option>
+    </select>
+
+    <button
+      type="button"
+      class="icon-btn"
+      data-action="toggle-theme"
+      data-i18n-aria="settings.theme"
+      aria-label={t("settings.theme")}
+    >
+      <span class="theme-icon-dark" aria-hidden="true">🌙</span>
+      <span class="theme-icon-light" aria-hidden="true">☀️</span>
+    </button>
+
+    <button
+      type="button"
+      class="icon-btn"
+      data-action="open-settings"
+      data-i18n-aria="nav.settings"
+      aria-label={t("nav.settings")}
+    >
+      ⚙️
+    </button>
+  </div>
+</header>

@@ -1,0 +1,30 @@
+{
+  "name": "algo-dsa-infra",
+  "version": "1.0.0",
+  "description": "AWS CDK infrastructure for the algorithms-practitioner learning platform",
+  "private": true,
+  "bin": {
+    "algo-dsa-infra": "bin/app.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc -w",
+    "bootstrap": "node scripts/cdk.js bootstrap",
+    "synth": "node scripts/cdk.js synth",
+    "diff": "node scripts/cdk.js diff",
+    "deploy": "node scripts/cdk.js deploy",
+    "destroy": "node scripts/cdk.js destroy"
+  },
+  "devDependencies": {
+    "@types/node": "^22.10.0",
+    "aws-cdk": "^2.170.0",
+    "dotenv-cli": "^11.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.7.0"
+  },
+  "dependencies": {
+    "aws-cdk-lib": "^2.170.0",
+    "constructs": "^10.4.0",
+    "dotenv": "^16.4.0"
+  }
+}

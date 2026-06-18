@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { resolve } from "../i18n";
+import { Language } from "../lib/constants";
+
+const t = (key: string): string => resolve(key, Language.EN);
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title={t("notFound.title")}>
+  <section class="not-found">
+    <h1 data-i18n="notFound.title">{t("notFound.title")}</h1>
+    <p data-i18n="notFound.message">{t("notFound.message")}</p>
+    <a class="btn btn-primary" href={base} data-i18n="notFound.backHome">{t("notFound.backHome")}</a>
+  </section>
+</BaseLayout>

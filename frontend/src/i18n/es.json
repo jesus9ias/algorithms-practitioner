@@ -1,0 +1,119 @@
+{
+  "app": {
+    "title": "Algorithms Practitioner",
+    "tagline": "Aprende algoritmos y estructuras de datos de forma interactiva"
+  },
+  "nav": {
+    "home": "Inicio",
+    "library": "Biblioteca",
+    "settings": "Ajustes"
+  },
+  "common": {
+    "new": "Nuevo",
+    "learned": "Aprendido",
+    "close": "Cerrar"
+  },
+  "categories": {
+    "general": "General",
+    "text": "Texto",
+    "dates": "Fechas",
+    "lists": "Listas",
+    "matrices": "Matrices",
+    "trees": "Árboles",
+    "graphs": "Grafos",
+    "sorting": "Ordenamiento",
+    "searching": "Búsqueda",
+    "hashing": "Hashing",
+    "dynamicProgramming": "Programación Dinámica",
+    "recursion": "Recursión",
+    "bitManipulation": "Manipulación de Bits",
+    "heaps": "Montículos"
+  },
+  "levels": {
+    "easy": "Fácil",
+    "medium": "Medio",
+    "hard": "Difícil"
+  },
+  "home": {
+    "searchPlaceholder": "Buscar ejercicios...",
+    "viewGrid": "Vista de cuadrícula",
+    "viewList": "Vista de lista",
+    "filtersTitle": "Filtros",
+    "filterCategory": "Categoría",
+    "filterLevel": "Nivel",
+    "filterStatus": "Estado",
+    "filterNew": "Solo nuevos",
+    "statusAll": "Todos",
+    "statusLearned": "Aprendidos",
+    "statusUnlearned": "Por aprender",
+    "noResults": "Ningún ejercicio coincide con los filtros actuales.",
+    "clearFilters": "Limpiar filtros",
+    "progressTitle": "Tu progreso"
+  },
+  "exercise": {
+    "referencesTitle": "Referencias",
+    "codeTitle": "Código del algoritmo",
+    "visualizationTitle": "Visualización",
+    "copy": "Copiar",
+    "copied": "¡Copiado!",
+    "preload": "Precargar",
+    "preloadHint": "Restaurar la entrada de ejemplo por defecto",
+    "reset": "Reiniciar",
+    "auto": "Auto",
+    "stop": "Detener",
+    "stepForward": "Avanzar",
+    "stepBack": "Retroceder",
+    "currentStep": "Paso",
+    "inputLabel": "Entrada",
+    "resultLabel": "Resultado",
+    "targetLabel": "objetivo",
+    "markLearned": "Marcar como aprendido",
+    "unlearn": "Desmarcar",
+    "customInputTitle": "Entrada personalizada",
+    "inputPlaceholder": "ej. [2, 4, 6, 8]",
+    "targetPlaceholder": "Objetivo",
+    "applyInput": "Aplicar entrada",
+    "invalidInput": "Entrada inválida. Proporciona un arreglo no vacío de enteros.",
+    "saveInputLabel": "Etiqueta",
+    "saveInputPlaceholder": "Mi caso de prueba",
+    "save": "Guardar",
+    "savedInputsTitle": "Entradas guardadas",
+    "noSavedInputs": "Aún no hay entradas guardadas.",
+    "load": "Cargar",
+    "delete": "Eliminar"
+  },
+  "library": {
+    "title": "Biblioteca",
+    "intro": "Enlaces de referencia de cada ejercicio, agrupados para profundizar.",
+    "openExercise": "Ir al ejercicio"
+  },
+  "settings": {
+    "title": "Ajustes",
+    "summaryTitle": "Resumen",
+    "theme": "Tema",
+    "themeLight": "Claro",
+    "themeDark": "Oscuro",
+    "language": "Idioma",
+    "languageEn": "Inglés",
+    "languageEs": "Español",
+    "viewMode": "Vista",
+    "viewGrid": "Cuadrícula",
+    "viewList": "Lista",
+    "learnedCount": "Aprendidos",
+    "savedInputsCount": "Entradas guardadas",
+    "changeHint": "Cambia el tema y el idioma desde el encabezado.",
+    "dataTitle": "Tus datos",
+    "export": "Exportar datos",
+    "import": "Importar datos",
+    "importSuccess": "Datos importados correctamente.",
+    "importError": "No se pudo importar: el archivo es inválido o está corrupto."
+  },
+  "notFound": {
+    "title": "Página no encontrada",
+    "message": "El ejercicio o la página que solicitaste no existe.",
+    "backHome": "Volver al inicio"
+  },
+  "errors": {
+    "storageReset": "Los datos guardados eran inválidos y se restablecieron a los valores por defecto."
+  }
+}

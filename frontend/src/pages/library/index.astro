@@ -1,0 +1,48 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { exercises } from "../../data/exercises";
+import { resolve, localize } from "../../i18n";
+import { Language } from "../../lib/constants";
+
+const t = (key: string): string => resolve(key, Language.EN);
+const base = import.meta.env.BASE_URL;
+---
+
+<BaseLayout title={t("library.title")} description={t("library.intro")}>
+  <section class="library">
+    <h1 data-i18n="library.title">{t("library.title")}</h1>
+    <p class="muted" data-i18n="library.intro">{t("library.intro")}</p>
+
+    <div class="library-list">
+      {exercises.map((exercise) => (
+        <article class="library-entry">
+          <h2>
+            <a
+              class="library-xref"
+              href={`${base}exercise/${exercise.slug}`}
+              data-loc-en={exercise.name.en}
+              data-loc-es={exercise.name.es}
+            >
+              {localize(exercise.name, Language.EN)}
+            </a>
+          </h2>
+          <ul class="reference-list">
+            {exercise.links.map((link) => (
+              <li>
+                <a
+                  href={link.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  data-loc-en={link.label.en}
+                  data-loc-es={link.label.es}
+                >
+                  {localize(link.label, Language.EN)}
+                </a>
+              </li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+  </section>
+</BaseLayout>

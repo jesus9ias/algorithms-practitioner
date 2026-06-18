@@ -1,0 +1,10 @@
+---
+import { resolve } from "../i18n";
+import { Language } from "../lib/constants";
+
+const t = (key: string): string => resolve(key, Language.EN);
+---
+
+<footer class="site-footer">
+  <p data-i18n="app.tagline">{t("app.tagline")}</p>
+</footer>

@@ -1,0 +1,21 @@
+# Dependencies
+node_modules/
+
+# CDK
+cdk.out/
+dist/
+*.js
+*.d.ts
+!jest.config.js
+
+# Environment (sensitive — never commit)
+.env
+.env.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

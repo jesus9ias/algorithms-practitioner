@@ -1,0 +1,67 @@
+---
+import Header from "../components/Header.astro";
+import Footer from "../components/Footer.astro";
+import SettingsPanel from "../components/SettingsPanel.astro";
+import { resolve } from "../i18n";
+import { Language } from "../lib/constants";
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const { title, description } = Astro.props;
+const t = (key: string): string => resolve(key, Language.EN);
+const pageTitle = title ? `${title} · ${t("app.title")}` : t("app.title");
+const pageDesc = description ?? t("app.tagline");
+const siteUrl = import.meta.env.PUBLIC_SITE_URL ?? "";
+const canonical = siteUrl ? new URL(Astro.url.pathname, siteUrl).href : Astro.url.pathname;
+---
+
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{pageTitle}</title>
+    <meta name="description" content={pageDesc} />
+    <link rel="canonical" href={canonical} />
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDesc} />
+    <meta property="og:type" content="website" />
+    {siteUrl && <meta property="og:url" content={canonical} />}
+    <!-- Pre-paint theme/language to avoid flash. Minimal, safe parsing only. -->
+    <script is:inline>
+      (function () {
+        try {
+          var raw = localStorage.getItem("algo_prefs");
+          if (!raw) return;
+          var prefs = JSON.parse(raw);
+          if (prefs && (prefs.theme === "light" || prefs.theme === "dark")) {
+            document.documentElement.setAttribute("data-theme", prefs.theme);
+          }
+          if (prefs && (prefs.language === "en" || prefs.language === "es")) {
+            document.documentElement.lang = prefs.language;
+          }
+        } catch (e) {
+          /* ignore — full validation happens after load */
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <Header />
+    <main class="site-main">
+      <slot />
+    </main>
+    <Footer />
+    <SettingsPanel />
+    <div class="toast" data-role="storage-warning" role="alert" hidden></div>
+
+    <script>
+      import { initGlobal } from "../lib/globalInit";
+      initGlobal();
+    </script>
+  </body>
+</html>

@@ -1,0 +1,118 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import ProgressBar from "../components/ProgressBar.astro";
+import ExerciseCard from "../components/ExerciseCard.astro";
+import { exercises } from "../data/exercises";
+import { resolve } from "../i18n";
+import {
+  Language,
+  ExerciseCategory,
+  ExerciseLevel,
+  LearnedStatus,
+} from "../lib/constants";
+import { categoryKey, levelKey } from "../lib/labels";
+
+const t = (key: string): string => resolve(key, Language.EN);
+const categories = Object.values(ExerciseCategory);
+const levels = Object.values(ExerciseLevel);
+---
+
+<BaseLayout>
+  <ProgressBar />
+
+  <div class="home-toolbar">
+    <input
+      type="search"
+      class="search-input"
+      data-role="search"
+      data-i18n-placeholder="home.searchPlaceholder"
+      placeholder={t("home.searchPlaceholder")}
+      aria-label={t("home.searchPlaceholder")}
+    />
+    <div class="view-toggle" role="group" aria-label={t("home.viewGrid")}>
+      <button
+        type="button"
+        class="icon-btn"
+        data-action="view-grid"
+        data-i18n-aria="home.viewGrid"
+        aria-label={t("home.viewGrid")}
+      >▦</button>
+      <button
+        type="button"
+        class="icon-btn"
+        data-action="view-list"
+        data-i18n-aria="home.viewList"
+        aria-label={t("home.viewList")}
+      >☰</button>
+    </div>
+  </div>
+
+  <div class="home-layout">
+    <aside class="filters" aria-label={t("home.filtersTitle")}>
+      <div class="filters-head">
+        <h2 data-i18n="home.filtersTitle">{t("home.filtersTitle")}</h2>
+        <button type="button" class="btn btn-small" data-action="clear-filters" data-i18n="home.clearFilters">
+          {t("home.clearFilters")}
+        </button>
+      </div>
+
+      <fieldset class="filter-group">
+        <legend data-i18n="home.filterStatus">{t("home.filterStatus")}</legend>
+        <label class="filter-opt">
+          <input type="radio" name="status" data-filter="status" value={LearnedStatus.ALL} checked />
+          <span data-i18n="home.statusAll">{t("home.statusAll")}</span>
+        </label>
+        <label class="filter-opt">
+          <input type="radio" name="status" data-filter="status" value={LearnedStatus.LEARNED} />
+          <span data-i18n="home.statusLearned">{t("home.statusLearned")}</span>
+        </label>
+        <label class="filter-opt">
+          <input type="radio" name="status" data-filter="status" value={LearnedStatus.UNLEARNED} />
+          <span data-i18n="home.statusUnlearned">{t("home.statusUnlearned")}</span>
+        </label>
+      </fieldset>
+
+      <fieldset class="filter-group">
+        <legend data-i18n="home.filterNew">{t("home.filterNew")}</legend>
+        <label class="filter-opt">
+          <input type="checkbox" data-filter="new" value="new" />
+          <span data-i18n="common.new">{t("common.new")}</span>
+        </label>
+      </fieldset>
+
+      <fieldset class="filter-group">
+        <legend data-i18n="home.filterLevel">{t("home.filterLevel")}</legend>
+        {levels.map((level) => (
+          <label class="filter-opt">
+            <input type="checkbox" data-filter="level" value={level} />
+            <span data-i18n={levelKey(level)}>{t(levelKey(level))}</span>
+          </label>
+        ))}
+      </fieldset>
+
+      <fieldset class="filter-group">
+        <legend data-i18n="home.filterCategory">{t("home.filterCategory")}</legend>
+        {categories.map((category) => (
+          <label class="filter-opt">
+            <input type="checkbox" data-filter="category" value={category} />
+            <span data-i18n={categoryKey(category)}>{t(categoryKey(category))}</span>
+          </label>
+        ))}
+      </fieldset>
+    </aside>
+
+    <section class="home-results">
+      <div class="exercise-list list-grid" data-role="exercise-list">
+        {exercises.map((exercise) => <ExerciseCard exercise={exercise} />)}
+      </div>
+      <p class="no-results" data-role="no-results" data-i18n="home.noResults" hidden>
+        {t("home.noResults")}
+      </p>
+    </section>
+  </div>
+
+  <script>
+    import { initHome } from "../lib/homeInit";
+    initHome();
+  </script>
+</BaseLayout>

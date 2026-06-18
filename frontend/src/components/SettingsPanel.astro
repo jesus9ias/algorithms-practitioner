@@ -1,0 +1,62 @@
+---
+import { resolve } from "../i18n";
+import { Language } from "../lib/constants";
+
+const t = (key: string): string => resolve(key, Language.EN);
+---
+
+<div class="modal-backdrop" data-role="settings" hidden>
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+    <div class="modal-header">
+      <h2 id="settings-title" data-i18n="settings.title">{t("settings.title")}</h2>
+      <button
+        type="button"
+        class="icon-btn"
+        data-action="close-settings"
+        data-i18n-aria="common.close"
+        aria-label={t("common.close")}
+      >✕</button>
+    </div>
+
+    <section class="modal-section">
+      <h3 data-i18n="settings.summaryTitle">{t("settings.summaryTitle")}</h3>
+      <dl class="summary">
+        <div class="summary-row">
+          <dt data-i18n="settings.theme">{t("settings.theme")}</dt>
+          <dd data-role="sum-theme"></dd>
+        </div>
+        <div class="summary-row">
+          <dt data-i18n="settings.language">{t("settings.language")}</dt>
+          <dd data-role="sum-language"></dd>
+        </div>
+        <div class="summary-row">
+          <dt data-i18n="settings.viewMode">{t("settings.viewMode")}</dt>
+          <dd data-role="sum-view"></dd>
+        </div>
+        <div class="summary-row">
+          <dt data-i18n="settings.learnedCount">{t("settings.learnedCount")}</dt>
+          <dd data-role="sum-learned"></dd>
+        </div>
+        <div class="summary-row">
+          <dt data-i18n="settings.savedInputsCount">{t("settings.savedInputsCount")}</dt>
+          <dd data-role="sum-inputs"></dd>
+        </div>
+      </dl>
+      <p class="modal-hint muted" data-i18n="settings.changeHint">{t("settings.changeHint")}</p>
+    </section>
+
+    <section class="modal-section">
+      <h3 data-i18n="settings.dataTitle">{t("settings.dataTitle")}</h3>
+      <div class="data-actions">
+        <button type="button" class="btn" data-action="export" data-i18n="settings.export">
+          {t("settings.export")}
+        </button>
+        <label class="btn btn-outline">
+          <span data-i18n="settings.import">{t("settings.import")}</span>
+          <input type="file" accept="application/json" data-role="import-file" hidden />
+        </label>
+      </div>
+      <p class="form-msg" data-role="import-msg" role="status" hidden></p>
+    </section>
+  </div>
+</div>

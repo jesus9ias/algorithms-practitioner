@@ -1,0 +1,175 @@
+---
+import { Code } from "astro:components";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { exercises } from "../../data/exercises";
+import { resolve, localize } from "../../i18n";
+import { Language } from "../../lib/constants";
+import { categoryKey, levelKey } from "../../lib/labels";
+
+export function getStaticPaths() {
+  return exercises.map((exercise) => ({
+    params: { slug: exercise.slug },
+    props: { exercise },
+  }));
+}
+
+const { exercise } = Astro.props;
+const t = (key: string): string => resolve(key, Language.EN);
+
+// Raw algorithm source for the highlighted, copyable code block.
+const rawSources = import.meta.glob("../../exercises/*/exercise.js", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+}) as Record<string, string>;
+const code = rawSources[`../../exercises/${exercise.codeFile}`] ?? "";
+
+const hasTarget = exercise.defaultTarget !== undefined;
+const catKey = categoryKey(exercise.category);
+const lvlKey = levelKey(exercise.level);
+---
+
+<BaseLayout title={localize(exercise.name, Language.EN)} description={localize(exercise.description, Language.EN)}>
+  <article
+    class="exercise"
+    data-role="exercise"
+    data-exercise-id={exercise.id}
+    data-default-input={JSON.stringify(exercise.defaultInput)}
+    data-default-target={hasTarget ? String(exercise.defaultTarget) : undefined}
+  >
+    <header class="exercise-header">
+      <div class="exercise-badges">
+        <span class={`badge badge-level level-${exercise.level.toLowerCase()}`} data-i18n={lvlKey}>
+          {t(lvlKey)}
+        </span>
+        <span class="badge badge-category" data-i18n={catKey}>{t(catKey)}</span>
+      </div>
+      <h1 data-loc-en={exercise.name.en} data-loc-es={exercise.name.es}>
+        {localize(exercise.name, Language.EN)}
+      </h1>
+      <p class="exercise-desc" data-loc-en={exercise.description.en} data-loc-es={exercise.description.es}>
+        {localize(exercise.description, Language.EN)}
+      </p>
+      <button type="button" class="btn btn-primary" data-action="learned" data-i18n="exercise.markLearned">
+        {t("exercise.markLearned")}
+      </button>
+    </header>
+
+    <section class="panel">
+      <h2 data-i18n="exercise.visualizationTitle">{t("exercise.visualizationTitle")}</h2>
+      <div class="viz-stage">
+        <svg class="viz-svg" data-role="viz-svg" role="img" aria-label={t("exercise.visualizationTitle")}></svg>
+      </div>
+      <dl class="viz-io">
+        <div class="viz-io-row">
+          <dt class="viz-io-key" data-i18n="exercise.inputLabel">{t("exercise.inputLabel")}</dt>
+          <dd class="viz-io-val" data-role="input-label"></dd>
+        </div>
+        <div class="viz-io-row viz-io-result" data-role="result-line" hidden>
+          <dt class="viz-io-key" data-i18n="exercise.resultLabel">{t("exercise.resultLabel")}</dt>
+          <dd class="viz-io-val" data-role="result-label"></dd>
+        </div>
+      </dl>
+      <div class="viz-controls">
+        <div class="player-group player-main">
+          <button type="button" class="btn btn-step" data-action="back" data-i18n="exercise.stepBack">{t("exercise.stepBack")}</button>
+          <button type="button" class="btn btn-play" data-action="auto" data-i18n="exercise.auto">{t("exercise.auto")}</button>
+          <button type="button" class="btn btn-step" data-action="forward" data-i18n="exercise.stepForward">{t("exercise.stepForward")}</button>
+        </div>
+        <div class="player-group player-secondary">
+          <button
+            type="button"
+            class="btn btn-ghost"
+            data-action="reset"
+            data-i18n="exercise.reset"
+          >{t("exercise.reset")}</button>
+          <button
+            type="button"
+            class="btn btn-ghost"
+            data-action="preload"
+            data-i18n="exercise.preload"
+            data-i18n-title="exercise.preloadHint"
+            title={t("exercise.preloadHint")}
+          >{t("exercise.preload")}</button>
+        </div>
+        <span class="step-label" data-role="step-label"></span>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 data-i18n="exercise.customInputTitle">{t("exercise.customInputTitle")}</h2>
+      <div class="input-row">
+        <input
+          type="text"
+          class="text-input"
+          data-role="input"
+          data-i18n-placeholder="exercise.inputPlaceholder"
+          placeholder={t("exercise.inputPlaceholder")}
+        />
+        {hasTarget && (
+          <input
+            type="text"
+            class="text-input text-input-small"
+            data-role="target"
+            data-i18n-placeholder="exercise.targetPlaceholder"
+            placeholder={t("exercise.targetPlaceholder")}
+          />
+        )}
+        <button type="button" class="btn btn-primary" data-action="apply" data-i18n="exercise.applyInput">
+          {t("exercise.applyInput")}
+        </button>
+      </div>
+      <p class="form-msg form-error" data-role="input-error" role="alert" hidden></p>
+
+      <div class="save-row">
+        <input
+          type="text"
+          class="text-input"
+          data-role="save-label"
+          data-i18n-placeholder="exercise.saveInputPlaceholder"
+          placeholder={t("exercise.saveInputPlaceholder")}
+        />
+        <button type="button" class="btn" data-action="save" data-i18n="exercise.save">{t("exercise.save")}</button>
+      </div>
+
+      <h3 data-i18n="exercise.savedInputsTitle">{t("exercise.savedInputsTitle")}</h3>
+      <div class="saved-list" data-role="saved-list"></div>
+    </section>
+
+    <section class="panel">
+      <div class="code-head">
+        <h2 data-i18n="exercise.codeTitle">{t("exercise.codeTitle")}</h2>
+        <button type="button" class="btn btn-small" data-action="copy" data-i18n="exercise.copy">
+          {t("exercise.copy")}
+        </button>
+      </div>
+      <div class="code-block" data-role="code">
+        <Code code={code} lang="js" theme="github-dark" />
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2 data-i18n="exercise.referencesTitle">{t("exercise.referencesTitle")}</h2>
+      <ul class="reference-list">
+        {exercise.links.map((link) => (
+          <li>
+            <a
+              href={link.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              data-loc-en={link.label.en}
+              data-loc-es={link.label.es}
+            >
+              {localize(link.label, Language.EN)}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  </article>
+
+  <script>
+    import { initExercise } from "../../lib/exerciseInit";
+    initExercise();
+  </script>
+</BaseLayout>

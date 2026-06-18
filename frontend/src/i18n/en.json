@@ -1,0 +1,119 @@
+{
+  "app": {
+    "title": "Algorithms Practitioner",
+    "tagline": "Learn algorithms and data structures interactively"
+  },
+  "nav": {
+    "home": "Home",
+    "library": "Library",
+    "settings": "Settings"
+  },
+  "common": {
+    "new": "New",
+    "learned": "Learned",
+    "close": "Close"
+  },
+  "categories": {
+    "general": "General",
+    "text": "Text",
+    "dates": "Dates",
+    "lists": "Lists",
+    "matrices": "Matrices",
+    "trees": "Trees",
+    "graphs": "Graphs",
+    "sorting": "Sorting",
+    "searching": "Searching",
+    "hashing": "Hashing",
+    "dynamicProgramming": "Dynamic Programming",
+    "recursion": "Recursion",
+    "bitManipulation": "Bit Manipulation",
+    "heaps": "Heaps"
+  },
+  "levels": {
+    "easy": "Easy",
+    "medium": "Medium",
+    "hard": "Hard"
+  },
+  "home": {
+    "searchPlaceholder": "Search exercises...",
+    "viewGrid": "Grid view",
+    "viewList": "List view",
+    "filtersTitle": "Filters",
+    "filterCategory": "Category",
+    "filterLevel": "Level",
+    "filterStatus": "Status",
+    "filterNew": "New only",
+    "statusAll": "All",
+    "statusLearned": "Learned",
+    "statusUnlearned": "To learn",
+    "noResults": "No exercises match the current filters.",
+    "clearFilters": "Clear filters",
+    "progressTitle": "Your progress"
+  },
+  "exercise": {
+    "referencesTitle": "References",
+    "codeTitle": "Algorithm code",
+    "visualizationTitle": "Visualization",
+    "copy": "Copy",
+    "copied": "Copied!",
+    "preload": "Preload",
+    "preloadHint": "Restore the default example input",
+    "reset": "Reset",
+    "auto": "Auto",
+    "stop": "Stop",
+    "stepForward": "Step forward",
+    "stepBack": "Step back",
+    "currentStep": "Step",
+    "inputLabel": "Input",
+    "resultLabel": "Result",
+    "targetLabel": "target",
+    "markLearned": "Mark as learned",
+    "unlearn": "Unlearn",
+    "customInputTitle": "Custom input",
+    "inputPlaceholder": "e.g. [2, 4, 6, 8]",
+    "targetPlaceholder": "Target",
+    "applyInput": "Apply input",
+    "invalidInput": "Invalid input. Provide a non-empty array of integers.",
+    "saveInputLabel": "Label",
+    "saveInputPlaceholder": "My test case",
+    "save": "Save",
+    "savedInputsTitle": "Saved inputs",
+    "noSavedInputs": "No saved inputs yet.",
+    "load": "Load",
+    "delete": "Delete"
+  },
+  "library": {
+    "title": "Library",
+    "intro": "Reference links from every exercise, grouped for further study.",
+    "openExercise": "Go to exercise"
+  },
+  "settings": {
+    "title": "Settings",
+    "summaryTitle": "Summary",
+    "theme": "Theme",
+    "themeLight": "Light",
+    "themeDark": "Dark",
+    "language": "Language",
+    "languageEn": "English",
+    "languageEs": "Spanish",
+    "viewMode": "View",
+    "viewGrid": "Grid",
+    "viewList": "List",
+    "learnedCount": "Learned",
+    "savedInputsCount": "Saved inputs",
+    "changeHint": "Change theme and language from the header.",
+    "dataTitle": "Your data",
+    "export": "Export data",
+    "import": "Import data",
+    "importSuccess": "Data imported successfully.",
+    "importError": "Could not import: the file is invalid or corrupted."
+  },
+  "notFound": {
+    "title": "Page not found",
+    "message": "The exercise or page you requested does not exist.",
+    "backHome": "Back to home"
+  },
+  "errors": {
+    "storageReset": "Stored data was invalid and has been reset to defaults."
+  }
+}

@@ -1,0 +1,46 @@
+---
+import { resolve, localize } from "../i18n";
+import { Language } from "../lib/constants";
+import { categoryKey, levelKey } from "../lib/labels";
+import type { Exercise } from "../lib/types";
+
+interface Props {
+  exercise: Exercise;
+}
+
+const { exercise } = Astro.props;
+const t = (key: string): string => resolve(key, Language.EN);
+const base = import.meta.env.BASE_URL;
+const catKey = categoryKey(exercise.category);
+const lvlKey = levelKey(exercise.level);
+---
+
+<article
+  class="card"
+  data-role="exercise-card"
+  data-id={exercise.id}
+  data-category={exercise.category}
+  data-level={exercise.level}
+  data-new={String(exercise.isNew)}
+>
+  <a class="card-link" href={`${base}exercise/${exercise.slug}`}>
+    <header class="card-head">
+      <h3 class="card-title" data-loc-en={exercise.name.en} data-loc-es={exercise.name.es}>
+        {localize(exercise.name, Language.EN)}
+      </h3>
+      <span class="learned-dot" data-role="card-learned" hidden aria-hidden="true">✓</span>
+    </header>
+    <p class="card-desc" data-loc-en={exercise.description.en} data-loc-es={exercise.description.es}>
+      {localize(exercise.description, Language.EN)}
+    </p>
+    <footer class="card-badges">
+      <span class={`badge badge-level level-${exercise.level.toLowerCase()}`} data-i18n={lvlKey}>
+        {t(lvlKey)}
+      </span>
+      <span class="badge badge-category" data-i18n={catKey}>{t(catKey)}</span>
+      {exercise.isNew && (
+        <span class="badge badge-new" data-i18n="common.new">{t("common.new")}</span>
+      )}
+    </footer>
+  </a>
+</article>

@@ -1,0 +1,16 @@
+---
+import { resolve } from "../i18n";
+import { Language } from "../lib/constants";
+
+const t = (key: string): string => resolve(key, Language.EN);
+---
+
+<section class="progress" aria-label={t("home.progressTitle")}>
+  <div class="progress-head">
+    <h2 data-i18n="home.progressTitle">{t("home.progressTitle")}</h2>
+    <span class="progress-label" data-role="progress-label">0 / 0</span>
+  </div>
+  <div class="progress-track">
+    <div class="progress-fill" data-role="progress-fill" style="width: 0%"></div>
+  </div>
+</section>
