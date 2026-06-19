@@ -84,9 +84,11 @@ export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
   const total = Math.max(nodes.length, 1);
 
   return {
-    totalSteps: total,
+    totalSteps: total + 1,
     result,
     renderStep(svg: SVGSVGElement, stepIndex: number): void {
+      // stepIndex 0 = initial undecorated state; algorithm walk starts at index 1
+      const walkIndex = stepIndex - 1;
       svg.setAttribute("viewBox", `0 0 ${VIEW_W} ${VIEW_H}`);
       clear(svg);
       const g = group();
@@ -107,8 +109,8 @@ export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
       });
 
       nodes.forEach((n) => {
-        const visited = n.order <= stepIndex;
-        const active = n.order === stepIndex;
+        const visited = walkIndex >= 0 && n.order <= walkIndex;
+        const active = walkIndex >= 0 && n.order === walkIndex;
         let fill = "var(--viz-cell)";
         if (visited) fill = "var(--viz-range)";
         if (active) fill = "var(--viz-mid)";

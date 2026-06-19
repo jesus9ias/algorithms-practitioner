@@ -51,8 +51,10 @@ export function buildSteps(input: VizInput): { steps: BsStep[]; result: number }
 export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
   const values = [...input.values];
   const { steps, result } = buildSteps(input);
-  const renderable: BsStep[] =
+  const INITIAL_STEP: BsStep = { lo: -1, hi: -1, mid: -1, found: false };
+  const algorithmSteps: BsStep[] =
     steps.length > 0 ? steps : [{ lo: 0, hi: values.length - 1, mid: 0, found: false }];
+  const renderable: BsStep[] = [INITIAL_STEP, ...algorithmSteps];
 
   const count = Math.max(values.length, 1);
   const cellW = (VIEW_W - CELL_GAP * (count + 1)) / count;

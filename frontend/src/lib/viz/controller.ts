@@ -118,8 +118,8 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
     viz.renderStep(svg, engine.currentStep);
     if (stepLabel) {
       stepLabel.textContent = `${resolve(I18N.currentStep, lang())} ${
-        engine.currentStep + 1
-      } / ${viz.totalSteps}`;
+        engine.currentStep
+      } / ${viz.totalSteps - 1}`;
     }
     renderIo();
     syncControls();

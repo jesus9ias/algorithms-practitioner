@@ -39,8 +39,10 @@ export function buildSteps(input: VizInput): { steps: LlStep[]; result: number[]
 export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
   const values = [...input.values];
   const { steps, result } = buildSteps(input);
-  const renderable: LlStep[] =
+  const INITIAL_STEP: LlStep = { index: -1, reversedSoFar: [] };
+  const algorithmSteps: LlStep[] =
     steps.length > 0 ? steps : [{ index: -1, reversedSoFar: [] }];
+  const renderable: LlStep[] = [INITIAL_STEP, ...algorithmSteps];
 
   const nodeX = (index: number): number => START_X + index * (NODE_W + GAP);
 
