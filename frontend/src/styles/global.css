@@ -267,6 +267,19 @@ a {
     grid-column: 1;
   }
   .filters.is-open { display: block; }
+
+  /* Exercise page: player pill goes full width, buttons spread evenly */
+  .player-group.player-main { width: 100%; justify-content: space-between; align-items: stretch; }
+  /* Back/forward: hide text label, icon only, fill available width */
+  [data-action="back"].btn-step,
+  [data-action="forward"].btn-step { flex: 1; line-height: 1; }
+  [data-action="back"].btn-step .btn-label,
+  [data-action="forward"].btn-step .btn-label { display: none; }
+  [data-action="back"].btn-step::before { content: "‹"; font-size: 1.6rem; }
+  [data-action="forward"].btn-step::after { content: "›"; font-size: 1.6rem; }
+
+  /* Viz SVG: render at designed size (640px base) and scroll horizontally */
+  .viz-svg { min-width: 640px; }
 }
 
 .filters {
