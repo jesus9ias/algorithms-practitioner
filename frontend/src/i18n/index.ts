@@ -37,3 +37,20 @@ export function resolve(key: string, lang: LanguageCode): string {
 
   return typeof current === "string" ? current : key;
 }
+
+/**
+ * Substitutes `{name}` placeholders in a template with the matching `params`
+ * value. Unknown placeholders are left untouched. Used to fill dynamic values
+ * (e.g. `{mid}`, `{target}`) into step-detail message templates.
+ */
+export function interpolate(
+  template: string,
+  params?: Readonly<Record<string, string | number>>
+): string {
+  if (!params) {
+    return template;
+  }
+  return template.replace(/\{(\w+)\}/g, (match, name: string) =>
+    name in params ? String(params[name]) : match
+  );
+}

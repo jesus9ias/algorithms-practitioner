@@ -1,5 +1,10 @@
 import { clear, rect, text, group } from "../../lib/viz/svg";
-import type { ExerciseViz, VizFactory, VizInput } from "../../lib/viz/types";
+import type {
+  ExerciseViz,
+  StepDescriptor,
+  VizFactory,
+  VizInput,
+} from "../../lib/viz/types";
 
 export interface BsStep {
   readonly lo: number;
@@ -50,6 +55,7 @@ export function buildSteps(input: VizInput): { steps: BsStep[]; result: number }
 /** Binary search visualization: a linear array with lo/hi/mid pointers. */
 export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
   const values = [...input.values];
+  const target = input.target ?? values[0] ?? 0;
   const { steps, result } = buildSteps(input);
   const INITIAL_STEP: BsStep = { lo: -1, hi: -1, mid: -1, found: false };
   const algorithmSteps: BsStep[] =
@@ -63,6 +69,20 @@ export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
   return {
     totalSteps: renderable.length,
     result,
+    describeStep(stepIndex: number): StepDescriptor | null {
+      // Step 0 is the initial, pre-search state and has no log row.
+      if (stepIndex <= 0) {
+        return null;
+      }
+      const step = renderable[Math.min(stepIndex, renderable.length - 1)];
+      const midValue = values[step.mid];
+      if (step.found) {
+        return { key: "found", params: { mid: midValue, index: step.mid } };
+      }
+      // midValue < target means the target lies to the right, and vice versa.
+      const key = midValue < target ? "compareGreater" : "compareSmaller";
+      return { key, params: { mid: midValue, target } };
+    },
     renderStep(svg: SVGSVGElement, stepIndex: number): void {
       const step = renderable[Math.min(stepIndex, renderable.length - 1)];
       svg.setAttribute("viewBox", `0 0 ${VIEW_W} ${VIEW_H}`);

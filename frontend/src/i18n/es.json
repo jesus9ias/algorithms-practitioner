@@ -80,7 +80,9 @@
     "savedInputsTitle": "Entradas guardadas",
     "noSavedInputs": "Aún no hay entradas guardadas.",
     "load": "Cargar",
-    "delete": "Eliminar"
+    "delete": "Eliminar",
+    "stepLogTitle": "Detalle de pasos",
+    "stepLogEmpty": "Avanza la visualización para ver cada paso explicado aquí."
   },
   "library": {
     "title": "Biblioteca",

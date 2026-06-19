@@ -80,7 +80,9 @@
     "savedInputsTitle": "Saved inputs",
     "noSavedInputs": "No saved inputs yet.",
     "load": "Load",
-    "delete": "Delete"
+    "delete": "Delete",
+    "stepLogTitle": "Step detail",
+    "stepLogEmpty": "Advance the visualization to see each step explained here."
   },
   "library": {
     "title": "Library",

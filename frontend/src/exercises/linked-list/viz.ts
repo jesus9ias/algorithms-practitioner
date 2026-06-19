@@ -1,5 +1,10 @@
 import { clear, rect, text, line, group } from "../../lib/viz/svg";
-import type { ExerciseViz, VizFactory, VizInput } from "../../lib/viz/types";
+import type {
+  ExerciseViz,
+  StepDescriptor,
+  VizFactory,
+  VizInput,
+} from "../../lib/viz/types";
 
 export interface LlStep {
   /** Index (in original order) of the node being reversed at this step. */
@@ -49,6 +54,17 @@ export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
   return {
     totalSteps: renderable.length,
     result,
+    describeStep(stepIndex: number): StepDescriptor | null {
+      // Step 0 shows the original list untouched; no log row yet.
+      if (stepIndex <= 0) {
+        return null;
+      }
+      const step = renderable[Math.min(stepIndex, renderable.length - 1)];
+      if (step.index < 0) {
+        return null;
+      }
+      return { key: "prepend", params: { value: values[step.index] } };
+    },
     renderStep(svg: SVGSVGElement, stepIndex: number): void {
       const step = renderable[Math.min(stepIndex, renderable.length - 1)];
       const totalW = Math.max(VIEW_W, nodeX(values.length) + NODE_W);

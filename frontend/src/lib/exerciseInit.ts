@@ -1,4 +1,5 @@
 import { loadViz } from "../exercises/registry";
+import { exercises } from "../data/exercises";
 import { mountExercise } from "./viz/controller";
 import { parseIntegerArray } from "./validation/userInput";
 import { COPY_FEEDBACK_MS } from "./constants";
@@ -47,5 +48,12 @@ export async function initExercise(): Promise<void> {
     : undefined;
 
   const createViz = await loadViz(id);
-  mountExercise({ root, exerciseId: id, createViz, defaultInput: { values, target } });
+  const stepMessages = exercises.find((e) => e.id === id)?.stepMessages ?? {};
+  mountExercise({
+    root,
+    exerciseId: id,
+    createViz,
+    defaultInput: { values, target },
+    stepMessages,
+  });
 }

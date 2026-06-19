@@ -57,42 +57,50 @@ const lvlKey = levelKey(exercise.level);
 
     <section class="panel">
       <h2 data-i18n="exercise.visualizationTitle">{t("exercise.visualizationTitle")}</h2>
-      <div class="viz-stage">
-        <svg class="viz-svg" data-role="viz-svg" role="img" aria-label={t("exercise.visualizationTitle")}></svg>
-      </div>
-      <dl class="viz-io">
-        <div class="viz-io-row">
-          <dt class="viz-io-key" data-i18n="exercise.inputLabel">{t("exercise.inputLabel")}</dt>
-          <dd class="viz-io-val" data-role="input-label"></dd>
+      <div class="viz-layout">
+        <div class="viz-main">
+          <div class="viz-stage">
+            <svg class="viz-svg" data-role="viz-svg" role="img" aria-label={t("exercise.visualizationTitle")}></svg>
+          </div>
+          <dl class="viz-io">
+            <div class="viz-io-row">
+              <dt class="viz-io-key" data-i18n="exercise.inputLabel">{t("exercise.inputLabel")}</dt>
+              <dd class="viz-io-val" data-role="input-label"></dd>
+            </div>
+            <div class="viz-io-row viz-io-result" data-role="result-line" hidden>
+              <dt class="viz-io-key" data-i18n="exercise.resultLabel">{t("exercise.resultLabel")}</dt>
+              <dd class="viz-io-val" data-role="result-label"></dd>
+            </div>
+          </dl>
+          <div class="viz-controls">
+            <div class="player-group player-main">
+              <button type="button" class="btn btn-step" data-action="back" data-i18n="exercise.stepBack">{t("exercise.stepBack")}</button>
+              <button type="button" class="btn btn-play" data-action="auto" data-i18n="exercise.auto">{t("exercise.auto")}</button>
+              <button type="button" class="btn btn-step" data-action="forward" data-i18n="exercise.stepForward">{t("exercise.stepForward")}</button>
+            </div>
+            <div class="player-group player-secondary">
+              <button
+                type="button"
+                class="btn btn-ghost"
+                data-action="reset"
+                data-i18n="exercise.reset"
+              >{t("exercise.reset")}</button>
+              <button
+                type="button"
+                class="btn btn-ghost"
+                data-action="preload"
+                data-i18n="exercise.preload"
+                data-i18n-title="exercise.preloadHint"
+                title={t("exercise.preloadHint")}
+              >{t("exercise.preload")}</button>
+            </div>
+            <span class="step-label" data-role="step-label"></span>
+          </div>
         </div>
-        <div class="viz-io-row viz-io-result" data-role="result-line" hidden>
-          <dt class="viz-io-key" data-i18n="exercise.resultLabel">{t("exercise.resultLabel")}</dt>
-          <dd class="viz-io-val" data-role="result-label"></dd>
-        </div>
-      </dl>
-      <div class="viz-controls">
-        <div class="player-group player-main">
-          <button type="button" class="btn btn-step" data-action="back" data-i18n="exercise.stepBack">{t("exercise.stepBack")}</button>
-          <button type="button" class="btn btn-play" data-action="auto" data-i18n="exercise.auto">{t("exercise.auto")}</button>
-          <button type="button" class="btn btn-step" data-action="forward" data-i18n="exercise.stepForward">{t("exercise.stepForward")}</button>
-        </div>
-        <div class="player-group player-secondary">
-          <button
-            type="button"
-            class="btn btn-ghost"
-            data-action="reset"
-            data-i18n="exercise.reset"
-          >{t("exercise.reset")}</button>
-          <button
-            type="button"
-            class="btn btn-ghost"
-            data-action="preload"
-            data-i18n="exercise.preload"
-            data-i18n-title="exercise.preloadHint"
-            title={t("exercise.preloadHint")}
-          >{t("exercise.preload")}</button>
-        </div>
-        <span class="step-label" data-role="step-label"></span>
+        <aside class="step-log-panel" aria-live="polite">
+          <h3 class="step-log-title" data-i18n="exercise.stepLogTitle">{t("exercise.stepLogTitle")}</h3>
+          <ol class="step-log" data-role="step-log"></ol>
+        </aside>
       </div>
     </section>
 

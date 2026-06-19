@@ -37,6 +37,12 @@ export interface Exercise {
   readonly codeFile: string;
   readonly defaultInput: readonly number[];
   readonly defaultTarget?: number;
+  /**
+   * Bilingual templates for the step-detail log, keyed by the `key` a viz's
+   * `describeStep` returns. Values may contain `{placeholder}` tokens filled
+   * from the descriptor's `params`.
+   */
+  readonly stepMessages: Readonly<Record<string, LocalizedText>>;
 }
 
 /** A user-saved custom input for an exercise. */

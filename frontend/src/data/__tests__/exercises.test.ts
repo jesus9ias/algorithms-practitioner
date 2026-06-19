@@ -26,6 +26,7 @@ interface RegistryEntry {
   name: LocalizedText;
   description: LocalizedText;
   links: { url: string; label: LocalizedText }[];
+  stepMessages: Record<string, LocalizedText>;
 }
 
 function isNonEmptyLocalized(value: LocalizedText): boolean {
@@ -80,6 +81,20 @@ describe("exercise registry (T-REG)", () => {
       expect(isNonEmptyLocalized(entry.description), `${entry.id} description`).toBe(true);
       for (const link of entry.links) {
         expect(isNonEmptyLocalized(link.label), `${entry.id} link label`).toBe(true);
+      }
+    }
+  });
+
+  it("T-REG-07: all exercises declare non-empty localized stepMessages", () => {
+    for (const entry of registry) {
+      expect(entry.stepMessages, `${entry.id} stepMessages`).toBeTruthy();
+      const keys = Object.keys(entry.stepMessages ?? {});
+      expect(keys.length, `${entry.id} stepMessages keys`).toBeGreaterThan(0);
+      for (const key of keys) {
+        expect(
+          isNonEmptyLocalized(entry.stepMessages[key]),
+          `${entry.id} stepMessages.${key}`
+        ).toBe(true);
       }
     }
   });

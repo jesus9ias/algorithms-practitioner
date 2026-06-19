@@ -449,6 +449,78 @@ a {
   font-weight: 600;
 }
 
+/* Visualization + step-detail log: single column on narrow screens, two
+   columns (viz left, scrollable log right) once there is room. */
+.viz-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+.viz-main { min-width: 0; }
+
+@media (min-width: 860px) {
+  .viz-layout { grid-template-columns: minmax(0, 1fr) 16rem; }
+}
+
+.step-log-panel {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--surface-2);
+  padding: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+}
+.step-log-title {
+  margin: 0 0 0.5rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+}
+.step-log {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  overflow-y: auto;
+  max-height: 18rem;
+}
+.step-log-row {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+  padding: 0.45rem 0.55rem;
+  border-radius: var(--radius-sm);
+  border-left: 3px solid var(--border);
+  background: var(--bg);
+}
+.step-log-row.is-active {
+  border-left-color: var(--accent);
+  background: var(--surface);
+}
+.step-log-num {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+}
+.step-log-msg {
+  font-size: 0.9rem;
+  color: var(--text);
+  line-height: 1.35;
+}
+.step-log-empty {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+}
+
 .input-row, .save-row {
   display: flex;
   gap: 0.5rem;

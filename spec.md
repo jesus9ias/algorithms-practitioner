@@ -372,6 +372,17 @@ Feature: Exercise detail page
     Given the visualization is at step 3
     When the user clicks "Reset"
     Then the visualization returns to step 0
+    And the step-detail log is cleared
+
+  Scenario: Step-detail log grows and shrinks with playback
+    Given the visualization is at step 0
+    Then the step-detail log shows no step rows
+    When the user clicks "Step forward"
+    Then the step-detail log shows one row describing step 1
+    When the user clicks "Step forward"
+    Then the step-detail log shows two rows, the second describing step 2
+    When the user clicks "Step back"
+    Then the last row is removed and only step 1 remains
 
   Scenario: Copy algorithm code
     When the user clicks the "Copy" button on the code block
@@ -545,6 +556,7 @@ Feature: Input validation and security
 | `T-REG-04` | All codeFile paths resolve to existing files | `exercises.json` | No 404 on any `codeFile` reference |
 | `T-REG-05` | All exercise IDs are unique | `exercises.json` | No duplicate `id` values |
 | `T-REG-06` | All localized fields have non-empty en/es | `exercises.json` | Every `name`, `description`, and link `label` has non-empty `en` and `es` |
+| `T-REG-07` | All exercises declare non-empty localized `stepMessages` | `exercises.json` | Every entry has a `stepMessages` map whose every value has non-empty `en` and `es` |
 
 ### i18n
 
@@ -631,6 +643,20 @@ SVG rendering, so the step model is testable in Node without a DOM.
 | `T-INT-BS` | Viz result equals `binarySearch` result | `{ values:[1,3,5,7,9], target:7 }` | `buildSteps(input).result === binarySearch([1,3,5,7,9], 7)` |
 | `T-INT-LL` | Viz result equals `reverseLinkedList` result | `{ values:[4,2,7] }` | `buildSteps(input).result` deep-equals `reverseLinkedList([4,2,7])` |
 | `T-INT-BST` | Viz result equals `binarySearchTreeInorder` result | `{ values:[5,3,7,1,4] }` | `buildSteps(input).result` deep-equals `binarySearchTreeInorder([5,3,7,1,4])` |
+
+### Visualization step-detail descriptors (per exercise)
+
+Each exercise's `createViz` exposes `describeStep(stepIndex)` returning a
+`StepDescriptor` (`{ key, params }`) for steps that have a log row, or `null` for
+the initial state (step 0). The shared controller resolves `key` against the
+exercise's `stepMessages` (in `exercises.json`) for the current language and
+interpolates `params`, building one log row per advanced step.
+
+| Test ID | Objective | Input | Expected output |
+|---|---|---|---|
+| `T-DESC-BS` | Binary search describes the initial, comparison and found steps | `{ values:[1,3,5,7,9], target:7 }` | `describeStep(0) === null`; step 1 key `compareGreater` with `mid:5`; last step key `found` with `index:3` |
+| `T-DESC-LL` | Linked list describes prepending each node | `{ values:[4,2,7] }` | `describeStep(0) === null`; step 1 key `prepend` with `value:4`; one descriptor per node |
+| `T-DESC-BST` | BST describes visiting each node in order | `{ values:[5,3,7,1,4] }` | `describeStep(0) === null`; step 1 key `visit` with `value:1`; one descriptor per node |
 
 ### Visualization step engine (per exercise)
 
@@ -731,17 +757,17 @@ Stages are executed in strict order. Claude Code stops after each stage and wait
 - `src/lib/validation/__tests__/localStorage.test.ts` — T-LS-*
 - `src/lib/validation/__tests__/userInput.test.ts` — T-INP-*
 - `src/i18n/__tests__/i18n.test.ts` — T-I18N-*
-- `src/data/__tests__/exercises.test.ts` — T-REG-*
+- `src/data/__tests__/exercises.test.ts` — T-REG-* (incl. T-REG-07)
 - `src/lib/__tests__/filters.test.ts` — T-FILT-*, T-SEARCH-*
 - `src/lib/__tests__/progress.test.ts` — T-PROG-*
 - `src/lib/__tests__/exportImport.test.ts` — T-EXP-*, T-IMP-*
 - `src/lib/viz/__tests__/stepEngine.test.ts` — T-VIZ-*
 - `src/exercises/binary-search/__tests__/exercise.test.ts` — T-ALG-BS-*
-- `src/exercises/binary-search/__tests__/viz.test.ts` — T-VIZEX-BS, T-INT-BS
+- `src/exercises/binary-search/__tests__/viz.test.ts` — T-VIZEX-BS, T-INT-BS, T-DESC-BS
 - `src/exercises/linked-list/__tests__/exercise.test.ts` — T-ALG-LL-*
-- `src/exercises/linked-list/__tests__/viz.test.ts` — T-VIZEX-LL, T-INT-LL
+- `src/exercises/linked-list/__tests__/viz.test.ts` — T-VIZEX-LL, T-INT-LL, T-DESC-LL
 - `src/exercises/binary-tree/__tests__/exercise.test.ts` — T-ALG-BST-*
-- `src/exercises/binary-tree/__tests__/viz.test.ts` — T-VIZEX-BST, T-INT-BST
+- `src/exercises/binary-tree/__tests__/viz.test.ts` — T-VIZEX-BST, T-INT-BST, T-DESC-BST
 
 **Constraints:**
 
@@ -844,3 +870,4 @@ Must include:
 | 2026-06-17 | Each exercise file (`exercise.js`, renamed from `algorithm.js`) exports exactly one pure function | The exported function is the copy-paste artifact shown to the user; it must be a clean, idiomatic reference implementation that takes input and returns the natural result — no step trace, no expected-result or config parameters. Internal helpers stay private. Named after the exercise's algorithm/structure (`binarySearch`, `reverseLinkedList`, `binarySearchTreeInorder`) |
 | 2026-06-17 | Step trace moved out of `exercise.js` into `viz.ts` as a pure `buildSteps(input)` separated from SVG rendering | Keeps the copyable function pristine and lets the step model be unit-tested in Node without a DOM. Testing splits into three: the exported function, the viz step model, and an integration test asserting `buildSteps(input).result` equals the exercise function's result |
 | 2026-06-18 | Exercise-specific text (name, description, link labels) stored inline as `{ en, es }` (`LocalizedText`) in `exercises.json`, not as keys in `en.json`/`es.json` | Co-locates each exercise's text with its data so adding an exercise touches one file; `en.json`/`es.json` keep only general UI text. Client language switching for these uses `data-loc-en`/`data-loc-es` attributes resolved via `textContent`. Refines the i18n rule: user-visible text lives in JSON (UI in i18n files, exercise text in `exercises.json`) |
+| 2026-06-19 | Per-step detail log rendered next to each viz; messages composed from a `describeStep(stepIndex)` descriptor (`{ key, params }`) on the viz plus a `stepMessages` template map in `exercises.json` | Adds a step-by-step legend table that grows/shrinks with playback (derived purely from the current step index — no mutating DOM state — mirroring how `renderStep` paints by index). The *which message + values* logic is custom per exercise (in `viz.ts`), while the *bilingual text* stays co-located with the exercise data (`stepMessages` in `exercises.json`), consistent with the 2026-06-18 decision. The shared controller resolves the template for the active language and interpolates `params`, building rows `0..currentStep`. The vestigial optional `caption?` on `ExerciseViz` is replaced by the required `describeStep`. Log row chrome (the "Step N →" prefix, panel title) lives in `en.json`/`es.json` as general UI text |

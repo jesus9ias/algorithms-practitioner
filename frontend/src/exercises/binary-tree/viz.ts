@@ -1,5 +1,10 @@
 import { clear, circle, text, line, group } from "../../lib/viz/svg";
-import type { ExerciseViz, VizFactory, VizInput } from "../../lib/viz/types";
+import type {
+  ExerciseViz,
+  StepDescriptor,
+  VizFactory,
+  VizInput,
+} from "../../lib/viz/types";
 
 interface BstNode {
   value: number;
@@ -86,6 +91,14 @@ export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
   return {
     totalSteps: total + 1,
     result,
+    describeStep(stepIndex: number): StepDescriptor | null {
+      // Step 0 shows the built tree before the traversal starts; no log row.
+      const walkIndex = stepIndex - 1;
+      if (walkIndex < 0 || walkIndex >= nodes.length) {
+        return null;
+      }
+      return { key: "visit", params: { value: nodes[walkIndex].value } };
+    },
     renderStep(svg: SVGSVGElement, stepIndex: number): void {
       // stepIndex 0 = initial undecorated state; algorithm walk starts at index 1
       const walkIndex = stepIndex - 1;
