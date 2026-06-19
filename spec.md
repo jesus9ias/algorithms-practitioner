@@ -61,9 +61,10 @@ algo-dsa/
 ```
 DOMAIN_NAME=          # Full subdomain, e.g. algo.example.com
 HOSTED_ZONE_ID=       # Route 53 hosted zone ID
+HOSTED_ZONE_NAME=     # Route 53 zone name (apex domain, e.g. example.com)
 AWS_ACCOUNT_ID=
-AWS_REGION=
-CERTIFICATE_ARN=      # ACM certificate ARN (us-east-1 for CloudFront)
+AWS_REGION=           # Must be us-east-1 for CloudFront + ACM
+AWS_PROFILE=          # Optional: AWS credentials profile for CDK CLI
 ```
 
 ### `frontend/.env`
@@ -669,12 +670,12 @@ Stages are executed in strict order. Claude Code stops after each stage and wait
 - S3 bucket (private, versioning enabled, no public access)
 - CloudFront distribution (OAC, HTTPS-only, default root object `index.html`, custom error for 404 → `404.html` with 200 status for SPA routing)
 - Route 53 A + AAAA alias records pointing subdomain to CloudFront (subdomain read from `.env`)
-- ACM certificate reference (ARN from `.env`)
+- ACM certificate created and DNS-validated by CDK against the hosted zone (no external ARN required)
 - All resource names derived from constants, no hardcoded strings
 - `infra/.env.example` documenting all required variables
 - `infra/README.md` with deploy instructions
 
-**GitHub Action:** `infra/.github/workflows/deploy-infra.yml` — triggered manually; runs `cdk deploy`
+**GitHub Action:** `.github/workflows/deploy-infra.yml` — triggered manually; runs `cdk deploy`
 
 **Constraints:**
 
@@ -830,6 +831,9 @@ Must include:
 | 2025-01-01 | Astro SSG (static generation) | No server required; deploys to S3/CloudFront natively; all dynamism is client-side JS |
 | 2025-01-01 | All user-visible text in i18n JSON | Enables language switching without page reload; single source of truth for EN/ES |
 | 2025-01-01 | Each exercise is fully isolated (own folder, own viz, own tests) | Prevents regression when adding exercises; each can evolve independently |
+| 2026-06-18 | CDK creates and DNS-validates the ACM certificate (removed `CERTIFICATE_ARN`) | Eliminates manual cert provisioning; CDK handles validation automatically via the hosted zone; cert lifecycle is managed as part of the stack |
+| 2026-06-18 | Added `HOSTED_ZONE_NAME` as a separate env var from `DOMAIN_NAME` | The hosted zone is for the apex domain (e.g. `example.com`) while `DOMAIN_NAME` is the subdomain (e.g. `algo.example.com`); using `DOMAIN_NAME` as `zoneName` was a bug |
+| 2026-06-18 | GitHub Actions workflows moved to repo-root `.github/workflows/` | GitHub only recognizes workflows at the repository root; `frontend/.github/` and `infra/.github/` are not picked up |
 | 2025-01-01 | 14 categories including additions (Sorting, Searching, Hashing, DP, Recursion, Bit Manipulation, Heaps) | Covers all major CS interview and learning topic areas |
 | 2025-01-01 | Seed set: Binary Search, Linked List, Binary Search Tree | Covers 3 distinct visualization archetypes (linear array, node chain, tree graph) to validate the full component system |
 | 2026-06-17 | Added `LearnedStatus` enum (`ALL` / `LEARNED` / `UNLEARNED`) | The "Filter by status" feature needs three discrete states; declaring them as an enum honors the "no magic strings" rule and is shared by the filter logic, tests, and home UI |

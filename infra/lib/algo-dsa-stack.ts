@@ -56,6 +56,26 @@ export class AlgoDsaStack extends Stack {
       validation: acm.CertificateValidation.fromDns(hostedZone),
     });
 
+    // CloudFront Function: rewrites extensionless paths to their /index.html.
+    // Needed because S3 (via OAC) only resolves the root defaultRootObject
+    // automatically; nested routes like /exercises/foo return 403 without this.
+    const urlRewriteFn = new cloudfront.Function(this, RESOURCE_ID.URL_REWRITE_FUNCTION, {
+      code: cloudfront.FunctionCode.fromInline(`
+function handler(event) {
+  var request = event.request;
+  var uri = request.uri;
+  if (uri.endsWith('/')) {
+    request.uri += 'index.html';
+  } else if (!uri.includes('.')) {
+    request.uri += '/index.html';
+  }
+  return request;
+}
+      `.trim()),
+      runtime: cloudfront.FunctionRuntime.JS_2_0,
+      comment: "Rewrite extensionless URIs to /index.html for Astro SSG routes",
+    });
+
     // CloudFront distribution with OAC against the private bucket.
     const distribution = new cloudfront.Distribution(this, RESOURCE_ID.DISTRIBUTION, {
       defaultRootObject: SITE_CONFIG.DEFAULT_ROOT_OBJECT,
@@ -69,11 +89,16 @@ export class AlgoDsaStack extends Stack {
         allowedMethods: cloudfront.AllowedMethods.ALLOW_GET_HEAD,
         cachePolicy: cloudfront.CachePolicy.CACHING_OPTIMIZED,
         compress: true,
+        functionAssociations: [
+          {
+            function: urlRewriteFn,
+            eventType: cloudfront.FunctionEventType.VIEWER_REQUEST,
+          },
+        ],
       },
       errorResponses: [
         {
           httpStatus: SITE_CONFIG.HTTP_NOT_FOUND,
-          responseHttpStatus: SITE_CONFIG.HTTP_OK,
           responsePagePath: `/${SITE_CONFIG.ERROR_DOCUMENT}`,
           ttl: Duration.seconds(SITE_CONFIG.ERROR_RESPONSE_TTL_SECONDS),
         },

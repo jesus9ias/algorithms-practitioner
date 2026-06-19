@@ -16,6 +16,7 @@ export const RESOURCE_ID = {
   HOSTED_ZONE: "SiteHostedZone",
   A_RECORD: "SiteAliasRecordA",
   AAAA_RECORD: "SiteAliasRecordAaaa",
+  URL_REWRITE_FUNCTION: "UrlRewriteFunction",
 } as const;
 
 /** CloudFormation output keys. */
