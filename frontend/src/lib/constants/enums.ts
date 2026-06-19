@@ -21,6 +21,16 @@ export enum ExerciseCategory {
   HEAPS = "HEAPS",
 }
 
+/**
+ * Kind of input/output an exercise works with. Declared so the shared infra can
+ * branch on it instead of inlining string literals. Defaults to `NUMBERS` when
+ * an exercise omits it, keeping the original integer-array model unchanged.
+ */
+export enum InputKind {
+  NUMBERS = "NUMBERS",
+  STRING = "STRING",
+}
+
 /** Exercise difficulty (LeetCode-style, 3 tiers). */
 export enum ExerciseLevel {
   EASY = "EASY",

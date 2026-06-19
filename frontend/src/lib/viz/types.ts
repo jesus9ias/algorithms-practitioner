@@ -1,7 +1,10 @@
 /** Normalized input handed to every exercise visualization. */
 export interface VizInput {
+  /** Integer values for numeric exercises (empty for text exercises). */
   readonly values: readonly number[];
   readonly target?: number;
+  /** Raw text for `STRING`-kind exercises; undefined for numeric ones. */
+  readonly text?: string;
 }
 
 /**
@@ -23,7 +26,7 @@ export interface StepDescriptor {
 export interface ExerciseViz {
   readonly totalSteps: number;
   /** The final result of the exercise function for the current input. */
-  readonly result: number | readonly number[];
+  readonly result: number | readonly number[] | string;
   renderStep(svg: SVGSVGElement, stepIndex: number): void;
   /**
    * Descriptor for the step's detail-log row, or `null` when the step has no row

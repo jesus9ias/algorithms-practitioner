@@ -1,7 +1,11 @@
 import { createStepEngine } from "./stepEngine";
 import type { VizFactory, VizInput, ExerciseViz } from "./types";
-import { AUTO_PLAY_INTERVAL_MS } from "../constants";
-import { parseIntegerArray, parseIntegerTarget } from "../validation/userInput";
+import { AUTO_PLAY_INTERVAL_MS, InputKind } from "../constants";
+import {
+  parseIntegerArray,
+  parseIntegerTarget,
+  parseEncodedString,
+} from "../validation/userInput";
 import {
   readLearned,
   writeLearned,
@@ -16,6 +20,8 @@ import { getPrefs, LANGUAGE_CHANGE_EVENT } from "../clientPrefs";
 export interface ExerciseControllerDeps {
   readonly root: HTMLElement;
   readonly exerciseId: string;
+  /** Whether this exercise consumes integer arrays or raw text. */
+  readonly inputKind: InputKind;
   readonly createViz: VizFactory;
   readonly defaultInput: VizInput;
   /** Bilingual step-detail templates for this exercise (from exercises.json). */
@@ -28,6 +34,7 @@ const I18N = {
   markLearned: "exercise.markLearned",
   unlearn: "exercise.unlearn",
   invalidInput: "exercise.invalidInput",
+  invalidInputString: "exercise.invalidInputString",
   currentStep: "exercise.currentStep",
   inputLabel: "exercise.inputLabel",
   resultLabel: "exercise.resultLabel",
@@ -44,7 +51,9 @@ function lang(): LanguageCode {
 
 /** Wires up all interactive behavior for a single exercise page. */
 export function mountExercise(deps: ExerciseControllerDeps): void {
-  const { root, exerciseId, createViz, defaultInput, stepMessages } = deps;
+  const { root, exerciseId, inputKind, createViz, defaultInput, stepMessages } =
+    deps;
+  const isStringInput = inputKind === InputKind.STRING;
 
   const svg = root.querySelector<SVGSVGElement>('[data-role="viz-svg"]');
   const stepLabel = root.querySelector<HTMLElement>('[data-role="step-label"]');
@@ -100,13 +109,21 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
     autoBtn?.classList.toggle("is-playing", playing);
   }
 
-  function formatValue(value: number | readonly number[]): string {
+  function formatValue(value: number | readonly number[] | string): string {
+    if (typeof value === "string") {
+      return `"${value}"`;
+    }
     return Array.isArray(value) ? `[${value.join(", ")}]` : String(value);
+  }
+
+  /** Display string for the current input, by kind. */
+  function formatInput(input: VizInput): string {
+    return isStringInput ? `"${input.text ?? ""}"` : formatValue(input.values);
   }
 
   function renderIo(): void {
     if (inputLabel) {
-      let text = formatValue(currentInput.values);
+      let text = formatInput(currentInput);
       if (currentInput.target !== undefined) {
         text += ` · ${resolve(I18N.targetLabel, lang())} ${currentInput.target}`;
       }
@@ -255,6 +272,19 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
   const applyBtn = root.querySelector<HTMLButtonElement>('[data-action="apply"]');
   function applyCustomInput(): void {
     if (!inputField || !inputError) return;
+
+    if (isStringInput) {
+      const stringResult = parseEncodedString(inputField.value);
+      if (!stringResult.ok) {
+        inputError.textContent = resolve(I18N.invalidInputString, lang());
+        inputError.hidden = false;
+        return;
+      }
+      inputError.hidden = true;
+      rebuild({ values: [], text: stringResult.value });
+      return;
+    }
+
     const arrayResult = parseIntegerArray(inputField.value);
     if (!arrayResult.ok) {
       inputError.textContent = resolve(I18N.invalidInput, lang());
@@ -315,7 +345,11 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
       loadBtn.className = "btn btn-small";
       loadBtn.textContent = resolve(I18N.load, lang());
       loadBtn.addEventListener("click", () => {
-        rebuild({ values: [...saved.value], target: saved.target });
+        if (typeof saved.value === "string") {
+          rebuild({ values: [], text: saved.value });
+        } else {
+          rebuild({ values: [...saved.value], target: saved.target });
+        }
       });
 
       const delBtn = document.createElement("button");
@@ -338,13 +372,16 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
   saveBtn?.addEventListener("click", () => {
     if (!saveLabel) return;
     const label = saveLabel.value.trim();
-    if (label === "" || currentInput.values.length === 0) {
+    const isEmpty = isStringInput
+      ? (currentInput.text ?? "") === ""
+      : currentInput.values.length === 0;
+    if (label === "" || isEmpty) {
       return;
     }
     const list = getSaved();
     list.push({
       label,
-      value: [...currentInput.values],
+      value: isStringInput ? (currentInput.text ?? "") : [...currentInput.values],
       target: currentInput.target,
     });
     persistSaved(list);

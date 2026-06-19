@@ -40,6 +40,66 @@ export function parseIntegerArray(raw: string): Result<number[]> {
 }
 
 /**
+ * Validates a raw string for `STRING`-kind exercises in the `n[substring]`
+ * run-length format used by `decode-string`. Accepts only ASCII letters,
+ * digits and square brackets; the brackets must be balanced, every `[` must be
+ * preceded by at least one digit (a repeat count), and digits may appear only
+ * as such a count. An empty string is valid (decodes to `""`). No `eval` is
+ * used — parsing is a single character scan.
+ */
+export function parseEncodedString(raw: string): Result<string> {
+  if (raw.length > MAX_INPUT_LENGTH) {
+    return err(`Input must not exceed ${MAX_INPUT_LENGTH} characters.`);
+  }
+
+  let depth = 0;
+  for (let i = 0; i < raw.length; i += 1) {
+    const ch = raw[i];
+    const isLetter = (ch >= "a" && ch <= "z") || (ch >= "A" && ch <= "Z");
+    const isDigit = ch >= "0" && ch <= "9";
+
+    if (isLetter) {
+      continue;
+    }
+    if (isDigit) {
+      // A run of digits is only meaningful as a repeat count: it must be
+      // followed (after the rest of the digits) by an opening bracket.
+      let j = i;
+      while (j < raw.length && raw[j] >= "0" && raw[j] <= "9") {
+        j += 1;
+      }
+      if (raw[j] !== "[") {
+        return err("Digits must be a repeat count directly before '['.");
+      }
+      i = j - 1; // skip the consumed digits; the loop will land on '['
+      continue;
+    }
+    if (ch === "[") {
+      // The char before '[' must be a digit (the count we just validated).
+      if (i === 0 || raw[i - 1] < "0" || raw[i - 1] > "9") {
+        return err("Every '[' must be preceded by a repeat count.");
+      }
+      depth += 1;
+      continue;
+    }
+    if (ch === "]") {
+      if (depth === 0) {
+        return err("Unbalanced ']' in input.");
+      }
+      depth -= 1;
+      continue;
+    }
+    return err("Input may contain only letters, digits and square brackets.");
+  }
+
+  if (depth !== 0) {
+    return err("Unbalanced '[' in input.");
+  }
+
+  return ok(raw);
+}
+
+/**
  * Parses an optional integer target (used by search-style exercises).
  * An empty string yields `undefined` (no target). Any non-integer is rejected.
  */

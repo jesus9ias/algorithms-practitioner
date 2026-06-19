@@ -88,5 +88,45 @@
         "es": "Visito el nodo {value} en orden — el menor valor aún no recolectado."
       }
     }
+  },
+  {
+    "id": "decode-string",
+    "slug": "decode-string",
+    "name": { "en": "String Decoder", "es": "Decodificador de Strings" },
+    "description": {
+      "en": "Receives a string encoded in the run-length format n[substring], where a number followed by a bracketed group means that group repeats n times, and groups can be nested. It scans the text left to right with a stack: digits build the repeat count, an opening bracket pushes the text built so far together with its count, plain letters are appended to the current text, and a closing bracket pops the saved text and count to repeat the just-finished group — expanding the innermost groups first. Returns the fully expanded string; text without brackets is returned unchanged and an empty input yields an empty string.",
+      "es": "Recibe una cadena codificada en el formato de repetición n[substring], donde un número seguido de un grupo entre corchetes significa que ese grupo se repite n veces, y los grupos pueden anidarse. Recorre el texto de izquierda a derecha con una pila: los dígitos forman el contador de repeticiones, un corchete de apertura apila el texto construido hasta ahora junto con su contador, las letras sueltas se agregan al texto actual y un corchete de cierre desapila el texto y el contador guardados para repetir el grupo recién terminado — expandiendo primero los grupos más internos. Devuelve la cadena totalmente expandida; el texto sin corchetes se devuelve sin cambios y una entrada vacía produce una cadena vacía."
+    },
+    "category": "TEXT",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-06-19",
+    "inputKind": "STRING",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/decode-string/",
+        "label": { "en": "Decode String on LeetCode", "es": "Decode String en LeetCode" }
+      }
+    ],
+    "codeFile": "decode-string/exercise.js",
+    "defaultInput": "3[ab]2[cd]",
+    "stepMessages": {
+      "readDigit": {
+        "en": "Read digit {digit}: the repeat count is now {count}.",
+        "es": "Leo el dígito {digit}: el contador de repeticiones ahora es {count}."
+      },
+      "openGroup": {
+        "en": "Open bracket: save the current text and start a group to repeat {count} times.",
+        "es": "Corchete de apertura: guardo el texto actual e inicio un grupo para repetir {count} veces."
+      },
+      "appendChar": {
+        "en": "Append '{char}' to the current text, now \"{current}\".",
+        "es": "Agrego '{char}' al texto actual, ahora \"{current}\"."
+      },
+      "closeGroup": {
+        "en": "Close bracket: repeat \"{segment}\" {count} times and append to the saved text → \"{current}\".",
+        "es": "Corchete de cierre: repito \"{segment}\" {count} veces y lo agrego al texto guardado → \"{current}\"."
+      }
+    }
   }
 ]

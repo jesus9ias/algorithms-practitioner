@@ -1,6 +1,7 @@
 import type {
   ExerciseCategory,
   ExerciseLevel,
+  InputKind,
   Theme,
   Language,
   ViewMode,
@@ -35,7 +36,13 @@ export interface Exercise {
   readonly addedAt: string;
   readonly links: readonly ExerciseLink[];
   readonly codeFile: string;
-  readonly defaultInput: readonly number[];
+  /**
+   * Kind of input this exercise consumes. Optional; absent means `NUMBERS`
+   * (an integer-array exercise). Text exercises set `STRING`.
+   */
+  readonly inputKind?: InputKind;
+  /** Integer-array seed for numeric exercises, or raw text for `STRING` ones. */
+  readonly defaultInput: readonly number[] | string;
   readonly defaultTarget?: number;
   /**
    * Bilingual templates for the step-detail log, keyed by the `key` a viz's
@@ -48,7 +55,8 @@ export interface Exercise {
 /** A user-saved custom input for an exercise. */
 export interface SavedInput {
   readonly label: string;
-  readonly value: readonly number[];
+  /** Integer array for numeric exercises, or raw text for `STRING` ones. */
+  readonly value: readonly number[] | string;
   readonly target?: number;
 }
 

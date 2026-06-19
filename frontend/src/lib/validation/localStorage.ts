@@ -62,13 +62,20 @@ function isValidSavedInput(value: unknown): value is SavedInput {
   if (typeof record.label !== "string" || record.label.length === 0) {
     return false;
   }
-  if (!Array.isArray(record.value)) {
-    return false;
-  }
-  if (record.value.length < MIN_INPUT_LENGTH || record.value.length > MAX_INPUT_LENGTH) {
-    return false;
-  }
-  if (!record.value.every((n) => typeof n === "number" && Number.isInteger(n))) {
+  // Text exercises persist their input as a bounded string; numeric exercises
+  // persist a bounded array of integers.
+  if (typeof record.value === "string") {
+    if (record.value.length > MAX_INPUT_LENGTH) {
+      return false;
+    }
+  } else if (Array.isArray(record.value)) {
+    if (record.value.length < MIN_INPUT_LENGTH || record.value.length > MAX_INPUT_LENGTH) {
+      return false;
+    }
+    if (!record.value.every((n) => typeof n === "number" && Number.isInteger(n))) {
+      return false;
+    }
+  } else {
     return false;
   }
   if (record.target !== undefined && !Number.isInteger(record.target)) {

@@ -134,6 +134,15 @@ Canonical exported function per seed exercise:
 | `binary-search` | `binarySearch(arr, target)` | index, or -1 |
 | `linked-list` | `reverseLinkedList(values)` | reversed `number[]` |
 | `binary-tree` | `binarySearchTreeInorder(values)` | ascending `number[]` |
+| `decode-string` | `decodeString(s)` | expanded `string` |
+
+Most exercises operate on integer arrays (`defaultInput: number[]`,
+`VizInput.values`). Exercises whose natural input/output is text instead declare
+`"inputKind": "STRING"` in their registry entry and provide a `string`
+`defaultInput`; the shared infra carries the raw text in `VizInput.text` and
+allows `string` results (see Decisions Log, 2026-06-19). `inputKind` is optional
+and defaults to `NUMBERS` (the `InputKind` enum), so numeric exercises are
+unchanged.
 
 ### User state — localStorage keys
 
@@ -629,6 +638,12 @@ internal helpers.
 | `T-ALG-BST-02` | BST in-order ignores duplicates | `binarySearchTreeInorder([5,3,3,5])` | `[3,5]` |
 | `T-ALG-BST-03` | BST in-order on single value | `binarySearchTreeInorder([42])` | `[42]` |
 | `T-ALG-BST-04` | BST in-order on empty input | `binarySearchTreeInorder([])` | `[]` |
+| `T-ALG-DS-01` | Decodes sequential groups | `decodeString("3[ab]2[cd]")` | `"abababcdcd"` |
+| `T-ALG-DS-02` | Decodes nested groups inside-out | `decodeString("2[a3[b]]")` | `"abbbabbb"` |
+| `T-ALG-DS-03` | Preserves text without brackets | `decodeString("abc")` | `"abc"` |
+| `T-ALG-DS-04` | Handles multi-digit repeat counts | `decodeString("12[a]")` | `"aaaaaaaaaaaa"` |
+| `T-ALG-DS-05` | Keeps letters outside brackets | `decodeString("ab2[c]d")` | `"abccd"` |
+| `T-ALG-DS-06` | Returns empty string for empty input | `decodeString("")` | `""` |
 
 ### Visualization step model and integration (per exercise)
 
@@ -643,6 +658,8 @@ SVG rendering, so the step model is testable in Node without a DOM.
 | `T-INT-BS` | Viz result equals `binarySearch` result | `{ values:[1,3,5,7,9], target:7 }` | `buildSteps(input).result === binarySearch([1,3,5,7,9], 7)` |
 | `T-INT-LL` | Viz result equals `reverseLinkedList` result | `{ values:[4,2,7] }` | `buildSteps(input).result` deep-equals `reverseLinkedList([4,2,7])` |
 | `T-INT-BST` | Viz result equals `binarySearchTreeInorder` result | `{ values:[5,3,7,1,4] }` | `buildSteps(input).result` deep-equals `binarySearchTreeInorder([5,3,7,1,4])` |
+| `T-VIZEX-DS` | Decode string emits one step per scanned character | `{ text:"2[a3[b]]" }` | `steps.length === text.length` |
+| `T-INT-DS` | Viz result equals `decodeString` result | `{ text:"2[a3[b]]" }` | `buildSteps(input).result === decodeString("2[a3[b]]")` |
 
 ### Visualization step-detail descriptors (per exercise)
 
@@ -657,6 +674,7 @@ interpolates `params`, building one log row per advanced step.
 | `T-DESC-BS` | Binary search describes the initial, comparison and found steps | `{ values:[1,3,5,7,9], target:7 }` | `describeStep(0) === null`; step 1 key `compareGreater` with `mid:5`; last step key `found` with `index:3` |
 | `T-DESC-LL` | Linked list describes prepending each node | `{ values:[4,2,7] }` | `describeStep(0) === null`; step 1 key `prepend` with `value:4`; one descriptor per node |
 | `T-DESC-BST` | BST describes visiting each node in order | `{ values:[5,3,7,1,4] }` | `describeStep(0) === null`; step 1 key `visit` with `value:1`; one descriptor per node |
+| `T-DESC-DS` | Decode string describes each character action | `{ text:"2[a]" }` | `describeStep(0) === null`; step 1 key `readDigit`; the `[` step key `openGroup`; the `]` step key `closeGroup`; one descriptor per character |
 
 ### Visualization step engine (per exercise)
 
@@ -870,4 +888,6 @@ Must include:
 | 2026-06-17 | Each exercise file (`exercise.js`, renamed from `algorithm.js`) exports exactly one pure function | The exported function is the copy-paste artifact shown to the user; it must be a clean, idiomatic reference implementation that takes input and returns the natural result — no step trace, no expected-result or config parameters. Internal helpers stay private. Named after the exercise's algorithm/structure (`binarySearch`, `reverseLinkedList`, `binarySearchTreeInorder`) |
 | 2026-06-17 | Step trace moved out of `exercise.js` into `viz.ts` as a pure `buildSteps(input)` separated from SVG rendering | Keeps the copyable function pristine and lets the step model be unit-tested in Node without a DOM. Testing splits into three: the exported function, the viz step model, and an integration test asserting `buildSteps(input).result` equals the exercise function's result |
 | 2026-06-18 | Exercise-specific text (name, description, link labels) stored inline as `{ en, es }` (`LocalizedText`) in `exercises.json`, not as keys in `en.json`/`es.json` | Co-locates each exercise's text with its data so adding an exercise touches one file; `en.json`/`es.json` keep only general UI text. Client language switching for these uses `data-loc-en`/`data-loc-es` attributes resolved via `textContent`. Refines the i18n rule: user-visible text lives in JSON (UI in i18n files, exercise text in `exercises.json`) |
+| 2026-06-19 | Shared exercise I/O generalized from integer-array-only to also support text exercises via an `InputKind` enum (`NUMBERS` default, `STRING`) | The seed model assumed every exercise's input/output was `number[]` (`VizInput.values`, `Exercise.defaultInput`, `SavedInput.value`, integer-only parsing/validation). The `decode-string` exercise is intrinsically text (`string` in, `string` out) and did not fit. Rather than encode characters as numbers (which would break the "trivially copyable" `exercise.js` and the human-readable description), the contract was widened minimally and backward-compatibly: `VizInput` gains an optional `text?: string`, `ExerciseViz.result`/`Exercise.defaultInput`/`SavedInput.value` accept `string`, a `parseEncodedString` validator + `validateInputs` string branch keep the security schema, and the shared controller branches on `inputKind`. Numeric exercises are untouched (`inputKind` defaults to `NUMBERS`). Authorized by the developer before implementation |
+| 2026-06-19 | Added `decode-string` exercise (category `TEXT`, level `MEDIUM`) | First text exercise; validates the string-I/O generalization. Decodes the `n[substring]` run-length format with nesting via an explicit count/string stack — a distinct visualization archetype (scanning cursor + stack) versus the existing array/list/tree ones |
 | 2026-06-19 | Per-step detail log rendered next to each viz; messages composed from a `describeStep(stepIndex)` descriptor (`{ key, params }`) on the viz plus a `stepMessages` template map in `exercises.json` | Adds a step-by-step legend table that grows/shrinks with playback (derived purely from the current step index — no mutating DOM state — mirroring how `renderStep` paints by index). The *which message + values* logic is custom per exercise (in `viz.ts`), while the *bilingual text* stays co-located with the exercise data (`stepMessages` in `exercises.json`), consistent with the 2026-06-18 decision. The shared controller resolves the template for the active language and interpolates `params`, building rows `0..currentStep`. The vestigial optional `caption?` on `ExerciseViz` is replaced by the required `describeStep`. Log row chrome (the "Step N →" prefix, panel title) lives in `en.json`/`es.json` as general UI text |

@@ -2,7 +2,8 @@ import { loadViz } from "../exercises/registry";
 import { exercises } from "../data/exercises";
 import { mountExercise } from "./viz/controller";
 import { parseIntegerArray } from "./validation/userInput";
-import { COPY_FEEDBACK_MS } from "./constants";
+import { COPY_FEEDBACK_MS, InputKind } from "./constants";
+import type { VizInput } from "./viz/types";
 import { resolve } from "../i18n";
 import { getPrefs } from "./clientPrefs";
 import type { LanguageCode } from "../i18n";
@@ -40,20 +41,31 @@ export async function initExercise(): Promise<void> {
 
   setupCopyButton();
 
-  const rawInput = root.dataset.defaultInput ?? "[]";
-  const parsed = parseIntegerArray(rawInput);
-  const values = parsed.ok ? parsed.value : [];
-  const target = root.dataset.defaultTarget
-    ? Number(root.dataset.defaultTarget)
-    : undefined;
+  const exercise = exercises.find((e) => e.id === id);
+  const inputKind = exercise?.inputKind ?? InputKind.NUMBERS;
+
+  let defaultInput: VizInput;
+  if (inputKind === InputKind.STRING) {
+    const text = typeof exercise?.defaultInput === "string" ? exercise.defaultInput : "";
+    defaultInput = { values: [], text };
+  } else {
+    const rawInput = root.dataset.defaultInput ?? "[]";
+    const parsed = parseIntegerArray(rawInput);
+    const values = parsed.ok ? parsed.value : [];
+    const target = root.dataset.defaultTarget
+      ? Number(root.dataset.defaultTarget)
+      : undefined;
+    defaultInput = { values, target };
+  }
 
   const createViz = await loadViz(id);
-  const stepMessages = exercises.find((e) => e.id === id)?.stepMessages ?? {};
+  const stepMessages = exercise?.stepMessages ?? {};
   mountExercise({
     root,
     exerciseId: id,
+    inputKind,
     createViz,
-    defaultInput: { values, target },
+    defaultInput,
     stepMessages,
   });
 }
