@@ -22,6 +22,10 @@ export function initHome(): void {
   const progressLabel = document.querySelector<HTMLElement>('[data-role="progress-label"]');
   if (!list) return;
 
+  const filterPanel = document.querySelector<HTMLElement>('#home-filters');
+  const filterToggleBtn = document.querySelector<HTMLButtonElement>('[data-action="toggle-filters"]');
+  const filterCountEl = document.querySelector<HTMLElement>('[data-role="filter-count"]');
+
   const cards = new Map<string, HTMLElement>();
   list.querySelectorAll<HTMLElement>('[data-role="exercise-card"]').forEach((card) => {
     const id = card.dataset.id;
@@ -55,6 +59,22 @@ export function initHome(): void {
     };
   }
 
+  function countActiveFilters(): number {
+    const categories = checkedValues(document.querySelectorAll('[data-filter="category"]')).length;
+    const levels = checkedValues(document.querySelectorAll('[data-filter="level"]')).length;
+    const newOnly = document.querySelector<HTMLInputElement>('[data-filter="new"]')?.checked ? 1 : 0;
+    const statusEl = document.querySelector<HTMLInputElement>('[data-filter="status"]:checked');
+    const statusActive = statusEl?.value !== LearnedStatus.ALL ? 1 : 0;
+    return categories + levels + newOnly + statusActive;
+  }
+
+  function updateFilterCount(): void {
+    if (!filterCountEl) return;
+    const count = countActiveFilters();
+    filterCountEl.textContent = String(count);
+    filterCountEl.hidden = count === 0;
+  }
+
   function applyFilters(): void {
     const byFilter = filterExercises(exercises, readCriteria());
     const visible = searchExercises(byFilter, search?.value ?? "", lang());
@@ -66,6 +86,7 @@ export function initHome(): void {
     if (noResults) {
       noResults.hidden = visibleIds.size > 0;
     }
+    updateFilterCount();
   }
 
   function updateProgress(): void {
@@ -107,6 +128,12 @@ export function initHome(): void {
     applyViewMode((e as CustomEvent<ViewMode>).detail);
   });
 
+  // --- Filter panel toggle (mobile) ---
+  filterToggleBtn?.addEventListener('click', () => {
+    const isOpen = filterPanel?.classList.toggle('is-open') ?? false;
+    filterToggleBtn.setAttribute('aria-expanded', String(isOpen));
+  });
+
   // --- Filter/search inputs ---
   search?.addEventListener("input", applyFilters);
   document
@@ -125,6 +152,8 @@ export function initHome(): void {
     if (allStatus) allStatus.checked = true;
     if (search) search.value = "";
     applyFilters();
+    filterPanel?.classList.remove('is-open');
+    filterToggleBtn?.setAttribute('aria-expanded', 'false');
   });
 
   document.addEventListener(LANGUAGE_CHANGE_EVENT, applyFilters);

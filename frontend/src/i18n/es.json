@@ -48,7 +48,8 @@
     "statusUnlearned": "Por aprender",
     "noResults": "Ningún ejercicio coincide con los filtros actuales.",
     "clearFilters": "Limpiar filtros",
-    "progressTitle": "Tu progreso"
+    "progressTitle": "Tu progreso",
+    "showFilters": "Filtros"
   },
   "exercise": {
     "referencesTitle": "Referencias",

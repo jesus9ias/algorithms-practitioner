@@ -29,6 +29,17 @@ const levels = Object.values(ExerciseLevel);
       placeholder={t("home.searchPlaceholder")}
       aria-label={t("home.searchPlaceholder")}
     />
+    <button
+      type="button"
+      class="filter-toggle-btn btn btn-small"
+      data-action="toggle-filters"
+      data-i18n-aria="home.showFilters"
+      aria-expanded="false"
+      aria-controls="home-filters"
+    >
+      <span data-i18n="home.showFilters">{t("home.showFilters")}</span>
+      <span class="filter-count" data-role="filter-count" hidden>0</span>
+    </button>
     <div class="view-toggle" role="group" aria-label={t("home.viewGrid")}>
       <button
         type="button"
@@ -48,7 +59,7 @@ const levels = Object.values(ExerciseLevel);
   </div>
 
   <div class="home-layout">
-    <aside class="filters" aria-label={t("home.filtersTitle")}>
+    <aside id="home-filters" class="filters" aria-label={t("home.filtersTitle")}>
       <div class="filters-head">
         <h2 data-i18n="home.filtersTitle">{t("home.filtersTitle")}</h2>
         <button type="button" class="btn btn-small" data-action="clear-filters" data-i18n="home.clearFilters">
