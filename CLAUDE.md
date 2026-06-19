@@ -66,7 +66,7 @@ algorithms-practitioner/
 │       │   ├── constants/      # enums.ts, storage.ts, app.ts, index.ts
 │       │   ├── storage/        # Validated localStorage read/write/reset wrappers
 │       │   ├── validation/     # userInput + localStorage validators
-│       │   ├── viz/            # stepEngine, svg helpers, ExerciseViz types, controller
+│       │   ├── viz/            # stepEngine, svg helpers, ExerciseViz/VizInput/StepDescriptor types, controller
 │       │   ├── types.ts        # Result<T>, Exercise, Prefs, AppState…
 │       │   ├── filters.ts      # filterExercises / searchExercises (pure)
 │       │   ├── progress.ts     # computeProgress (pure)
@@ -101,6 +101,16 @@ other exercises.
    `defaultTarget`. Both `en` and `es` must be non-empty (enforced by `T-REG-06`).
    Exercise text lives here, not in `en.json`/`es.json`.
 
+   For **text exercises** (input is a string rather than an integer array) add
+   `"inputKind": "STRING"` and set `defaultInput` to a string literal. Omitting
+   `inputKind` defaults to `NUMBERS` (integer-array behavior).
+
+   Add a `stepMessages` object: a flat map of step-key → `{ "en": "...", "es": "..." }`
+   template pairs. Keys are returned by `describeStep()` in `viz.ts`; values may
+   contain `{placeholder}` tokens that the controller interpolates at runtime
+   (e.g. `{ "check": { "en": "Checking index {i}", "es": "Revisando índice {i}" } }`).
+   Every key that `describeStep` can emit must have an entry here.
+
    **Description convention:** the `description` must let the user understand the
    exercise without reading the code. Cover, in plain language, three things:
    (1) **what the algorithm does** — its core idea/strategy (e.g. "halves the
@@ -117,9 +127,24 @@ other exercises.
    non-exported helpers are fine.
 4. **Create `viz.ts`** — export a pure `buildSteps(input)` returning
    `{ steps, result }`, and `const createViz: VizFactory` that uses it.
-   Implement the shared `ExerciseViz` interface (`totalSteps`,
-   `renderStep(svg, stepIndex)`). Build SVG only with the helpers in
-   `src/lib/viz/svg.ts` (`createElementNS` / `textContent`) — never `innerHTML`.
+   `VizFactory` is `(input: VizInput) => ExerciseViz` where `VizInput` is
+   `{ values: readonly number[]; target?: number; text?: string }` — `values`
+   carries integer-array exercises; `text` carries string exercises.
+
+   Implement the full `ExerciseViz` interface:
+   - `totalSteps: number` — total number of steps (including the initial state).
+   - `result: number | readonly number[] | string` — final result of the algorithm
+     for the current input; displayed on the last step.
+   - `renderStep(svg: SVGSVGElement, stepIndex: number): void` — draws the
+     visualization for the given step into the provided `<svg>` element.
+   - `describeStep(stepIndex: number): StepDescriptor | null` — returns a
+     `{ key: string; params?: Record<string, string | number> }` descriptor for
+     the step-detail log row, or `null` if the step produces no log entry (e.g.
+     the initial state at step 0). The `key` must match an entry in
+     `stepMessages`; `params` are interpolated into the template.
+
+   Build SVG only with the helpers in `src/lib/viz/svg.ts`
+   (`createElementNS` / `textContent`) — never `innerHTML`.
    Use the `--viz-*` CSS variables for color.
 5. **Create `__tests__/exercise.test.ts`** (the exported function, multiple `it`
    cases for edge cases) and **`__tests__/viz.test.ts`** (the `buildSteps` step
