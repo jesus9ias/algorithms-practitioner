@@ -18,15 +18,15 @@ const base = import.meta.env.BASE_URL;
   </nav>
 
   <div class="header-controls">
-    <select
-      class="lang-select"
-      data-role="language-select"
+    <button
+      type="button"
+      class="icon-btn"
+      data-action="toggle-language"
       data-i18n-aria="settings.language"
       aria-label={t("settings.language")}
     >
-      <option value={Language.EN}>EN</option>
-      <option value={Language.ES}>ES</option>
-    </select>
+      <span data-role="lang-label">EN</span>
+    </button>
 
     <button
       type="button"

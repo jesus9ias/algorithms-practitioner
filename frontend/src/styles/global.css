@@ -178,7 +178,6 @@ a {
 .btn-outline { background: transparent; }
 .btn-small { padding: 0.25rem 0.6rem; font-size: 0.85rem; }
 .btn-danger { color: var(--danger); border-color: var(--danger); }
-.btn.is-learned { background: var(--success); color: #fff; border-color: var(--success); }
 .icon-btn {
   font: inherit;
   font-size: 1.1rem;
@@ -191,7 +190,7 @@ a {
   cursor: pointer;
 }
 .icon-btn.is-active { border-color: var(--accent); color: var(--accent); }
-.lang-select, .text-input, .search-input {
+.text-input, .search-input {
   font: inherit;
   padding: 0.45rem 0.6rem;
   border-radius: var(--radius-sm);
@@ -344,8 +343,24 @@ a {
 /* ---- Exercise detail ---- */
 .exercise { display: flex; flex-direction: column; gap: 1.5rem; }
 .exercise-header h1 { margin: 0.4rem 0; }
-.exercise-badges { display: flex; gap: 0.4rem; }
-.exercise-desc { color: var(--text-muted); max-width: 60ch; }
+.exercise-badges { display: flex; align-items: center; gap: 0.4rem; }
+.exercise-desc { color: var(--text-muted); }
+.learned-toggle {
+  font: inherit;
+  font-size: 0.75rem;
+  padding: 0.15rem 0.6rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--border);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  white-space: nowrap;
+  margin-left: auto;
+}
+.learned-toggle:hover { border-color: var(--accent); color: var(--text); }
+.learned-toggle::before { content: "○  "; }
+.learned-toggle.is-learned { background: var(--success); color: #fff; border-color: var(--success); }
+.learned-toggle.is-learned::before { content: "✓  "; }
 
 .panel {
   background: var(--surface);
@@ -557,13 +572,24 @@ a {
 .code-block {
   border-radius: var(--radius-sm);
   overflow: auto;
+  counter-reset: line;
 }
 .code-block :global(pre) {
   margin: 0;
-  padding: 1rem;
+  padding: 1rem 1rem 1rem 0;
   border-radius: var(--radius-sm);
   font-family: var(--mono);
   font-size: 0.85rem;
+}
+.code-block .line::before {
+  counter-increment: line;
+  content: counter(line);
+  display: inline-block;
+  width: 2.5rem;
+  padding-right: 1rem;
+  text-align: right;
+  color: #4b5263;
+  user-select: none;
 }
 
 .reference-list { margin: 0; padding-left: 1.2rem; }

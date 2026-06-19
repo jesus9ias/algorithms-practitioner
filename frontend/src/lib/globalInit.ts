@@ -59,13 +59,18 @@ export function initGlobal(): void {
     .querySelector('[data-action="toggle-theme"]')
     ?.addEventListener("click", () => toggleTheme());
 
-  // Language switcher.
-  const langSelect = document.querySelector<HTMLSelectElement>('[data-role="language-select"]');
-  if (langSelect) {
-    langSelect.value = getPrefs().language;
-    langSelect.addEventListener("change", () => {
-      const value = langSelect.value === Language.ES ? Language.ES : Language.EN;
-      setLanguage(value);
+  // Language toggle.
+  const langBtn = document.querySelector<HTMLButtonElement>('[data-action="toggle-language"]');
+  const langLabel = document.querySelector<HTMLElement>('[data-role="lang-label"]');
+  function oppositeLang(lang: Language): Language {
+    return lang === Language.ES ? Language.EN : Language.ES;
+  }
+  if (langBtn) {
+    if (langLabel) langLabel.textContent = oppositeLang(getPrefs().language).toUpperCase();
+    langBtn.addEventListener("click", () => {
+      const next = oppositeLang(getPrefs().language);
+      setLanguage(next);
+      if (langLabel) langLabel.textContent = oppositeLang(next).toUpperCase();
     });
   }
 

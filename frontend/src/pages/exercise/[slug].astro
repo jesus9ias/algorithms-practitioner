@@ -47,6 +47,9 @@ const lvlKey = levelKey(exercise.level);
           {t(lvlKey)}
         </span>
         <span class="badge badge-category" data-i18n={catKey}>{t(catKey)}</span>
+        <button type="button" class="learned-toggle" data-action="learned" data-i18n="exercise.markLearned">
+          {t("exercise.markLearned")}
+        </button>
       </div>
       <h1 data-loc-en={exercise.name.en} data-loc-es={exercise.name.es}>
         {localize(exercise.name, Language.EN)}
@@ -54,9 +57,6 @@ const lvlKey = levelKey(exercise.level);
       <p class="exercise-desc" data-loc-en={exercise.description.en} data-loc-es={exercise.description.es}>
         {localize(exercise.description, Language.EN)}
       </p>
-      <button type="button" class="btn btn-primary" data-action="learned" data-i18n="exercise.markLearned">
-        {t("exercise.markLearned")}
-      </button>
     </header>
 
     <section class="panel">
