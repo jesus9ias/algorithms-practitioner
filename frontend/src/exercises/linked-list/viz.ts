@@ -1,10 +1,21 @@
 import { clear, rect, text, line, group } from "../../lib/viz/svg";
 import type {
+  CodeLines,
   ExerciseViz,
   StepDescriptor,
   VizFactory,
   VizInput,
 } from "../../lib/viz/types";
+
+/**
+ * Lines of the pointer-reversal loop body, executed once per step (each step
+ * moves one node from the input chain onto the reversed prefix). 1-based; kept
+ * in lockstep with exercise.js and exercise.pseudo.
+ */
+const REVERSE_STEP_LINES: CodeLines = {
+  js: [19, 20, 21, 22, 23],
+  pseudo: [10, 11, 12, 13, 14],
+};
 
 export interface LlStep {
   /** Index (in original order) of the node being reversed at this step. */
@@ -64,6 +75,18 @@ export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
         return null;
       }
       return { key: "prepend", params: { value: values[step.index] } };
+    },
+    codeLines(stepIndex: number): CodeLines | null {
+      // Step 0 shows the original list untouched; nothing executes yet.
+      if (stepIndex <= 0) {
+        return null;
+      }
+      const step = renderable[Math.min(stepIndex, renderable.length - 1)];
+      if (step.index < 0) {
+        return null;
+      }
+      // Every step is one iteration of the in-place pointer-reversal loop.
+      return REVERSE_STEP_LINES;
     },
     renderStep(svg: SVGSVGElement, stepIndex: number): void {
       const step = renderable[Math.min(stepIndex, renderable.length - 1)];

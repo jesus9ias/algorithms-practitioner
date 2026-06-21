@@ -1,7 +1,17 @@
+import { readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
+
 import { describe, it, expect } from "vitest";
 
 import { buildSteps, createViz } from "../viz";
 import { removeDuplicatesCLL } from "../exercise.js";
+
+/** Rendered line count of a sibling source file (Shiki drops one trailing \n). */
+function sourceLineCount(relative: string): number {
+  return readFileSync(fileURLToPath(new URL(relative, import.meta.url)), "utf8")
+    .replace(/\n$/, "")
+    .split("\n").length;
+}
 
 function toArray(head: { value: number; next: any } | null): number[] {
   if (head === null) return [];
@@ -54,5 +64,25 @@ describe("remove-duplicates-cll describeStep (T-DESC-CLL)", () => {
 
   it("T-DESC-CLL-04: totalSteps equals node count plus one initial step", () => {
     expect(viz.totalSteps).toBe(input.values.length + 1);
+  });
+});
+
+describe("remove-duplicates-cll codeLines (T-CODELINES-CLL)", () => {
+  const viz = createViz(input);
+  const jsLines = sourceLineCount("../exercise.js");
+  const pseudoLines = sourceLineCount("../exercise.pseudo");
+
+  it("T-CODELINES-CLL-01: step 0 highlights nothing", () => {
+    expect(viz.codeLines(0)).toBeNull();
+  });
+
+  it("T-CODELINES-CLL-02: every step maps to in-range 1-based source lines", () => {
+    const inRange = (n: number, max: number): boolean => n >= 1 && n <= max;
+    for (let step = 1; step < viz.totalSteps; step += 1) {
+      const lines = viz.codeLines(step);
+      if (lines === null) continue;
+      expect(lines.js.every((n) => inRange(n, jsLines))).toBe(true);
+      expect(lines.pseudo.every((n) => inRange(n, pseudoLines))).toBe(true);
+    }
   });
 });

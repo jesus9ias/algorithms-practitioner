@@ -1,10 +1,21 @@
 import { clear, circle, text, line, group } from "../../lib/viz/svg";
 import type {
+  CodeLines,
   ExerciseViz,
   StepDescriptor,
   VizFactory,
   VizInput,
 } from "../../lib/viz/types";
+
+/**
+ * Lines of the in-order `walk` body executed when a node is visited (recurse
+ * left, emit the value, recurse right). Each step visits one node. 1-based;
+ * kept in lockstep with exercise.js and exercise.pseudo.
+ */
+const VISIT_STEP_LINES: CodeLines = {
+  js: [32, 33, 34],
+  pseudo: [26, 27, 28],
+};
 
 interface BstNode {
   value: number;
@@ -98,6 +109,14 @@ export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
         return null;
       }
       return { key: "visit", params: { value: nodes[walkIndex].value } };
+    },
+    codeLines(stepIndex: number): CodeLines | null {
+      // Step 0 shows the built tree before the traversal starts; nothing runs.
+      const walkIndex = stepIndex - 1;
+      if (walkIndex < 0 || walkIndex >= nodes.length) {
+        return null;
+      }
+      return VISIT_STEP_LINES;
     },
     renderStep(svg: SVGSVGElement, stepIndex: number): void {
       // stepIndex 0 = initial undecorated state; algorithm walk starts at index 1

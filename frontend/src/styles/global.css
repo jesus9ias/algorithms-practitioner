@@ -24,6 +24,10 @@
   --viz-muted: #64748b;
   --viz-mid-label: #2563eb;
 
+  /* Code-block line highlight (block is always the github-dark Shiki theme). */
+  --code-exec-bg: rgba(56, 139, 253, 0.16);
+  --code-exec-bar: #58a6ff;
+
   --radius: 10px;
   --radius-sm: 6px;
   --shadow: 0 1px 3px rgba(0, 0, 0, 0.08), 0 1px 2px rgba(0, 0, 0, 0.06);
@@ -658,6 +662,14 @@ a {
   text-align: right;
   color: #4b5263;
   user-select: none;
+}
+/* Source line(s) executing at the current step. Highlight stretches the full
+   row (inline-block + width) without changing the surrounding line layout. */
+.code-block .line.is-executing {
+  display: inline-block;
+  width: 100%;
+  background: var(--code-exec-bg);
+  box-shadow: inset 0.2rem 0 0 0 var(--code-exec-bar);
 }
 
 .reference-list { margin: 0; padding-left: 1.2rem; }

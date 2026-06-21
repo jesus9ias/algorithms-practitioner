@@ -1,10 +1,23 @@
 import { clear, rect, text, group } from "../../lib/viz/svg";
 import type {
+  CodeLines,
   ExerciseViz,
   StepDescriptor,
   VizFactory,
   VizInput,
 } from "../../lib/viz/types";
+
+/**
+ * Source lines that execute for each scan action, by code mode. Each step
+ * processes one character, taking exactly one branch of the scan loop. 1-based;
+ * kept in lockstep with exercise.js and exercise.pseudo.
+ */
+const ACTION_LINES: Record<DecodeAction, CodeLines> = {
+  digit: { js: [16, 17, 18], pseudo: [7, 8, 9] },
+  open: { js: [16, 19, 20, 21, 22, 23], pseudo: [7, 10, 11, 12, 13, 14] },
+  close: { js: [16, 24, 25, 26, 27], pseudo: [7, 15, 16, 17, 18] },
+  char: { js: [16, 28, 29], pseudo: [7, 19, 20] },
+};
 
 /** One saved (count, text) pair on the decode stack. */
 interface Frame {
@@ -128,6 +141,13 @@ export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
       }
       const step = steps[stepIndex - 1];
       return { key: DESCRIPTOR_KEY[step.action], params: describeParams(step) };
+    },
+    codeLines(stepIndex: number): CodeLines | null {
+      // Step 0 shows the untouched input; the scan starts at step 1.
+      if (stepIndex <= 0 || stepIndex > steps.length) {
+        return null;
+      }
+      return ACTION_LINES[steps[stepIndex - 1].action];
     },
     renderStep(svg: SVGSVGElement, stepIndex: number): void {
       const activeIndex = stepIndex - 1; // -1 at the initial state

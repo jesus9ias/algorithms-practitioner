@@ -1,10 +1,20 @@
 import { clear, rect, text, line, group } from "../../lib/viz/svg";
 import type {
+  CodeLines,
   ExerciseViz,
   StepDescriptor,
   VizFactory,
   VizInput,
 } from "../../lib/viz/types";
+
+/**
+ * Source lines per dedup decision, by code mode. The head node is kept by the
+ * pre-loop setup; every other node is decided inside the while-loop, taking the
+ * skip or keep branch. 1-based; kept in lockstep with exercise.js / .pseudo.
+ */
+const HEAD_LINES: CodeLines = { js: [19, 20], pseudo: [12, 13] };
+const DUP_LINES: CodeLines = { js: [23, 24, 25, 26, 31], pseudo: [16, 17, 18, 19, 23] };
+const KEEP_LINES: CodeLines = { js: [23, 24, 25, 28, 29, 31], pseudo: [16, 17, 18, 21, 22, 23] };
 
 export interface SllDedupeStep {
   readonly nodeIndex: number;
@@ -55,6 +65,12 @@ export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
       if (stepIndex <= 0) return null;
       const step = steps[stepIndex - 1];
       return { key: step.isDuplicate ? "skip" : "keep", params: { value: step.value } };
+    },
+    codeLines(stepIndex: number): CodeLines | null {
+      if (stepIndex <= 0) return null;
+      const step = steps[stepIndex - 1];
+      if (step.nodeIndex === 0) return HEAD_LINES;
+      return step.isDuplicate ? DUP_LINES : KEEP_LINES;
     },
     renderStep(svg: SVGSVGElement, stepIndex: number): void {
       svg.setAttribute("viewBox", `0 0 ${totalW} ${VIEW_H}`);

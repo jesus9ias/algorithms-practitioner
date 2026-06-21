@@ -155,14 +155,33 @@ other exercises.
      the step-detail log row, or `null` if the step produces no log entry (e.g.
      the initial state at step 0). The `key` must match an entry in
      `stepMessages`; `params` are interpolated into the template.
+   - `codeLines(stepIndex: number): CodeLines | null` — returns the **1-based**
+     source line numbers that "execute" at this step, per code mode
+     (`{ js: readonly number[]; pseudo: readonly number[] }`), or `null` when the
+     step highlights nothing (always `null` at step 0). The controller toggles an
+     `is-executing` highlight on the matching `.line` spans of both code blocks.
+     Rules: (a) a step answers *"what happens here"*, not a single breakpoint —
+     it may list **non-contiguous** lines (the loop header + the branch it took +
+     the pointer update). (b) The viz step model is an *abstraction* of the
+     algorithm, not a line-by-line trace, so map each step to the line(s) that
+     best express it; setup that runs outside the stepped loop (e.g. seeding the
+     head node) can be mapped to the step that conceptually performs it. (c) Keep
+     `js` and `pseudo` in lockstep with `exercise.js`/`exercise.pseudo` —
+     re-derive the numbers if you edit either source file. (d) Declare the line
+     sets as **named constants** at module scope (no inline magic numbers), like
+     the existing exercises. `pseudo` is `[]` only if the exercise has no
+     `pseudoFile`.
 
    Build SVG only with the helpers in `src/lib/viz/svg.ts`
    (`createElementNS` / `textContent`) — never `innerHTML`.
    Use the `--viz-*` CSS variables for color.
 5. **Create `__tests__/exercise.test.ts`** (the exported function, multiple `it`
    cases for edge cases) and **`__tests__/viz.test.ts`** (the `buildSteps` step
-   model, plus an integration test asserting `buildSteps(input).result` equals
-   the exercise function's result), satisfying the Gherkin scenarios.
+   model, an integration test asserting `buildSteps(input).result` equals the
+   exercise function's result, and a `codeLines` block asserting `codeLines(0)`
+   is `null` and that every step maps to in-range 1-based lines for both `js` and
+   `pseudo` — read the sibling source files to get their line counts, as the
+   existing exercises do), satisfying the Gherkin scenarios.
    (Adding/altering tests requires developer authorization.)
 6. **Create `exercise.pseudo`** in `src/exercises/<id>/`. Write the
    language-agnostic pseudo-code version of the exported function, following
@@ -170,7 +189,9 @@ other exercises.
    assignment, `WHILE`/`FOR`/`IF`/`RETURN` in uppercase, helper functions
    declared below the main one. Derive it directly from the JS — every branch
    must be present. Then add `"pseudoFile": "<id>/exercise.pseudo"` to the
-   `exercises.json` entry alongside `"codeFile"`.
+   `exercises.json` entry alongside `"codeFile"`. Once the file is final,
+   re-verify the `pseudo` line numbers used by `codeLines` in `viz.ts` (step 4),
+   since they are 1-based offsets into this file.
 7. **Run `npm test`** in `frontend/`. All new tests must pass; `T-REG-04`
    confirms the `codeFile` resolves.
 8. **Confirm no other tests broke** (`npm test` is the full suite) and that

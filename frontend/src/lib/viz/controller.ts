@@ -56,6 +56,8 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
   const isStringInput = inputKind === InputKind.STRING;
 
   const svg = root.querySelector<SVGSVGElement>('[data-role="viz-svg"]');
+  const codeJs = root.querySelector<HTMLElement>('[data-role="code-js"]');
+  const codePseudo = root.querySelector<HTMLElement>('[data-role="code-pseudo"]');
   const stepLabel = root.querySelector<HTMLElement>('[data-role="step-label"]');
   const stepLog = root.querySelector<HTMLElement>('[data-role="step-log"]');
   const inputLabel = root.querySelector<HTMLElement>('[data-role="input-label"]');
@@ -183,9 +185,30 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
     }
   }
 
+  /**
+   * Marks the source line(s) that "execute" at the current step on a Shiki code
+   * block by toggling `is-executing` on its `.line` spans (1-based numbers map to
+   * the spans in order). Applied to both blocks regardless of which is visible or
+   * whether the block is collapsed, so the switcher and toggle need no coupling.
+   */
+  function paintExecutingLines(block: HTMLElement | null, lines: readonly number[]): void {
+    if (!block) return;
+    const spans = block.querySelectorAll<HTMLElement>(".line");
+    spans.forEach((span, index) => {
+      span.classList.toggle("is-executing", lines.includes(index + 1));
+    });
+  }
+
+  function highlightCode(): void {
+    const lines = viz.codeLines(engine.currentStep);
+    paintExecutingLines(codeJs, lines?.js ?? []);
+    paintExecutingLines(codePseudo, lines?.pseudo ?? []);
+  }
+
   function render(): void {
     if (!svg) return;
     viz.renderStep(svg, engine.currentStep);
+    highlightCode();
     if (stepLabel) {
       stepLabel.textContent = `${resolve(I18N.currentStep, lang())} ${
         engine.currentStep

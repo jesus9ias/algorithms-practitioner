@@ -1,10 +1,38 @@
 import { clear, rect, text, group } from "../../lib/viz/svg";
 import type {
+  CodeLines,
   ExerciseViz,
   StepDescriptor,
   VizFactory,
   VizInput,
 } from "../../lib/viz/types";
+
+/**
+ * Source lines that "execute" during one search iteration, by code mode.
+ * 1-based, kept in lockstep with exercise.js and exercise.pseudo. A step
+ * highlights the loop condition, the mid computation, the equality check, and
+ * then either the success return or the comparison + the branch that moves a
+ * bound — so non-`found` steps highlight non-contiguous lines.
+ */
+const JS_LINE = {
+  whileCond: 13,
+  computeMid: 14,
+  compareEqual: 15,
+  returnMid: 16,
+  compareLess: 18,
+  raiseLo: 19,
+  lowerHi: 21,
+} as const;
+
+const PSEUDO_LINE = {
+  whileCond: 5,
+  computeMid: 6,
+  compareEqual: 8,
+  returnMid: 9,
+  compareLess: 10,
+  raiseLo: 11,
+  lowerHi: 13,
+} as const;
 
 export interface BsStep {
   readonly lo: number;
@@ -82,6 +110,24 @@ export const createViz: VizFactory = (input: VizInput): ExerciseViz => {
       // midValue < target means the target lies to the right, and vice versa.
       const key = midValue < target ? "compareGreater" : "compareSmaller";
       return { key, params: { mid: midValue, target } };
+    },
+    codeLines(stepIndex: number): CodeLines | null {
+      // Step 0 is the pre-search state; it highlights nothing.
+      if (stepIndex <= 0) {
+        return null;
+      }
+      const step = renderable[Math.min(stepIndex, renderable.length - 1)];
+      const js: number[] = [JS_LINE.whileCond, JS_LINE.computeMid, JS_LINE.compareEqual];
+      const pseudo: number[] = [PSEUDO_LINE.whileCond, PSEUDO_LINE.computeMid, PSEUDO_LINE.compareEqual];
+      if (step.found) {
+        js.push(JS_LINE.returnMid);
+        pseudo.push(PSEUDO_LINE.returnMid);
+      } else {
+        const goesRight = values[step.mid] < target;
+        js.push(JS_LINE.compareLess, goesRight ? JS_LINE.raiseLo : JS_LINE.lowerHi);
+        pseudo.push(PSEUDO_LINE.compareLess, goesRight ? PSEUDO_LINE.raiseLo : PSEUDO_LINE.lowerHi);
+      }
+      return { js, pseudo };
     },
     renderStep(svg: SVGSVGElement, stepIndex: number): void {
       const step = renderable[Math.min(stepIndex, renderable.length - 1)];

@@ -18,6 +18,17 @@ export interface StepDescriptor {
 }
 
 /**
+ * 1-based source line numbers that "execute" at a given step, per code mode.
+ * Lines may be non-contiguous: a step marks every line involved in it (it
+ * answers "what happens in this step", not a single debugger breakpoint).
+ * `pseudo` is empty when the exercise has no pseudo-code file.
+ */
+export interface CodeLines {
+  readonly js: readonly number[];
+  readonly pseudo: readonly number[];
+}
+
+/**
  * Shared contract every per-exercise visualization implements. The viz owns its
  * own step model internally; the host only needs the step count, a way to render
  * a given step into an <svg>, and a per-step descriptor for the detail log.
@@ -34,6 +45,14 @@ export interface ExerciseViz {
    * step index and the viz's own step model.
    */
   describeStep(stepIndex: number): StepDescriptor | null;
+  /**
+   * 1-based source lines that "execute" at the given step, per code mode, or
+   * `null` when the step highlights nothing (e.g. the initial state at step 0).
+   * The host toggles the highlight on the matching code lines. Pure — depends
+   * only on the step index. Lines are kept in lockstep with exercise.js and
+   * exercise.pseudo and may be non-contiguous.
+   */
+  codeLines(stepIndex: number): CodeLines | null;
 }
 
 /** Factory each exercise exports to build its viz from an input. */
