@@ -101,6 +101,19 @@ other exercises.
    `defaultTarget`. Both `en` and `es` must be non-empty (enforced by `T-REG-06`).
    Exercise text lives here, not in `en.json`/`es.json`.
 
+   Add a `serialCode` string (e.g. `"SRCH-ARR-FIND-BIN"`) following the four-part
+   `TYPE–STRUCT–OBJ–VAR` nomenclature documented in `spec.md § Serial Code
+   Nomenclature`. Rules:
+   - Use only codes from the tables in that section. Never invent a new segment
+     value without first adding it to the table and getting developer approval.
+   - The `id`, `slug`, and `name` must be unique across all exercises AND allusive
+     to the serial (the taxonomy should be readable from the id alone).
+   - Before finalizing the entry, scan `exercises.json` for any existing exercise
+     with the same `serialCode`. A match is not forbidden but **must be flagged**
+     to the developer before proceeding — a duplicate means both exercises solve
+     the same problem in the same way, which may be intentional (two difficulty
+     tiers) or a classification error.
+
    For **text exercises** (input is a string rather than an integer array) add
    `"inputKind": "STRING"` and set `defaultInput` to a string literal. Omitting
    `inputKind` defaults to `NUMBERS` (integer-array behavior).

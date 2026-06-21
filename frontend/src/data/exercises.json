@@ -2,6 +2,7 @@
   {
     "id": "binary-search",
     "slug": "binary-search",
+    "serialCode": "SRCH-ARR-FIND-BIN",
     "name": { "en": "Binary Search", "es": "Búsqueda Binaria" },
     "description": {
       "en": "Receives a sorted array of integers and a target value. It looks at the middle element of the current range: if it equals the target the search ends; if the target is smaller it continues in the left half, otherwise in the right half — halving the range each step because the array is already ordered. Returns the index (position) where the target is found, or -1 if it is not present.",
@@ -38,6 +39,7 @@
   {
     "id": "linked-list",
     "slug": "linked-list",
+    "serialCode": "TRAV-LIST-REV-SMP",
     "name": { "en": "Linked List", "es": "Lista Enlazada" },
     "description": {
       "en": "Receives an array of integers and builds a singly linked list, where each node holds a value and a pointer to the next one. It walks the list following each next pointer until it reaches null, and rebuilds the sequence backwards. Returns a new array with the values in reverse order.",
@@ -65,6 +67,7 @@
   {
     "id": "binary-tree",
     "slug": "binary-tree",
+    "serialCode": "TRAV-TREE-ORD-BST",
     "name": { "en": "Binary Search Tree", "es": "Árbol Binario de Búsqueda" },
     "description": {
       "en": "Receives an array of integers and builds a binary search tree: each value is placed by comparison — smaller than a node goes to its left child, larger goes to the right (duplicates are ignored). It then traverses in-order (left subtree, node, right subtree), which always visits the smallest remaining value first. Returns a new array with the values in ascending order.",
@@ -92,6 +95,7 @@
   {
     "id": "decode-string",
     "slug": "decode-string",
+    "serialCode": "XFRM-STR-DEC-STD",
     "name": { "en": "String Decoder", "es": "Decodificador de Strings" },
     "description": {
       "en": "Receives a string encoded in the run-length format n[substring], where a number followed by a bracketed group means that group repeats n times, and groups can be nested. It scans the text left to right with a stack: digits build the repeat count, an opening bracket pushes the text built so far together with its count, plain letters are appended to the current text, and a closing bracket pops the saved text and count to repeat the just-finished group — expanding the innermost groups first. Returns the fully expanded string; text without brackets is returned unchanged and an empty input yields an empty string.",

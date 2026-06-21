@@ -91,6 +91,7 @@ General UI text still lives in `src/i18n/en.json` / `es.json`.
 {
   "id": "binary-search",           // kebab-case, unique
   "slug": "binary-search",         // URL segment
+  "serialCode": "SRCH-ARR-FIND-BIN", // four-part classification, internal only (see § Serial Code Nomenclature)
   "name": { "en": "Binary Search", "es": "Búsqueda Binaria" },
   "description": { "en": "Find a target…", "es": "Encuentra un valor…" },
   "category": "SEARCHING",         // ExerciseCategory enum value
@@ -177,6 +178,108 @@ Defined as an enum `ExerciseCategory`:
 | `RECURSION` | `categories.recursion` |
 | `BIT_MANIPULATION` | `categories.bitManipulation` |
 | `HEAPS` | `categories.heaps` |
+
+---
+
+## Serial Code Nomenclature
+
+Each exercise in `exercises.json` carries a `serialCode` string — a four-part
+classification code that identifies the *class* of the exercise (not its unique
+instance). The `id` remains the unique key; two exercises can share a `serialCode`
+only when they are truly equivalent in every dimension (see duplicate policy below).
+
+### Format
+
+```
+TYPE–STRUCT–OBJ–VAR
+```
+
+All four parts are required, separated by hyphens. Values come exclusively from
+the tables below. **Never invent a new code.** If no existing value fits, stop and
+discuss with the developer before adding; the new value must be added to the tables
+here first.
+
+### Part 1 — TYPE (algorithm technique)
+
+| Code | Meaning |
+|---|---|
+| `SRCH` | Search / lookup |
+| `SORT` | Sorting / ordering |
+| `TRAV` | Traversal (walk a structure) |
+| `BUILD` | Construction (build the structure from input) |
+| `XFRM` | Transformation (convert/reshape data) |
+| `COMP` | Computation (aggregate value: sum, max, count…) |
+| `RECR` | Recursion (primary technique is recursive decomposition) |
+| `DYNA` | Dynamic programming |
+
+### Part 2 — STRUCT (data structure)
+
+| Code | Meaning |
+|---|---|
+| `ARR` | Array |
+| `LIST` | Linked list |
+| `TREE` | Tree |
+| `GRPH` | Graph |
+| `MAT` | Matrix |
+| `STR` | String / text |
+| `HEAP` | Heap / priority queue |
+| `HASH` | Hash table / dictionary |
+| `STCK` | Stack |
+| `QUE` | Queue |
+
+### Part 3 — OBJ (objective / what the algorithm achieves)
+
+| Code | Meaning |
+|---|---|
+| `FIND` | Find / locate an element |
+| `DEDUP` | Remove duplicates |
+| `REM` | Remove / filter elements (general) |
+| `REV` | Reverse |
+| `ORD` | Order / sort / in-order traversal |
+| `DEC` | Decode / expand |
+| `MAX` | Find maximum or minimum |
+| `CNT` | Count occurrences |
+| `MRG` | Merge |
+| `XPOS` | Transpose |
+
+### Part 4 — VAR (variant — specific form of the structure or technique)
+
+| Code | Applies to | Meaning |
+|---|---|---|
+| `SMP` | LIST | Singly linked |
+| `DBL` | LIST | Doubly linked |
+| `CIR` | LIST | Circular |
+| `BST` | TREE | Binary search tree |
+| `BIN` | TREE / SRCH | Binary (generic binary tree or binary search) |
+| `AVL` | TREE | AVL / self-balancing |
+| `NARY` | TREE | N-ary tree |
+| `SQR` | MAT | Square matrix |
+| `RCT` | MAT | Rectangular matrix |
+| `LIN` | SRCH | Linear search |
+| `STD` | any | Standard — no meaningful variant |
+
+### Current exercises
+
+| id | serialCode |
+|---|---|
+| `binary-search` | `SRCH-ARR-FIND-BIN` |
+| `linked-list` | `TRAV-LIST-REV-SMP` |
+| `binary-tree` | `TRAV-TREE-ORD-BST` |
+| `decode-string` | `XFRM-STR-DEC-STD` |
+
+### Rules when adding an exercise
+
+1. **Derive the serial from the tables above — do not invent codes.** If a
+   dimension does not match any existing value, flag it before writing any code.
+2. **The `id`, `slug`, and `name` must be unique AND allusive to the serial.**
+   Someone reading the id should be able to infer the general class of exercise.
+   Examples: `linked-list-circular-dedup` is a clear derivative of `linked-list`;
+   `binary-search-rotated` signals a `SRCH-ARR-FIND` variant on a rotated array.
+3. **Alert on duplicate serials.** Before finalizing the exercise entry, check
+   whether any existing exercise already has the same `serialCode`. A duplicate
+   is not forbidden but must be reviewed: it means both exercises solve the
+   exact same problem in the same way — confirm this is intentional (e.g. two
+   difficulty tiers of the same algorithm) or revise the code.
 
 ---
 
@@ -926,3 +1029,4 @@ Must include:
 | 2026-06-20 | Added a global "About" informational modal (header info button) explaining the platform's goal and study recommendations | The site reveals each exercise's source code, but the learning objective is for the user to practice and genuinely understand the algorithm, not just copy it. A short bilingual, multi-paragraph modal makes that intent explicit. It mirrors the existing `SettingsPanel` modal pattern (`AboutPanel.astro`, opened from a header button, wired in `globalInit.ts`, included in `BaseLayout`). Its text is general UI copy, so it lives as keys under `about.*` in `en.json`/`es.json` (multi-paragraph = one key per paragraph/list item, switched via `data-i18n`) |
 | 2026-06-20 | Code block on the exercise page is collapsible (Expand/Collapse button next to Copy), collapsed by default, with the expanded/collapsed state persisted per exercise in a new `algo_code_open` localStorage key (`Record<id, boolean>`) and included in export/import | Reinforces the platform's learning goal (2026-06-20 About modal): revealing the source should be a deliberate act, so the answer stays hidden until the user chooses to see it. State is per-exercise (not a global pref), so it gets its own key rather than living in `algo_prefs`; it follows the same validated-storage pipeline (`validateCodeOpen`, `read/writeCodeOpen`) as the other keys. To stay backward-compatible, `algo_code_open` is the only export key that is optional on import — older files lacking it still import cleanly, but when present it must validate (boolean values keyed by known exercise IDs). Default collapsed is rendered server-side (`is-collapsed` class in `[slug].astro`) to avoid a flash, then reconciled with stored state on load. Authorized by the developer before implementation |
 | 2026-06-19 | Per-step detail log rendered next to each viz; messages composed from a `describeStep(stepIndex)` descriptor (`{ key, params }`) on the viz plus a `stepMessages` template map in `exercises.json` | Adds a step-by-step legend table that grows/shrinks with playback (derived purely from the current step index — no mutating DOM state — mirroring how `renderStep` paints by index). The *which message + values* logic is custom per exercise (in `viz.ts`), while the *bilingual text* stays co-located with the exercise data (`stepMessages` in `exercises.json`), consistent with the 2026-06-18 decision. The shared controller resolves the template for the active language and interpolates `params`, building rows `0..currentStep`. The vestigial optional `caption?` on `ExerciseViz` is replaced by the required `describeStep`. Log row chrome (the "Step N →" prefix, panel title) lives in `en.json`/`es.json` as general UI text |
+| 2026-06-21 | Added `serialCode` field to the exercise registry: a four-part internal classification string `TYPE–STRUCT–OBJ–VAR` (e.g. `SRCH-ARR-FIND-BIN`) | As the exercise set grows, variants of the same algorithm on different data structures (e.g. remove-duplicates on singly vs. circular linked list) need a machine-readable way to be grouped and distinguished. The `id` remains the unique key; `serialCode` identifies the *class*. It is internal only (not shown in the UI), stored as a plain string (no enum — the table of valid values lives in `spec.md § Serial Code Nomenclature`), and coexists with the existing `category` filter without replacing it. Duplicate serials are allowed but must be flagged and reviewed. The `id`, `slug`, and `name` of each exercise must be unique and allusive to the serial so the taxonomy is self-evident from the registry |

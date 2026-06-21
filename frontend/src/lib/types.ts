@@ -28,6 +28,13 @@ export interface ExerciseLink {
 export interface Exercise {
   readonly id: string;
   readonly slug: string;
+  /**
+   * Four-part classification code: TYPE–STRUCT–OBJ–VAR.
+   * Internal only — not shown to the user. See spec.md § Serial Code Nomenclature
+   * for the full table of allowed values. Not guaranteed unique across exercises;
+   * the `id` remains the unique key. Duplicates must be flagged and reviewed.
+   */
+  readonly serialCode: string;
   readonly name: LocalizedText;
   readonly description: LocalizedText;
   readonly category: ExerciseCategory;
