@@ -19,7 +19,7 @@ describe("filterExercises (T-FILT)", () => {
 
   it("T-FILT-02: filter by level returns correct subset", () => {
     const result = filterExercises(exercises, { levels: [ExerciseLevel.EASY] });
-    expect(ids(result)).toEqual(["binary-search", "linked-list"]);
+    expect(ids(result)).toEqual(["binary-search", "linked-list", "remove-duplicates-dll", "remove-duplicates-sll"]);
   });
 
   it("T-FILT-03: filter by learned returns only learned IDs", () => {
@@ -54,7 +54,7 @@ describe("searchExercises (T-SEARCH)", () => {
 
   it("T-SEARCH-02: search is case-insensitive", () => {
     const result = searchExercises(exercises, "LINKED", "en");
-    expect(ids(result)).toEqual(["linked-list"]);
+    expect(ids(result)).toEqual(["linked-list", "remove-duplicates-cll", "remove-duplicates-dll", "remove-duplicates-sll"]);
   });
 
   it("T-SEARCH-03: search returns empty on no match", () => {
