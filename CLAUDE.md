@@ -164,9 +164,16 @@ other exercises.
    model, plus an integration test asserting `buildSteps(input).result` equals
    the exercise function's result), satisfying the Gherkin scenarios.
    (Adding/altering tests requires developer authorization.)
-6. **Run `npm test`** in `frontend/`. All new tests must pass; `T-REG-04`
+6. **Create `exercise.pseudo`** in `src/exercises/<id>/`. Write the
+   language-agnostic pseudo-code version of the exported function, following
+   the style of the existing `.pseudo` files: structured indentation, `←` for
+   assignment, `WHILE`/`FOR`/`IF`/`RETURN` in uppercase, helper functions
+   declared below the main one. Derive it directly from the JS — every branch
+   must be present. Then add `"pseudoFile": "<id>/exercise.pseudo"` to the
+   `exercises.json` entry alongside `"codeFile"`.
+7. **Run `npm test`** in `frontend/`. All new tests must pass; `T-REG-04`
    confirms the `codeFile` resolves.
-7. **Confirm no other tests broke** (`npm test` is the full suite) and that
+8. **Confirm no other tests broke** (`npm test` is the full suite) and that
    `npm run build` still produces a page at `/exercise/<slug>`.
 
 The exercise page and viz are wired automatically: `src/exercises/registry.ts`

@@ -1,0 +1,28 @@
+FUNCTION binarySearchTreeInorder(values):
+  root ← null
+
+  // Build the BST — duplicates are ignored
+  FOR EACH value IN values:
+    root ← insert(root, value)
+
+  // Collect nodes via in-order traversal (left → root → right)
+  out ← []
+  walk(root, out)
+  RETURN out
+
+
+FUNCTION insert(node, value):
+  IF node = null:
+    RETURN Node(value, left: null, right: null)
+  IF value < node.value:
+    node.left  ← insert(node.left,  value)
+  ELSE IF value > node.value:
+    node.right ← insert(node.right, value)
+  RETURN node
+
+
+FUNCTION walk(node, out):
+  IF node = null: RETURN
+  walk(node.left,  out)
+  APPEND node.value TO out
+  walk(node.right, out)

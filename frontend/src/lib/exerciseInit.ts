@@ -48,11 +48,17 @@ function setupCodeToggle(id: string): void {
 
 function setupCopyButton(): void {
   const copyBtn = document.querySelector<HTMLButtonElement>('[data-action="copy"]');
-  const codeEl = document.querySelector<HTMLElement>('[data-role="code"]');
-  if (!copyBtn || !codeEl) return;
+  if (!copyBtn) return;
 
   copyBtn.addEventListener("click", async () => {
-    const code = codeEl.textContent ?? "";
+    // Copy whichever inner block is currently visible (JS or pseudo-code).
+    // Falls back to the outer wrapper for exercises without a mode switcher,
+    // but in practice the js block is always present.
+    const pseudoEl = document.querySelector<HTMLElement>('[data-role="code-pseudo"]');
+    const jsEl = document.querySelector<HTMLElement>('[data-role="code-js"]');
+    const activeEl =
+      pseudoEl && !pseudoEl.hidden ? pseudoEl : jsEl ?? document.querySelector('[data-role="code"]');
+    const code = activeEl?.textContent ?? "";
     try {
       await navigator.clipboard.writeText(code);
     } catch {
@@ -69,6 +75,22 @@ function setupCopyButton(): void {
   });
 }
 
+function setupCodeSwitcher(): void {
+  const modeButtons = document.querySelectorAll<HTMLButtonElement>('[data-action="code-mode"]');
+  const jsEl = document.querySelector<HTMLElement>('[data-role="code-js"]');
+  const pseudoEl = document.querySelector<HTMLElement>('[data-role="code-pseudo"]');
+  if (!modeButtons.length || !jsEl || !pseudoEl) return;
+
+  modeButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const isPseudo = btn.dataset.mode === "pseudo";
+      jsEl.hidden = isPseudo;
+      pseudoEl.hidden = !isPseudo;
+      modeButtons.forEach((b) => b.classList.toggle("is-active", b === btn));
+    });
+  });
+}
+
 /** Bootstraps the exercise detail page once the DOM is ready. */
 export async function initExercise(): Promise<void> {
   const root = document.querySelector<HTMLElement>('[data-role="exercise"]');
@@ -78,6 +100,7 @@ export async function initExercise(): Promise<void> {
   if (!id) return;
 
   setupCopyButton();
+  setupCodeSwitcher();
   setupCodeToggle(id);
 
   const exercise = exercises.find((e) => e.id === id);

@@ -43,6 +43,8 @@ export interface Exercise {
   readonly addedAt: string;
   readonly links: readonly ExerciseLink[];
   readonly codeFile: string;
+  /** Path to the plain-text pseudo-code file, relative to `/src/exercises/`. Optional. */
+  readonly pseudoFile?: string;
   /**
    * Kind of input this exercise consumes. Optional; absent means `NUMBERS`
    * (an integer-array exercise). Text exercises set `STRING`.

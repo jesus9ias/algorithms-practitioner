@@ -613,6 +613,26 @@ a {
 .code-actions {
   display: flex;
   gap: 0.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+.code-mode-group {
+  display: flex;
+}
+.code-mode-group .btn {
+  border-radius: 0;
+}
+.code-mode-group .btn:first-child {
+  border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+  border-right-width: 0;
+}
+.code-mode-group .btn:last-child {
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+}
+.code-mode-group .btn.is-active {
+  background: var(--accent);
+  color: var(--accent-contrast);
+  border-color: var(--accent);
 }
 .code-block {
   border-radius: var(--radius-sm);

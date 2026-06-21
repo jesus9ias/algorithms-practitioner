@@ -1,0 +1,23 @@
+FUNCTION reverseLinkedList(values):
+  // Build the singly linked list
+  head ← null
+  FOR i FROM length(values) - 1 DOWN TO 0:
+    head ← Node(value: values[i], next: head)
+
+  // Reverse the pointers in-place
+  prev    ← null
+  current ← head
+  WHILE current ≠ null:
+    next         ← current.next
+    current.next ← prev
+    prev         ← current
+    current      ← next
+
+  // Read the reversed list back into an array
+  result ← []
+  node   ← prev
+  WHILE node ≠ null:
+    APPEND node.value TO result
+    node ← node.next
+
+  RETURN result

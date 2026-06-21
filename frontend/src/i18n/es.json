@@ -58,6 +58,8 @@
     "visualizationTitle": "Visualización",
     "copy": "Copiar",
     "copied": "¡Copiado!",
+    "codeJs": "JavaScript",
+    "codePseudo": "Pseudocódigo",
     "showCode": "Mostrar código",
     "hideCode": "Ocultar código",
     "preload": "Precargar",

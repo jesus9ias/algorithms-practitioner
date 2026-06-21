@@ -1,0 +1,26 @@
+FUNCTION removeDuplicatesCLL(arr):
+  IF arr is empty: RETURN null
+
+  // Build the circular linked list (last node points back to head)
+  head ← Node(arr[0], next: null)
+  cur  ← head
+  FOR i FROM 1 TO length(arr) - 1:
+    cur.next ← Node(arr[i], next: null)
+    cur      ← cur.next
+  cur.next ← head               // close the circle
+
+  // Remove duplicates using a seen-set (stop when we reach head again)
+  seen ← { head.value }
+  prev ← head
+  node ← head.next
+
+  WHILE node ≠ head:
+    next ← node.next
+    IF node.value IN seen:
+      prev.next ← next          // skip duplicate
+    ELSE:
+      ADD node.value TO seen
+      prev ← node
+    node ← next
+
+  RETURN head

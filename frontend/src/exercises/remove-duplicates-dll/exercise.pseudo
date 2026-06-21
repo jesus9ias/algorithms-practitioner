@@ -1,0 +1,28 @@
+FUNCTION removeDuplicatesDLL(arr):
+  IF arr is empty: RETURN null
+
+  // Build the doubly linked list
+  head ← Node(arr[0], prev: null, next: null)
+  cur  ← head
+  FOR i FROM 1 TO length(arr) - 1:
+    node     ← Node(arr[i], prev: cur, next: null)
+    cur.next ← node
+    cur      ← node
+
+  // Remove duplicates using a seen-set
+  seen ← { head.value }
+  prev ← head
+  node ← head.next
+
+  WHILE node ≠ null:
+    next ← node.next
+    IF node.value IN seen:
+      prev.next ← next          // unlink forward pointer
+      IF next ≠ null:
+        next.prev ← prev        // repair backward pointer
+    ELSE:
+      ADD node.value TO seen
+      prev ← node
+    node ← next
+
+  RETURN head

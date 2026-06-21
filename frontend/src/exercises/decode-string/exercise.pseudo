@@ -1,0 +1,22 @@
+FUNCTION decodeString(s):
+  countStack ← empty stack
+  textStack  ← empty stack
+  current    ← ""
+  count      ← 0
+
+  FOR EACH ch IN s:
+    IF ch is a digit:
+      count ← count × 10 + digit(ch)
+    ELSE IF ch = '[':
+      PUSH count   ONTO countStack
+      PUSH current ONTO textStack
+      count   ← 0
+      current ← ""
+    ELSE IF ch = ']':
+      repeat   ← POP countStack
+      previous ← POP textStack
+      current  ← previous + repeat(current, repeat)
+    ELSE:
+      current ← current + ch
+
+  RETURN current

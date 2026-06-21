@@ -50,6 +50,12 @@ export enum Language {
   ES = "es",
 }
 
+/** Active code view on the exercise page. */
+export enum CodeMode {
+  JS = "js",
+  PSEUDO = "pseudo",
+}
+
 /** Home page exercise layout. */
 export enum ViewMode {
   GRID = "grid",

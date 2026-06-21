@@ -1,0 +1,25 @@
+FUNCTION removeDuplicatesSLL(arr):
+  IF arr is empty: RETURN null
+
+  // Build the singly linked list
+  head ← Node(arr[0], next: null)
+  cur  ← head
+  FOR i FROM 1 TO length(arr) - 1:
+    cur.next ← Node(arr[i], next: null)
+    cur      ← cur.next
+
+  // Remove duplicates using a seen-set
+  seen ← { head.value }
+  prev ← head
+  node ← head.next
+
+  WHILE node ≠ null:
+    next ← node.next
+    IF node.value IN seen:
+      prev.next ← next          // skip duplicate
+    ELSE:
+      ADD node.value TO seen
+      prev ← node
+    node ← next
+
+  RETURN head

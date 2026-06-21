@@ -24,6 +24,16 @@ const rawSources = import.meta.glob("../../exercises/*/exercise.js", {
 }) as Record<string, string>;
 const code = rawSources[`../../exercises/${exercise.codeFile}`] ?? "";
 
+// Optional pseudo-code source (plain text). When present the mode switcher is rendered.
+const rawPseudoSources = import.meta.glob("../../exercises/*/exercise.pseudo", {
+  query: "?raw",
+  import: "default",
+  eager: true,
+}) as Record<string, string>;
+const pseudoCode = exercise.pseudoFile
+  ? (rawPseudoSources[`../../exercises/${exercise.pseudoFile}`] ?? "")
+  : null;
+
 const hasTarget = exercise.defaultTarget !== undefined;
 const isStringInput = exercise.inputKind === InputKind.STRING;
 const inputPlaceholderKey = isStringInput
@@ -152,6 +162,28 @@ const lvlKey = levelKey(exercise.level);
       <div class="code-head">
         <h2 data-i18n="exercise.codeTitle">{t("exercise.codeTitle")}</h2>
         <div class="code-actions">
+          {pseudoCode !== null && (
+            <div class="code-mode-group" role="group" data-role="code-mode-group">
+              <button
+                type="button"
+                class="btn btn-small is-active"
+                data-action="code-mode"
+                data-mode="js"
+                data-i18n="exercise.codeJs"
+              >
+                {t("exercise.codeJs")}
+              </button>
+              <button
+                type="button"
+                class="btn btn-small"
+                data-action="code-mode"
+                data-mode="pseudo"
+                data-i18n="exercise.codePseudo"
+              >
+                {t("exercise.codePseudo")}
+              </button>
+            </div>
+          )}
           <button
             type="button"
             class="btn btn-small"
@@ -168,7 +200,14 @@ const lvlKey = levelKey(exercise.level);
         </div>
       </div>
       <div id="exercise-code" class="code-block is-collapsed" data-role="code">
-        <Code code={code} lang="js" theme="github-dark" />
+        <div data-role="code-js">
+          <Code code={code} lang="js" theme="github-dark" />
+        </div>
+        {pseudoCode !== null && (
+          <div data-role="code-pseudo" hidden>
+            <Code code={pseudoCode} lang="plaintext" theme="github-dark" />
+          </div>
+        )}
       </div>
     </section>
 
