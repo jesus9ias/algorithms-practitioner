@@ -72,6 +72,12 @@ export interface AppState {
   readonly algo_learned: readonly string[];
   readonly algo_inputs: Readonly<Record<string, readonly SavedInput[]>>;
   readonly algo_prefs: Prefs;
+  /**
+   * Per-exercise code-block expanded state (exercise ID → expanded). Optional:
+   * absent on import means older files predating the feature, and an absent
+   * per-exercise entry means the block is collapsed (the default).
+   */
+  readonly algo_code_open?: Readonly<Record<string, boolean>>;
 }
 
 /** Helpers for building Result values. */

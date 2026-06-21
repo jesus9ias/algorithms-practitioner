@@ -151,11 +151,23 @@ const lvlKey = levelKey(exercise.level);
     <section class="panel">
       <div class="code-head">
         <h2 data-i18n="exercise.codeTitle">{t("exercise.codeTitle")}</h2>
-        <button type="button" class="btn btn-small" data-action="copy" data-i18n="exercise.copy">
-          {t("exercise.copy")}
-        </button>
+        <div class="code-actions">
+          <button
+            type="button"
+            class="btn btn-small"
+            data-action="toggle-code"
+            data-i18n="exercise.showCode"
+            aria-expanded="false"
+            aria-controls="exercise-code"
+          >
+            {t("exercise.showCode")}
+          </button>
+          <button type="button" class="btn btn-small" data-action="copy" data-i18n="exercise.copy" hidden>
+            {t("exercise.copy")}
+          </button>
+        </div>
       </div>
-      <div class="code-block" data-role="code">
+      <div id="exercise-code" class="code-block is-collapsed" data-role="code">
         <Code code={code} lang="js" theme="github-dark" />
       </div>
     </section>

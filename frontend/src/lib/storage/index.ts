@@ -4,6 +4,7 @@ import {
   validateLearned,
   validatePrefs,
   validateInputs,
+  validateCodeOpen,
   parseStored,
 } from "../validation/localStorage";
 
@@ -90,4 +91,12 @@ export function readInputs(onReset?: ResetListener): Record<string, SavedInput[]
 
 export function writeInputs(inputs: Record<string, readonly SavedInput[]>): void {
   safeSetItem(StorageKey.INPUTS, JSON.stringify(inputs));
+}
+
+export function readCodeOpen(onReset?: ResetListener): Record<string, boolean> {
+  return readValidated(StorageKey.CODE_OPEN, validateCodeOpen, {}, onReset);
+}
+
+export function writeCodeOpen(state: Record<string, boolean>): void {
+  safeSetItem(StorageKey.CODE_OPEN, JSON.stringify(state));
 }

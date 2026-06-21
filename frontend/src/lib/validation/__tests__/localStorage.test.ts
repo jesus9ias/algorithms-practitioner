@@ -1,6 +1,11 @@
 import { describe, it, expect } from "vitest";
 
-import { validateLearned, validatePrefs, parseStored } from "../localStorage";
+import {
+  validateLearned,
+  validatePrefs,
+  validateCodeOpen,
+  parseStored,
+} from "../localStorage";
 
 /**
  * T-LS-* — localStorage validation.
@@ -44,6 +49,26 @@ describe("validatePrefs (T-LS-05..06)", () => {
 
   it("T-LS-06: algo_prefs with invalid theme value fails", () => {
     const result = validatePrefs({ theme: "blue", language: "en", viewMode: "grid" });
+    expect(result.ok).toBe(false);
+  });
+});
+
+describe("validateCodeOpen (T-LS-08..10)", () => {
+  it("T-LS-08: valid algo_code_open passes validation", () => {
+    const result = validateCodeOpen({ "binary-search": true });
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value).toEqual({ "binary-search": true });
+    }
+  });
+
+  it("T-LS-09: algo_code_open with non-boolean value fails", () => {
+    const result = validateCodeOpen({ "binary-search": 1 });
+    expect(result.ok).toBe(false);
+  });
+
+  it("T-LS-10: algo_code_open with unknown exercise ID fails", () => {
+    const result = validateCodeOpen({ "not-a-real-id": true });
     expect(result.ok).toBe(false);
   });
 });

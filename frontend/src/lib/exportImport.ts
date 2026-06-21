@@ -1,14 +1,24 @@
 import { StorageKey } from "./constants";
 import { ok, err } from "./types";
 import type { Result, AppState } from "./types";
-import { validateLearned, validatePrefs, validateInputs } from "./validation/localStorage";
+import {
+  validateLearned,
+  validatePrefs,
+  validateInputs,
+  validateCodeOpen,
+} from "./validation/localStorage";
 
-/** Serializes the full application state to a JSON string for download. */
+/**
+ * Serializes the full application state to a JSON string for download. The
+ * `algo_code_open` key is included only when present; `JSON.stringify` drops it
+ * when undefined, keeping exports clean for callers that don't track it.
+ */
 export function exportState(state: AppState): string {
   const payload = {
     [StorageKey.LEARNED]: state.algo_learned,
     [StorageKey.INPUTS]: state.algo_inputs,
     [StorageKey.PREFS]: state.algo_prefs,
+    [StorageKey.CODE_OPEN]: state.algo_code_open,
   };
   return JSON.stringify(payload, null, 2);
 }
@@ -54,9 +64,22 @@ export function importState(raw: string): Result<AppState> {
     return err(prefs.error);
   }
 
+  // `algo_code_open` is optional for backward compatibility: files produced
+  // before the code-block toggle existed simply omit it. When present, it must
+  // validate like every other key.
+  let codeOpen: Record<string, boolean> | undefined;
+  if (StorageKey.CODE_OPEN in record) {
+    const result = validateCodeOpen(record[StorageKey.CODE_OPEN]);
+    if (!result.ok) {
+      return err(result.error);
+    }
+    codeOpen = result.value;
+  }
+
   return ok({
     algo_learned: learned.value,
     algo_inputs: inputs.value,
     algo_prefs: prefs.value,
+    ...(codeOpen !== undefined ? { algo_code_open: codeOpen } : {}),
   });
 }

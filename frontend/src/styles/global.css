@@ -608,11 +608,19 @@ a {
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: 0.5rem;
+}
+.code-actions {
+  display: flex;
+  gap: 0.5rem;
 }
 .code-block {
   border-radius: var(--radius-sm);
   overflow: auto;
   counter-reset: line;
+}
+.code-block.is-collapsed {
+  display: none;
 }
 .code-block :global(pre) {
   margin: 0;

@@ -58,6 +58,8 @@
     "visualizationTitle": "Visualization",
     "copy": "Copy",
     "copied": "Copied!",
+    "showCode": "Show code",
+    "hideCode": "Hide code",
     "preload": "Preload",
     "preloadHint": "Restore the default example input",
     "reset": "Reset",

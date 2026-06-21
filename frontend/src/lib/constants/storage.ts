@@ -3,4 +3,5 @@ export enum StorageKey {
   LEARNED = "algo_learned",
   INPUTS = "algo_inputs",
   PREFS = "algo_prefs",
+  CODE_OPEN = "algo_code_open",
 }

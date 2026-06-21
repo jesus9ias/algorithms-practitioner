@@ -58,6 +58,8 @@
     "visualizationTitle": "Visualización",
     "copy": "Copiar",
     "copied": "¡Copiado!",
+    "showCode": "Mostrar código",
+    "hideCode": "Ocultar código",
     "preload": "Precargar",
     "preloadHint": "Restaurar la entrada de ejemplo por defecto",
     "reset": "Reiniciar",

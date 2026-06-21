@@ -6,7 +6,15 @@ import {
   setLanguage,
   getPrefs,
 } from "./clientPrefs";
-import { readLearned, readInputs, writeLearned, writeInputs, writePrefs } from "./storage";
+import {
+  readLearned,
+  readInputs,
+  readCodeOpen,
+  writeLearned,
+  writeInputs,
+  writeCodeOpen,
+  writePrefs,
+} from "./storage";
 import { exportState, importState } from "./exportImport";
 import { validatePrefs } from "./validation/localStorage";
 import { resolve } from "../i18n";
@@ -43,6 +51,7 @@ function collectState(): AppState {
     algo_learned: readLearned(),
     algo_inputs: readInputs(),
     algo_prefs: getPrefs(),
+    algo_code_open: readCodeOpen(),
   };
 }
 
@@ -149,6 +158,9 @@ export function initGlobal(): void {
     }
     writeLearned(result.value.algo_learned);
     writeInputs(result.value.algo_inputs);
+    if (result.value.algo_code_open) {
+      writeCodeOpen(result.value.algo_code_open);
+    }
     const prefs = validatePrefs(result.value.algo_prefs);
     if (prefs.ok) {
       writePrefs(prefs.value);

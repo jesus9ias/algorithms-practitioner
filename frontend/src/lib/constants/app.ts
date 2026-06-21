@@ -12,6 +12,9 @@ export const AUTO_PLAY_INTERVAL_MS = 1000;
 /** Duration the "Copied!" confirmation indicator stays visible, in ms. */
 export const COPY_FEEDBACK_MS = 1500;
 
+/** Whether an exercise's code block is expanded the first time it is shown. */
+export const CODE_BLOCK_DEFAULT_OPEN = false;
+
 /** Percentage scale used by the progress calculation. */
 export const PERCENT_SCALE = 100;
 

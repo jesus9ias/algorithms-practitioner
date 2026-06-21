@@ -85,6 +85,32 @@ function isValidSavedInput(value: unknown): value is SavedInput {
 }
 
 /**
+ * Validates the `algo_code_open` value: a record mapping known exercise IDs to
+ * booleans (whether that exercise's code block is expanded).
+ */
+export function validateCodeOpen(
+  value: unknown
+): Result<Record<string, boolean>> {
+  if (value === null || typeof value !== "object" || Array.isArray(value)) {
+    return err("Code-block state must be an object.");
+  }
+  const record = value as Record<string, unknown>;
+  const out: Record<string, boolean> = {};
+
+  for (const [id, flag] of Object.entries(record)) {
+    if (!exerciseIds.has(id)) {
+      return err(`Unknown exercise ID in code-block state: ${id}`);
+    }
+    if (typeof flag !== "boolean") {
+      return err(`Code-block state for ${id} must be a boolean.`);
+    }
+    out[id] = flag;
+  }
+
+  return ok(out);
+}
+
+/**
  * Validates the `algo_inputs` value: a record mapping known exercise IDs to
  * arrays of saved inputs.
  */

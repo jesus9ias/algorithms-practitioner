@@ -2,11 +2,49 @@ import { loadViz } from "../exercises/registry";
 import { exercises } from "../data/exercises";
 import { mountExercise } from "./viz/controller";
 import { parseIntegerArray } from "./validation/userInput";
-import { COPY_FEEDBACK_MS, InputKind } from "./constants";
+import { COPY_FEEDBACK_MS, CODE_BLOCK_DEFAULT_OPEN, InputKind } from "./constants";
 import type { VizInput } from "./viz/types";
 import { resolve } from "../i18n";
 import { getPrefs } from "./clientPrefs";
+import { readCodeOpen, writeCodeOpen } from "./storage";
 import type { LanguageCode } from "../i18n";
+
+/** i18n keys for the code-block toggle button, by current open state. */
+const CODE_TOGGLE_KEY = {
+  show: "exercise.showCode",
+  hide: "exercise.hideCode",
+} as const;
+
+/**
+ * Wires the Expand/Collapse button for the code block. The block is collapsed
+ * by default (rendered server-side with `is-collapsed`); the per-exercise state
+ * is read from and persisted to localStorage so it survives reloads.
+ */
+function setupCodeToggle(id: string): void {
+  const toggleBtn = document.querySelector<HTMLButtonElement>('[data-action="toggle-code"]');
+  const codeEl = document.querySelector<HTMLElement>('[data-role="code"]');
+  const copyBtn = document.querySelector<HTMLButtonElement>('[data-action="copy"]');
+  if (!toggleBtn || !codeEl) return;
+
+  function apply(open: boolean): void {
+    codeEl!.classList.toggle("is-collapsed", !open);
+    const key = open ? CODE_TOGGLE_KEY.hide : CODE_TOGGLE_KEY.show;
+    toggleBtn!.dataset.i18n = key;
+    toggleBtn!.textContent = resolve(key, getPrefs().language as LanguageCode);
+    toggleBtn!.setAttribute("aria-expanded", String(open));
+    // The copy action only makes sense when the code is visible.
+    if (copyBtn) copyBtn.hidden = !open;
+  }
+
+  let open = readCodeOpen()[id] ?? CODE_BLOCK_DEFAULT_OPEN;
+  apply(open);
+
+  toggleBtn.addEventListener("click", () => {
+    open = !open;
+    apply(open);
+    writeCodeOpen({ ...readCodeOpen(), [id]: open });
+  });
+}
 
 function setupCopyButton(): void {
   const copyBtn = document.querySelector<HTMLButtonElement>('[data-action="copy"]');
@@ -40,6 +78,7 @@ export async function initExercise(): Promise<void> {
   if (!id) return;
 
   setupCopyButton();
+  setupCodeToggle(id);
 
   const exercise = exercises.find((e) => e.id === id);
   const inputKind = exercise?.inputKind ?? InputKind.NUMBERS;
