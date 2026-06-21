@@ -1,0 +1,72 @@
+---
+import { resolve } from "../i18n";
+import { Language } from "../lib/constants";
+
+const t = (key: string): string => resolve(key, Language.EN);
+---
+
+<div class="modal-backdrop" data-role="about" hidden>
+  <div class="modal modal--about" role="dialog" aria-modal="true" aria-labelledby="about-title">
+    <div class="modal-header">
+      <h2 id="about-title" data-i18n="about.title">{t("about.title")}</h2>
+      <button
+        type="button"
+        class="icon-btn"
+        data-action="close-about"
+        data-i18n-aria="common.close"
+        aria-label={t("common.close")}
+      >✕</button>
+    </div>
+
+    <div class="about-body">
+      <p class="about-text" data-i18n="about.intro1">{t("about.intro1")}</p>
+      <p class="about-text" data-i18n="about.composedIntro">{t("about.composedIntro")}</p>
+      <ul class="about-tips">
+        <li data-i18n="about.composed1">{t("about.composed1")}</li>
+        <li data-i18n="about.composed2">{t("about.composed2")}</li>
+        <li data-i18n="about.composed3">{t("about.composed3")}</li>
+        <li data-i18n="about.composed4">{t("about.composed4")}</li>
+        <li data-i18n="about.composed5">{t("about.composed5")}</li>
+        <li data-i18n="about.composed6">{t("about.composed6")}</li>
+      </ul>
+
+      <section class="modal-section">
+        <h3 data-i18n="about.goalTitle">{t("about.goalTitle")}</h3>
+        <p class="about-text" data-i18n="about.goal1">{t("about.goal1")}</p>
+        <p class="about-text" data-i18n="about.goal2">{t("about.goal2")}</p>
+      </section>
+
+      <section class="modal-section">
+        <h3 data-i18n="about.usageTitle">{t("about.usageTitle")}</h3>
+        <p class="about-text" data-i18n="about.usage1">{t("about.usage1")}</p>
+      </section>
+
+      <section class="modal-section">
+        <h3 data-i18n="about.notesTitle">{t("about.notesTitle")}</h3>
+        <ul class="about-tips">
+          <li data-i18n="about.note1">{t("about.note1")}</li>
+          <li data-i18n="about.note2">{t("about.note2")}</li>
+          <li data-i18n="about.note3">{t("about.note3")}</li>
+          <li data-i18n="about.note4">{t("about.note4")}</li>
+        </ul>
+      </section>
+
+      <section class="modal-section">
+        <h3 data-i18n="about.tipsTitle">{t("about.tipsTitle")}</h3>
+        <ul class="about-tips">
+          <li data-i18n="about.tip1">{t("about.tip1")}</li>
+          <li data-i18n="about.tip2">{t("about.tip2")}</li>
+          <li data-i18n="about.tip3">{t("about.tip3")}</li>
+          <li data-i18n="about.tip4">{t("about.tip4")}</li>
+          <li data-i18n="about.tip5">{t("about.tip5")}</li>
+        </ul>
+      </section>
+    </div>
+
+    <div class="about-actions">
+      <button type="button" class="btn" data-action="close-about" data-i18n="about.close">
+        {t("about.close")}
+      </button>
+    </div>
+  </div>
+</div>

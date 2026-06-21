@@ -701,6 +701,24 @@ a {
 .summary-row dd { margin: 0; font-weight: 600; font-variant-numeric: tabular-nums; }
 .modal-hint { margin: 0.6rem 0 0; font-size: 0.8rem; }
 
+/* ---- About modal ---- */
+.modal--about { max-width: 560px; max-height: 85vh; overflow-y: auto; }
+.about-text { margin: 0 0 0.7rem; line-height: 1.55; }
+.about-text:last-child { margin-bottom: 0; }
+.about-tips {
+  margin: 0;
+  padding-left: 1.1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  line-height: 1.5;
+}
+.about-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 1rem;
+}
+
 /* ---- Toast ---- */
 .toast {
   position: fixed;

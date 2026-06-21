@@ -116,6 +116,17 @@ export function initGlobal(): void {
       el.addEventListener("click", () => dialog.setAttribute("hidden", "")),
     );
 
+  // About dialog open/close. Static informational content; no state to populate.
+  const aboutDialog = document.querySelector<HTMLElement>('[data-role="about"]');
+  document
+    .querySelector('[data-action="open-about"]')
+    ?.addEventListener("click", () => aboutDialog?.removeAttribute("hidden"));
+  aboutDialog
+    ?.querySelectorAll('[data-action="close-about"]')
+    .forEach((el) =>
+      el.addEventListener("click", () => aboutDialog.setAttribute("hidden", "")),
+    );
+
   // Export.
   document
     .querySelector('[data-action="export"]')

@@ -6,7 +6,8 @@
   "nav": {
     "home": "Inicio",
     "library": "Biblioteca",
-    "settings": "Ajustes"
+    "settings": "Ajustes",
+    "about": "Acerca de"
   },
   "common": {
     "new": "Nuevo",
@@ -91,6 +92,34 @@
     "title": "Biblioteca",
     "intro": "Enlaces de referencia de cada ejercicio, agrupados para profundizar.",
     "openExercise": "Ir al ejercicio"
+  },
+  "about": {
+    "title": "Acerca de esta plataforma",
+    "intro1": "Algorithms Practitioner es un espacio interactivo para aprender algoritmos y estructuras de datos viendo su ejecución paso a paso.",
+    "composedIntro": "Cada ejercicio se compone de lo siguiente:",
+    "composed1": "Gráfico",
+    "composed2": "Pasos",
+    "composed3": "Navegación",
+    "composed4": "Carga de datos (preset y guardados)",
+    "composed5": "Código fuente",
+    "composed6": "Referencias externas",
+    "goalTitle": "Objetivo",
+    "goal1": "Esta plataforma invierte el enfoque: no muestra el problema para que lo resuelvas, sino que presenta el ejercicio listo para que practiques, entiendas su funcionamiento guiado con el paso a paso e incluso lo compares con tu propia versión.",
+    "goal2": "Busca ser un complemento a tu estrategia de aprendizaje, y qué mejor que con una visualización gráfica que facilite la comprensión.",
+    "usageTitle": "Uso apropiado",
+    "usage1": "Pero recuerda, por si te ves tentado: copiar y pegar es fácil, incluso memorizar sin más, pero eso no te va a ayudar a crecer ni a conseguir un buen empleo. Los reclutadores esperan ver cómo piensas, cómo llegas a una solución eficiente, defendible y a prueba de casos borde. Así que suma Algorithms Practitioner a tu plan de estudio: practica mucho, compara, imagina el flujo y pregúntate el porqué de cada línea. ¿Cómo lo harías tú?",
+    "notesTitle": "Notas",
+    "note1": "Todos los ejercicios están en JavaScript.",
+    "note2": "El código fue generado con Claude. Aunque cada ejercicio tiene su prueba unitaria y el autor ha revisado y ejecutado todos, no puede garantizarse que estén 100% libres de errores; incluso puede haber soluciones más eficientes (te reto a encontrarlas).",
+    "note3": "Por supuesto, existen muchas otras plataformas de este estilo; esto no pretende ser un clon, sino un desarrollo a la medida que surge también del plan de estudio de su autor.",
+    "note4": "Si estás por comenzar una prueba de código formal o ya estás en una, deberías cerrar este sitio; evita entrar salvo que las reglas lo permitan. No te arriesgues a ser descalificado y sé honesto e íntegro en todo momento.",
+    "tipsTitle": "Recomendaciones para tu plan de estudio",
+    "tip1": "Intenta resolver el ejercicio por tu cuenta antes de revelar el código.",
+    "tip2": "Recorre la visualización y predice el siguiente paso antes de avanzarlo.",
+    "tip3": "Usa entradas personalizadas y casos borde para poner a prueba tu comprensión, no solo el ejemplo por defecto.",
+    "tip4": "Cuando lo entiendas, cierra el código y reimplementa el algoritmo tal como lo entendiste; no te fuerces a hacerlo de memoria.",
+    "tip5": "Compara versiones, propias y de otras fuentes: ¿por qué se usó X patrón? ¿Cuál ahorra más memoria? ¿Cuál requiere menos pasos?",
+    "close": "Entendido"
   },
   "settings": {
     "title": "Ajustes",

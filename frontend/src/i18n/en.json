@@ -6,7 +6,8 @@
   "nav": {
     "home": "Home",
     "library": "Library",
-    "settings": "Settings"
+    "settings": "Settings",
+    "about": "About"
   },
   "common": {
     "new": "New",
@@ -91,6 +92,34 @@
     "title": "Library",
     "intro": "Reference links from every exercise, grouped for further study.",
     "openExercise": "Go to exercise"
+  },
+  "about": {
+    "title": "About this platform",
+    "intro1": "Algorithms Practitioner is an interactive space to learn algorithms and data structures by watching them run, step by step.",
+    "composedIntro": "Each exercise is made up of:",
+    "composed1": "Graphic",
+    "composed2": "Steps",
+    "composed3": "Navigation",
+    "composed4": "Data loading (presets and saved inputs)",
+    "composed5": "Source code",
+    "composed6": "External references",
+    "goalTitle": "Goal",
+    "goal1": "This platform flips the usual approach: instead of showing you a problem to solve, it presents the exercise ready for you to practice, understand how it works guided by the step-by-step walkthrough, and even compare it against your own version.",
+    "goal2": "It is meant to complement your learning strategy — and what better way than a visual representation that makes the idea easier to grasp.",
+    "usageTitle": "Using it well",
+    "usage1": "But remember, in case you are tempted: copying and pasting is easy, and so is rote memorization, but neither will help you grow or land a good job. Recruiters want to see how you think, how you reach a solution that is efficient, defensible and resistant to edge cases. So add Algorithms Practitioner to your study plan: practice a lot, compare, picture the flow and ask yourself the why behind every line. How would you do it?",
+    "notesTitle": "Notes",
+    "note1": "Every exercise is written in JavaScript.",
+    "note2": "The code was generated with Claude. While each exercise has its own unit test and the author has reviewed and run them all, it cannot be guaranteed 100% bug-free; there may even be more efficient solutions (I dare you to find them).",
+    "note3": "There are, of course, many other platforms in this style; this is not meant to be a clone, but a custom project that also grew out of its author's own study plan.",
+    "note4": "If you are about to start a formal coding assessment or are already in one, you should close this site; do not open it unless the rules allow it. Do not risk being disqualified, and stay honest and act with integrity at all times.",
+    "tipsTitle": "Recommendations for your study plan",
+    "tip1": "Try to solve the exercise yourself before revealing the code.",
+    "tip2": "Step through the visualization and predict the next step before advancing it.",
+    "tip3": "Use custom inputs and edge cases to test your understanding, not just the default example.",
+    "tip4": "Once it makes sense, close the code and re-implement the algorithm the way you understood it; don't force yourself to do it from memory.",
+    "tip5": "Compare versions, both your own and from other sources: why was pattern X used? Which one saves more memory? Which one takes fewer steps?",
+    "close": "Got it"
   },
   "settings": {
     "title": "Settings",
