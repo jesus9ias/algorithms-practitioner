@@ -1,0 +1,26 @@
+FUNCTION quickSort(arr):
+  result ← copy(arr)
+  sort(result, 0, length(result) - 1)
+  RETURN result
+
+FUNCTION sort(arr, lo, hi):
+  IF lo ≥ hi:
+    RETURN
+  pivotIndex ← partition(arr, lo, hi)
+  sort(arr, lo, pivotIndex - 1)
+  sort(arr, pivotIndex + 1, hi)
+
+FUNCTION partition(arr, lo, hi):
+  pivot ← arr[hi]
+  boundary ← lo
+  FOR j ← lo TO hi - 1:
+    IF arr[j] < pivot:
+      swap(arr, boundary, j)
+      boundary ← boundary + 1
+  swap(arr, boundary, hi)
+  RETURN boundary
+
+FUNCTION swap(arr, a, b):
+  temp ← arr[a]
+  arr[a] ← arr[b]
+  arr[b] ← temp

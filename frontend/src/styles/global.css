@@ -24,6 +24,13 @@
   --viz-muted: #64748b;
   --viz-mid-label: #2563eb;
 
+  /* Sorting (quicksort) bar roles. */
+  --viz-pivot: #8b5cf6;
+  --viz-less: #15803d;
+  --viz-greater: #b45309;
+  --viz-compare: #eab308;
+  --viz-sorted: #1d4ed8;
+
   /* Code-block line highlight (block is always the github-dark Shiki theme). */
   --code-exec-bg: rgba(56, 139, 253, 0.16);
   --code-exec-bar: #58a6ff;
@@ -58,6 +65,13 @@
   --viz-text: #e6e9ef;
   --viz-muted: #94a3b8;
   --viz-mid-label: #93c5fd;
+
+  /* Sorting (quicksort) bar roles. */
+  --viz-pivot: #a78bfa;
+  --viz-less: #22c55e;
+  --viz-greater: #ea7a3b;
+  --viz-compare: #fbbf24;
+  --viz-sorted: #3b82f6;
 }
 
 /* ---- Base ---- */

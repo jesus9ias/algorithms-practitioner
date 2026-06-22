@@ -89,117 +89,23 @@ algorithms-practitioner/
 
 ## How to add a new exercise
 
-All work happens in `frontend/`. Exercises are fully isolated; do not touch
-other exercises.
+The full step-by-step procedure lives in the **`add-exercise` skill**
+(`.claude/skills/add-exercise/SKILL.md`). Invoke it — or just ask Claude Code to
+"add a new exercise" — instead of duplicating the steps here. It is the
+canonical procedural guide and covers, in order: the spec-first/stage-discipline
+gate, the `exercises.json` registry entry, the serial-code taxonomy, the
+isolated `exercise.js` / `exercise.pseudo` / `viz.ts` / `__tests__` files, the
+`ExerciseViz` interface, the `codeLines` line-number contract, i18n parity, and
+the Vitest + build gate.
 
-1. **Register it** in `src/data/exercises.json`. Add an entry with a unique
-   kebab-case `id`, `slug`, inline `name` and `description` as
-   `{ "en": "...", "es": "..." }`, a valid `category` (an `ExerciseCategory`
-   value) and `level` (an `ExerciseLevel` value), `isNew: true`, `addedAt`
-   (ISO date), `links` (each `{ "url": "...", "label": { "en": "...", "es": "..." } }`),
-   `codeFile` (`"<id>/exercise.js"`), `defaultInput`, and optionally
-   `defaultTarget`. Both `en` and `es` must be non-empty (enforced by `T-REG-06`).
-   Exercise text lives here, not in `en.json`/`es.json`.
-
-   Add a `serialCode` string (e.g. `"SRCH-ARR-FIND-BIN"`) following the four-part
-   `TYPE–STRUCT–OBJ–VAR` nomenclature documented in `spec.md § Serial Code
-   Nomenclature`. Rules:
-   - Use only codes from the tables in that section. Never invent a new segment
-     value without first adding it to the table and getting developer approval.
-   - The `id`, `slug`, and `name` must be unique across all exercises AND allusive
-     to the serial (the taxonomy should be readable from the id alone).
-   - Before finalizing the entry, scan `exercises.json` for any existing exercise
-     with the same `serialCode`. A match is not forbidden but **must be flagged**
-     to the developer before proceeding — a duplicate means both exercises solve
-     the same problem in the same way, which may be intentional (two difficulty
-     tiers) or a classification error.
-
-   For **text exercises** (input is a string rather than an integer array) add
-   `"inputKind": "STRING"` and set `defaultInput` to a string literal. Omitting
-   `inputKind` defaults to `NUMBERS` (integer-array behavior).
-
-   Add a `stepMessages` object: a flat map of step-key → `{ "en": "...", "es": "..." }`
-   template pairs. Keys are returned by `describeStep()` in `viz.ts`; values may
-   contain `{placeholder}` tokens that the controller interpolates at runtime
-   (e.g. `{ "check": { "en": "Checking index {i}", "es": "Revisando índice {i}" } }`).
-   Every key that `describeStep` can emit must have an entry here.
-
-   **Description convention:** the `description` must let the user understand the
-   exercise without reading the code. Cover, in plain language, three things:
-   (1) **what the algorithm does** — its core idea/strategy (e.g. "halves the
-   range each step because the array is ordered"); (2) **what it receives** — the
-   input type(s) (e.g. "a sorted array of integers and a target"); and (3) **what
-   it returns** — the output and its meaning (e.g. "the index where the target is
-   found, or -1"). Keep it accurate and concise; the home card shows the first few
-   lines and the exercise page shows it in full.
-2. **Create the folder** `src/exercises/<id>/`.
-3. **Create `exercise.js`** — a **single** exported pure function (no side
-   effects), named after the exercise's algorithm/structure, that receives the
-   input and returns its natural result. No step trace, no expected-result or
-   config parameters — it must be trivial to copy and run anywhere. Internal,
-   non-exported helpers are fine.
-4. **Create `viz.ts`** — export a pure `buildSteps(input)` returning
-   `{ steps, result }`, and `const createViz: VizFactory` that uses it.
-   `VizFactory` is `(input: VizInput) => ExerciseViz` where `VizInput` is
-   `{ values: readonly number[]; target?: number; text?: string }` — `values`
-   carries integer-array exercises; `text` carries string exercises.
-
-   Implement the full `ExerciseViz` interface:
-   - `totalSteps: number` — total number of steps (including the initial state).
-   - `result: number | readonly number[] | string` — final result of the algorithm
-     for the current input; displayed on the last step.
-   - `renderStep(svg: SVGSVGElement, stepIndex: number): void` — draws the
-     visualization for the given step into the provided `<svg>` element.
-   - `describeStep(stepIndex: number): StepDescriptor | null` — returns a
-     `{ key: string; params?: Record<string, string | number> }` descriptor for
-     the step-detail log row, or `null` if the step produces no log entry (e.g.
-     the initial state at step 0). The `key` must match an entry in
-     `stepMessages`; `params` are interpolated into the template.
-   - `codeLines(stepIndex: number): CodeLines | null` — returns the **1-based**
-     source line numbers that "execute" at this step, per code mode
-     (`{ js: readonly number[]; pseudo: readonly number[] }`), or `null` when the
-     step highlights nothing (always `null` at step 0). The controller toggles an
-     `is-executing` highlight on the matching `.line` spans of both code blocks.
-     Rules: (a) a step answers *"what happens here"*, not a single breakpoint —
-     it may list **non-contiguous** lines (the loop header + the branch it took +
-     the pointer update). (b) The viz step model is an *abstraction* of the
-     algorithm, not a line-by-line trace, so map each step to the line(s) that
-     best express it; setup that runs outside the stepped loop (e.g. seeding the
-     head node) can be mapped to the step that conceptually performs it. (c) Keep
-     `js` and `pseudo` in lockstep with `exercise.js`/`exercise.pseudo` —
-     re-derive the numbers if you edit either source file. (d) Declare the line
-     sets as **named constants** at module scope (no inline magic numbers), like
-     the existing exercises. `pseudo` is `[]` only if the exercise has no
-     `pseudoFile`.
-
-   Build SVG only with the helpers in `src/lib/viz/svg.ts`
-   (`createElementNS` / `textContent`) — never `innerHTML`.
-   Use the `--viz-*` CSS variables for color.
-5. **Create `__tests__/exercise.test.ts`** (the exported function, multiple `it`
-   cases for edge cases) and **`__tests__/viz.test.ts`** (the `buildSteps` step
-   model, an integration test asserting `buildSteps(input).result` equals the
-   exercise function's result, and a `codeLines` block asserting `codeLines(0)`
-   is `null` and that every step maps to in-range 1-based lines for both `js` and
-   `pseudo` — read the sibling source files to get their line counts, as the
-   existing exercises do), satisfying the Gherkin scenarios.
-   (Adding/altering tests requires developer authorization.)
-6. **Create `exercise.pseudo`** in `src/exercises/<id>/`. Write the
-   language-agnostic pseudo-code version of the exported function, following
-   the style of the existing `.pseudo` files: structured indentation, `←` for
-   assignment, `WHILE`/`FOR`/`IF`/`RETURN` in uppercase, helper functions
-   declared below the main one. Derive it directly from the JS — every branch
-   must be present. Then add `"pseudoFile": "<id>/exercise.pseudo"` to the
-   `exercises.json` entry alongside `"codeFile"`. Once the file is final,
-   re-verify the `pseudo` line numbers used by `codeLines` in `viz.ts` (step 4),
-   since they are 1-based offsets into this file.
-7. **Run `npm test`** in `frontend/`. All new tests must pass; `T-REG-04`
-   confirms the `codeFile` resolves.
-8. **Confirm no other tests broke** (`npm test` is the full suite) and that
-   `npm run build` still produces a page at `/exercise/<slug>`.
-
-The exercise page and viz are wired automatically: `src/exercises/registry.ts`
-lazy-loads `viz.ts` by id, and `[slug].astro` is generated for every registry
-entry.
+`spec.md` remains the source of truth for *what* an exercise must be — the
+serial-code tables (`§ Serial Code Nomenclature`), the Gherkin scenarios, and
+the Decisions Log — while the skill is the guide for *how* to add one. Two
+invariants worth restating outside the skill, because they constrain all work
+here: exercises are **fully isolated** (never modify another exercise's files),
+and the exercise page + viz are **wired automatically** (`src/exercises/registry.ts`
+lazy-loads `viz.ts` by id and `[slug].astro` is generated for every registry
+entry), so there is no routing to add.
 
 ## How to update an i18n string
 

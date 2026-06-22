@@ -235,5 +235,50 @@
         "es": "Corchete de cierre: repito \"{segment}\" {count} veces y lo agrego al texto guardado → \"{current}\"."
       }
     }
+  },
+  {
+    "id": "quicksort",
+    "slug": "quicksort",
+    "serialCode": "SORT-ARR-ORD-STD",
+    "name": { "en": "Quicksort", "es": "Ordenamiento Rápido" },
+    "description": {
+      "en": "Receives an array of integers and sorts it in ascending order using quicksort, a divide-and-conquer algorithm. For each range it picks a pivot (the last element) and partitions the range so that every value smaller than the pivot ends up to its left and every larger-or-equal value to its right; the pivot then sits in its final sorted position. The two sides are sorted the same way recursively until every range has at most one element. Returns a new array with the values in ascending order.",
+      "es": "Recibe un arreglo de enteros y lo ordena de forma ascendente usando quicksort, un algoritmo de divide y vencerás. Para cada rango elige un pivote (el último elemento) y particiona el rango de modo que todo valor menor que el pivote quede a su izquierda y todo valor mayor o igual a su derecha; el pivote queda entonces en su posición final ordenada. Ambos lados se ordenan igual de forma recursiva hasta que cada rango tiene a lo sumo un elemento. Devuelve un arreglo nuevo con los valores en orden ascendente."
+    },
+    "category": "SORTING",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-06-22",
+    "links": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Quicksort",
+        "label": { "en": "Quicksort on Wikipedia", "es": "Quicksort en Wikipedia" }
+      }
+    ],
+    "codeFile": "quicksort/exercise.js",
+    "pseudoFile": "quicksort/exercise.pseudo",
+    "defaultInput": [5, 2, 8, 1, 9, 3, 7],
+    "stepMessages": {
+      "pivot": {
+        "en": "Choose pivot {pivot} for the range [{lo}, {hi}] and scan the rest for smaller values.",
+        "es": "Elijo el pivote {pivot} para el rango [{lo}, {hi}] y reviso el resto en busca de valores menores."
+      },
+      "less": {
+        "en": "{value} is smaller than pivot {pivot}: move it to the left group.",
+        "es": "{value} es menor que el pivote {pivot}: lo muevo al grupo de la izquierda."
+      },
+      "greaterEqual": {
+        "en": "{value} is not smaller than pivot {pivot}: leave it in the right group.",
+        "es": "{value} no es menor que el pivote {pivot}: lo dejo en el grupo de la derecha."
+      },
+      "place": {
+        "en": "Pivot {pivot} settles into its final position {index}: smaller values on the left, larger on the right.",
+        "es": "El pivote {pivot} queda en su posición final {index}: los menores a la izquierda y los mayores a la derecha."
+      },
+      "done": {
+        "en": "The array is fully sorted in ascending order.",
+        "es": "El arreglo queda completamente ordenado de forma ascendente."
+      }
+    }
   }
 ]
