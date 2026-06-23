@@ -107,7 +107,7 @@ export async function initExercise(): Promise<void> {
   const inputKind = exercise?.inputKind ?? InputKind.NUMBERS;
 
   let defaultInput: VizInput;
-  if (inputKind === InputKind.STRING) {
+  if (inputKind !== InputKind.NUMBERS) {
     const text = typeof exercise?.defaultInput === "string" ? exercise.defaultInput : "";
     defaultInput = { values: [], text };
   } else {

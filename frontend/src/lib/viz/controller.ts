@@ -5,6 +5,7 @@ import {
   parseIntegerArray,
   parseIntegerTarget,
   parseEncodedString,
+  parseBracketString,
 } from "../validation/userInput";
 import {
   readLearned,
@@ -35,6 +36,7 @@ const I18N = {
   unlearn: "exercise.unlearn",
   invalidInput: "exercise.invalidInput",
   invalidInputString: "exercise.invalidInputString",
+  invalidInputBrackets: "exercise.invalidInputBrackets",
   currentStep: "exercise.currentStep",
   inputLabel: "exercise.inputLabel",
   resultLabel: "exercise.resultLabel",
@@ -53,7 +55,9 @@ function lang(): LanguageCode {
 export function mountExercise(deps: ExerciseControllerDeps): void {
   const { root, exerciseId, inputKind, createViz, defaultInput, stepMessages } =
     deps;
-  const isStringInput = inputKind === InputKind.STRING;
+  // Text exercises (decode-string, valid-parentheses) carry raw text in
+  // `VizInput.text`; only the numeric kind uses arrays + an optional target.
+  const isStringInput = inputKind !== InputKind.NUMBERS;
 
   const svg = root.querySelector<SVGSVGElement>('[data-role="viz-svg"]');
   const codeJs = root.querySelector<HTMLElement>('[data-role="code-js"]');
@@ -111,7 +115,7 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
     autoBtn?.classList.toggle("is-playing", playing);
   }
 
-  function formatValue(value: number | readonly number[] | string): string {
+  function formatValue(value: number | readonly number[] | string | boolean): string {
     if (typeof value === "string") {
       return `"${value}"`;
     }
@@ -297,9 +301,13 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
     if (!inputField || !inputError) return;
 
     if (isStringInput) {
-      const stringResult = parseEncodedString(inputField.value);
+      const isBrackets = inputKind === InputKind.BRACKETS;
+      const stringResult = isBrackets
+        ? parseBracketString(inputField.value)
+        : parseEncodedString(inputField.value);
       if (!stringResult.ok) {
-        inputError.textContent = resolve(I18N.invalidInputString, lang());
+        const msgKey = isBrackets ? I18N.invalidInputBrackets : I18N.invalidInputString;
+        inputError.textContent = resolve(msgKey, lang());
         inputError.hidden = false;
         return;
       }

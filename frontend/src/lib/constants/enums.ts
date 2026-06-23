@@ -29,6 +29,7 @@ export enum ExerciseCategory {
 export enum InputKind {
   NUMBERS = "NUMBERS",
   STRING = "STRING",
+  BRACKETS = "BRACKETS",
 }
 
 /** Exercise difficulty (LeetCode-style, 3 tiers). */

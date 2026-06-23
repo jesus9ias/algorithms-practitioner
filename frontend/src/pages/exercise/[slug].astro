@@ -35,10 +35,12 @@ const pseudoCode = exercise.pseudoFile
   : null;
 
 const hasTarget = exercise.defaultTarget !== undefined;
-const isStringInput = exercise.inputKind === InputKind.STRING;
-const inputPlaceholderKey = isStringInput
-  ? "exercise.inputPlaceholderString"
-  : "exercise.inputPlaceholder";
+const inputPlaceholderKey =
+  exercise.inputKind === InputKind.BRACKETS
+    ? "exercise.inputPlaceholderBrackets"
+    : exercise.inputKind === InputKind.STRING
+      ? "exercise.inputPlaceholderString"
+      : "exercise.inputPlaceholder";
 const catKey = categoryKey(exercise.category);
 const lvlKey = levelKey(exercise.level);
 ---

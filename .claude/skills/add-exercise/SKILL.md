@@ -114,6 +114,23 @@ Required fields: `id` (kebab-case, unique), `slug`, `serialCode`, `name`,
 `"inputKind": "STRING"` and make `defaultInput` a string; omitting `inputKind`
 defaults to integer-array behavior.
 
+> **A "string exercise" does not automatically mean reuse `inputKind: "STRING"`.**
+> The `STRING` validator (`parseEncodedString`) is **decode-string-specific**: it
+> accepts only `[]` and *requires them balanced*. Before reusing it, confirm its
+> charset and balance rules actually fit your exercise's custom input. If they
+> don't — e.g. a bracket-validation exercise needs `(){}[]` and must accept
+> *unbalanced* input — reusing `STRING` ships a **latent defect the gate can't
+> catch**: Vitest tests the pure function, so a broken custom-input panel still
+> goes green. Budget instead for a shared-infra change: a new `InputKind` value
+> with its own validator in `src/lib/validation/`, per-kind placeholder/error
+> i18n keys in **both** `en.json`/`es.json`, generalizing the
+> `=== InputKind.STRING` checks in `controller.ts` / `exerciseInit.ts` /
+> `[slug].astro` to `!== InputKind.NUMBERS`, and widening `ExerciseViz.result`
+> (and `controller.ts`'s `formatValue`) if the exercise returns a new type such
+> as `boolean` (astro-check/tsc catches the missing type; Vitest does not).
+> A new `InputKind` is a spec-first decision — record it in the Decisions Log
+> before coding.
+
 **`description` must stand on its own** — a user should grasp the exercise
 without reading the code. Cover three things plainly: (1) *what the algorithm
 does* (its core idea/strategy), (2) *what it receives* (input types), (3) *what
@@ -213,7 +230,15 @@ Run from inside `frontend/`:
 
 1. `npm test` — the **authoritative gate**. All new tests must pass, and a
    registry test confirms `codeFile` resolves. Run the **full** suite (it is the
-   suite) and confirm no existing test broke.
+   suite) and confirm no existing test broke. **One existing test predictably
+   breaks on a valid add:** `src/lib/__tests__/filters.test.ts` enumerates
+   exercises against the real `exercises.json` — `T-FILT-02` lists every `EASY`
+   id, and the `T-SEARCH` cases list ids whose name matches a search substring.
+   If your exercise lands in one of those buckets (an `EASY` level, or a name
+   containing a searched term like "binary"/"linked"), grep `filters.test.ts`
+   for the affected enumeration and add your id (the arrays are `.sort()`ed).
+   This is a required **fixture sync** forced by the authorized add, not a logic
+   change — do it rather than reverting your registration.
 2. `npm run build` — must still succeed and produce a page at
    `/exercise/<slug>`.
 3. `npm run typecheck` if you touched shared types.
@@ -230,9 +255,12 @@ claim green without having seen it.
 - [ ] `id`/`slug`/`name` unique and allusive to the serial
 - [ ] `exercises.json` entry complete; `en` + `es` non-empty; description self-contained
 - [ ] `stepMessages` covers every `describeStep` key
+- [ ] Input kind verified: `STRING` validator actually fits the charset/balance
+      rules — else new `InputKind` + validator + i18n + widened `result` type
 - [ ] `exercise.js` — single pure exported function, no extra params
 - [ ] `exercise.pseudo` — every JS branch present
 - [ ] `viz.ts` — full `ExerciseViz`; SVG via helpers only; `--viz-*` colors
 - [ ] `codeLines` — named constants, 1-based, js/pseudo in lockstep, `null` at step 0
 - [ ] Tests added/changed only with authorization
+- [ ] `filters.test.ts` enumerations synced if the exercise is `EASY` / name-matched
 - [ ] `npm test` green, `npm run build` produces `/exercise/<slug>`

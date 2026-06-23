@@ -37,7 +37,7 @@ export interface CodeLines {
 export interface ExerciseViz {
   readonly totalSteps: number;
   /** The final result of the exercise function for the current input. */
-  readonly result: number | readonly number[] | string;
+  readonly result: number | readonly number[] | string | boolean;
   renderStep(svg: SVGSVGElement, stepIndex: number): void;
   /**
    * Descriptor for the step's detail-log row, or `null` when the step has no row

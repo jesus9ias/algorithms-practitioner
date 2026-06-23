@@ -140,11 +140,15 @@ Canonical exported function per seed exercise:
 
 Most exercises operate on integer arrays (`defaultInput: number[]`,
 `VizInput.values`). Exercises whose natural input/output is text instead declare
-`"inputKind": "STRING"` in their registry entry and provide a `string`
-`defaultInput`; the shared infra carries the raw text in `VizInput.text` and
-allows `string` results (see Decisions Log, 2026-06-19). `inputKind` is optional
-and defaults to `NUMBERS` (the `InputKind` enum), so numeric exercises are
-unchanged.
+a text `inputKind` in their registry entry and provide a `string` `defaultInput`;
+the shared infra carries the raw text in `VizInput.text` and allows `string` (and
+`boolean`) results (see Decisions Log, 2026-06-19 and 2026-06-23). The `InputKind`
+enum has three values: `NUMBERS` (default — integer arrays), `STRING` (text in the
+`n[substring]` run-length format, validated by `parseEncodedString`), and
+`BRACKETS` (free text whose meaningful tokens are `()[]{}`, possibly unbalanced,
+validated by `parseBracketString`). `inputKind` is optional and defaults to
+`NUMBERS`, so numeric exercises are unchanged; both text kinds share the same
+text path and differ only in their validator and placeholder/error strings.
 
 ### User state — localStorage keys
 
@@ -242,6 +246,7 @@ here first.
 | `CNT` | Count occurrences |
 | `MRG` | Merge |
 | `XPOS` | Transpose |
+| `VAL` | Validate / check a property (returns a boolean verdict) |
 
 ### Part 4 — VAR (variant — specific form of the structure or technique)
 
@@ -268,6 +273,7 @@ here first.
 | `binary-tree` | `TRAV-TREE-ORD-BST` |
 | `decode-string` | `XFRM-STR-DEC-STD` |
 | `quicksort` | `SORT-ARR-ORD-STD` |
+| `valid-parentheses` | `COMP-STR-VAL-STD` |
 
 ### Rules when adding an exercise
 
@@ -1079,4 +1085,6 @@ Must include:
 | 2026-06-21 | Added `serialCode` field to the exercise registry: a four-part internal classification string `TYPE–STRUCT–OBJ–VAR` (e.g. `SRCH-ARR-FIND-BIN`) | As the exercise set grows, variants of the same algorithm on different data structures (e.g. remove-duplicates on singly vs. circular linked list) need a machine-readable way to be grouped and distinguished. The `id` remains the unique key; `serialCode` identifies the *class*. It is internal only (not shown in the UI), stored as a plain string (no enum — the table of valid values lives in `spec.md § Serial Code Nomenclature`), and coexists with the existing `category` filter without replacing it. Duplicate serials are allowed but must be flagged and reviewed. The `id`, `slug`, and `name` of each exercise must be unique and allusive to the serial so the taxonomy is self-evident from the registry |
 | 2026-06-21 | Per-step code-line highlighting: the active step marks the source line(s) that "execute" in that step, in both the JS and pseudo-code blocks | Reinforces the learning goal by connecting the visualization to the code. The "which lines" logic is custom per exercise and lives in `viz.ts` as a **required** `codeLines(stepIndex): CodeLines \| null` method on `ExerciseViz` (`CodeLines = { js, pseudo }`, 1-based line numbers; `pseudo` is empty when the exercise has no `pseudoFile`). The shared controller reads it inside the single `render()` choke point and toggles an `is-executing` class on the `.line` spans Shiki already emits (and already numbers via a CSS counter). Decisions from the developer: step 0 highlights nothing; a step may highlight **non-contiguous** lines (it answers "what happens in this step", not a debugger breakpoint); the highlight is applied to both code blocks regardless of which is visible and regardless of the collapsed/expanded state (no auto-expand, no scroll — revealing the code stays the user's deliberate act per the 2026-06-20 decision). Prototyped on binary-search, then rolled out to all exercises and made a required part of the contract; a `viz.test.ts` check asserts every step's lines are in range and step 0 is `null`. Since the viz step model is an abstraction of the algorithm (not a line-by-line trace), each step maps to the line(s) that best express what it does; mappings are maintained by hand alongside the source files |
 | 2026-06-22 | Added `quicksort` exercise (category `SORTING`, level `MEDIUM`, serial `SORT-ARR-ORD-STD`) | First sorting exercise; validates the sorting visualization archetype. Implements divide-and-conquer quicksort with Lomuto partitioning (last element as pivot) over an integer array — `quickSort(arr) => number[]` sorted ascending, reusing the existing `number[]` I/O contract (no new `InputKind`). A distinct visualization archetype: a value-scaled **bar chart** whose bars are re-ordered as swaps happen, colored by per-step role (pivot / smaller-than-pivot / larger-than-pivot / placed-sorted / unprocessed / comparing), with the partition narration carried by the localized step-detail log. Introduces five additive `--viz-*` color tokens (`--viz-pivot`, `--viz-less`, `--viz-greater`, `--viz-compare`, `--viz-sorted`) in both themes for the new roles; existing exercises are untouched. All serial segments already existed in the nomenclature tables (no new codes); `SORTING` category and its i18n/label plumbing already existed |
+| 2026-06-23 | Added `VAL` to the OBJ segment of the serial nomenclature: "Validate / check a property (returns a boolean verdict)" | The existing OBJ codes (`FIND`, `DEDUP`, `REM`, `REV`, `ORD`, `DEC`, `MAX`, `CNT`, `MRG`, `XPOS`) all describe producing or reshaping data; none captures an exercise whose objective is to *decide a yes/no property* of the input. The `valid-parentheses` exercise returns a boolean, so a dedicated objective code was needed rather than misclassifying it. Approved by the developer before any code was written |
+| 2026-06-23 | Added `valid-parentheses` exercise (category `TEXT`, level `EASY`, serial `COMP-STR-VAL-STD`) | Validates that the brackets `()`, `[]` and `{}` in a string are balanced and correctly nested, ignoring any non-bracket characters; returns `true`/`false`. First boolean-result exercise and first to use the new `VAL` objective. **Input:** a new `InputKind.BRACKETS` was added rather than reusing `STRING`, because the `STRING` validator (`parseEncodedString`, built for `decode-string`'s `n[substring]` format) only accepts square brackets and *requires them to be balanced* — directly contradicting an exercise whose whole purpose is to accept arbitrary, possibly-unbalanced `()[]{}`. `BRACKETS` shares the entire text path with `STRING` (raw text in `VizInput.text`, quoted display, string-result handling) and differs only in its validator (`parseBracketString`: whitelist of letters/digits/spaces/`()[]{}`, no balance requirement) and its placeholder/error i18n keys; `isStringInput` checks were generalized from `=== STRING` to `!== NUMBERS`. **Output:** `ExerciseViz.result` (and the controller's `formatValue`) were widened from `number | number[] | string` to also accept `boolean` (rendered as `true`/`false`), the minimal extension to the 2026-06-19 string-I/O generalization. The visualization is a scanning cursor over the input plus a live stack of pending opening brackets (a distinct "stack-matching" framing of the existing scan-with-stack archetype seeded by `decode-string`); the per-step log narrates push / match / mismatch / ignore. Introduces one additive `--viz-invalid` (red) color token in both themes for the mismatch/unbalanced role, reusing `--viz-found` (green) for matches; existing exercises are untouched |
 | 2026-06-21 | Added optional `pseudoFile` field to the exercise registry and a JS/Pseudo-code mode switcher on the exercise page | The pure-JS `exercise.js` is the source of truth (tested, copyable) and stays unchanged. When an exercise declares `pseudoFile` (path to `exercise.pseudo`, a plain-text file), the code section renders a button group (JS / Pseudo-code) that swaps the visible block. The Copy button always copies whichever block is currently visible. Exercises without a `pseudoFile` are unaffected (no switcher rendered). The pseudo-code file is editorial content only — never executed, never tested. A new `CodeMode` enum (`JS` / `PSEUDO`) in `enums.ts` labels the two modes. Two i18n keys (`exercise.codeJs`, `exercise.codePseudo`) carry the button labels in EN/ES |

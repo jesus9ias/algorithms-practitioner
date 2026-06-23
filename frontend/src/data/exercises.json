@@ -280,5 +280,47 @@
         "es": "El arreglo queda completamente ordenado de forma ascendente."
       }
     }
+  },
+  {
+    "id": "valid-parentheses",
+    "slug": "valid-parentheses",
+    "serialCode": "COMP-STR-VAL-STD",
+    "name": { "en": "Valid Parentheses", "es": "Paréntesis Válidos" },
+    "description": {
+      "en": "Receives a string and checks whether its brackets are balanced and correctly nested. The valid pairs are (), [] and {}; any other character (letters, spaces, digits) is ignored. It scans the string left to right with a stack: every opening bracket is pushed, and every closing bracket must match the bracket on top of the stack — if it matches, that opening bracket is popped, otherwise the string is unbalanced. After the scan the string is balanced only if the stack is empty (no opening bracket was left unclosed). Returns true when every bracket is correctly paired and nested, and false otherwise.",
+      "es": "Recibe una cadena y comprueba si sus corchetes están balanceados y correctamente anidados. Los pares válidos son (), [] y {}; cualquier otro carácter (letras, espacios, dígitos) se ignora. Recorre la cadena de izquierda a derecha con una pila: cada corchete de apertura se apila, y cada corchete de cierre debe coincidir con el corchete en el tope de la pila — si coincide, ese corchete de apertura se desapila, y si no, la cadena no está balanceada. Tras el recorrido la cadena está balanceada solo si la pila queda vacía (no quedó ningún corchete de apertura sin cerrar). Devuelve true cuando cada corchete está correctamente emparejado y anidado, y false en caso contrario."
+    },
+    "category": "TEXT",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-06-23",
+    "inputKind": "BRACKETS",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/valid-parentheses/",
+        "label": { "en": "Valid Parentheses on LeetCode", "es": "Valid Parentheses en LeetCode" }
+      }
+    ],
+    "codeFile": "valid-parentheses/exercise.js",
+    "pseudoFile": "valid-parentheses/exercise.pseudo",
+    "defaultInput": "a(b[c]{d})e",
+    "stepMessages": {
+      "pushOpen": {
+        "en": "Opening bracket '{bracket}': push it onto the stack to wait for its closing match.",
+        "es": "Corchete de apertura '{bracket}': lo apilo para esperar su corchete de cierre."
+      },
+      "matchClose": {
+        "en": "Closing bracket '{bracket}': it matches the opening '{expected}' on top of the stack — pop it.",
+        "es": "Corchete de cierre '{bracket}': coincide con la apertura '{expected}' en el tope de la pila — lo desapilo."
+      },
+      "mismatchClose": {
+        "en": "Closing bracket '{bracket}': it does not match the top of the stack — the string is unbalanced.",
+        "es": "Corchete de cierre '{bracket}': no coincide con el tope de la pila — la cadena no está balanceada."
+      },
+      "ignoreChar": {
+        "en": "'{char}' is not a bracket — ignore it and keep scanning.",
+        "es": "'{char}' no es un corchete — lo ignoro y sigo recorriendo."
+      }
+    }
   }
 ]

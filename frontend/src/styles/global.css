@@ -31,6 +31,9 @@
   --viz-compare: #eab308;
   --viz-sorted: #1d4ed8;
 
+  /* Validation (valid-parentheses) mismatch/unbalanced role; --viz-found is reused for matches. */
+  --viz-invalid: #dc2626;
+
   /* Code-block line highlight (block is always the github-dark Shiki theme). */
   --code-exec-bg: rgba(56, 139, 253, 0.16);
   --code-exec-bar: #58a6ff;
@@ -72,6 +75,9 @@
   --viz-greater: #ea7a3b;
   --viz-compare: #fbbf24;
   --viz-sorted: #3b82f6;
+
+  /* Validation (valid-parentheses) mismatch/unbalanced role; --viz-found is reused for matches. */
+  --viz-invalid: #f87171;
 }
 
 /* ---- Base ---- */

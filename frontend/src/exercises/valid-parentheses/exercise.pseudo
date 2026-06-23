@@ -1,0 +1,12 @@
+FUNCTION isBalanced(s):
+  stack ← empty stack
+  pairs ← { ')' → '(' , ']' → '[' , '}' → '{' }
+
+  FOR EACH ch IN s:
+    IF ch is an opening bracket ( '(' , '[' , '{' ):
+      PUSH ch ONTO stack
+    ELSE IF ch is a closing bracket ( ')' , ']' , '}' ):
+      IF stack is empty OR POP stack ≠ pairs[ch]:
+        RETURN false
+
+  RETURN stack is empty

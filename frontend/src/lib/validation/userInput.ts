@@ -100,6 +100,33 @@ export function parseEncodedString(raw: string): Result<string> {
 }
 
 /**
+ * Validates a raw string for `BRACKETS`-kind exercises (bracket-balance checks
+ * such as `valid-parentheses`). Accepts ASCII letters, digits, spaces and the
+ * six bracket characters `()[]{}` in any arrangement — the brackets need NOT be
+ * balanced, since deciding that is the exercise itself. Any other character
+ * (e.g. `<`, `>`, quotes) is rejected to keep the input on a safe whitelist. An
+ * empty string is valid. No `eval` is used — parsing is a single character scan.
+ */
+export function parseBracketString(raw: string): Result<string> {
+  if (raw.length > MAX_INPUT_LENGTH) {
+    return err(`Input must not exceed ${MAX_INPUT_LENGTH} characters.`);
+  }
+
+  const BRACKETS = "()[]{}";
+  for (const ch of raw) {
+    const isLetter = (ch >= "a" && ch <= "z") || (ch >= "A" && ch <= "Z");
+    const isDigit = ch >= "0" && ch <= "9";
+    const isSpace = ch === " ";
+    if (isLetter || isDigit || isSpace || BRACKETS.includes(ch)) {
+      continue;
+    }
+    return err("Input may contain only letters, digits, spaces and brackets.");
+  }
+
+  return ok(raw);
+}
+
+/**
  * Parses an optional integer target (used by search-style exercises).
  * An empty string yields `undefined` (no target). Any non-integer is rejected.
  */

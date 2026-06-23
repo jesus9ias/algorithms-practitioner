@@ -1,6 +1,6 @@
 import { describe, it, expect } from "vitest";
 
-import { parseIntegerArray } from "../userInput";
+import { parseIntegerArray, parseBracketString } from "../userInput";
 import { MAX_INPUT_LENGTH } from "../../constants";
 
 /**
@@ -41,5 +41,39 @@ describe("parseIntegerArray (T-INP)", () => {
     const oversized = JSON.stringify(new Array(MAX_INPUT_LENGTH + 1).fill(0));
     const result = parseIntegerArray(oversized);
     expect(result.ok).toBe(false);
+  });
+});
+
+/**
+ * T-INP-BR-* — bracket-string validation (BRACKETS-kind exercises).
+ * parseBracketString(raw: string): Result<string>
+ * Accepts letters, digits, spaces and ()[]{} in any arrangement (balance not
+ * required, since deciding balance is the exercise); rejects any other char.
+ */
+describe("parseBracketString (T-INP-BR)", () => {
+  it("T-INP-BR-01: a balanced bracket string passes", () => {
+    const result = parseBracketString("a(b[c]{d})e");
+    expect(result.ok).toBe(true);
+    if (result.ok) {
+      expect(result.value).toBe("a(b[c]{d})e");
+    }
+  });
+
+  it("T-INP-BR-02: an unbalanced bracket string is accepted (it is the exercise)", () => {
+    expect(parseBracketString("([)]").ok).toBe(true);
+    expect(parseBracketString(")(").ok).toBe(true);
+  });
+
+  it("T-INP-BR-03: an empty string passes", () => {
+    expect(parseBracketString("").ok).toBe(true);
+  });
+
+  it("T-INP-BR-04: a script tag is rejected (disallowed characters)", () => {
+    expect(parseBracketString("<script>alert(1)</script>").ok).toBe(false);
+  });
+
+  it("T-INP-BR-05: input exceeding max length is rejected", () => {
+    const oversized = "(".repeat(MAX_INPUT_LENGTH + 1);
+    expect(parseBracketString(oversized).ok).toBe(false);
   });
 });
