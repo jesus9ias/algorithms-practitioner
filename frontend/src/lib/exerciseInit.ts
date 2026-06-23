@@ -1,7 +1,7 @@
 import { loadViz } from "../exercises/registry";
 import { exercises } from "../data/exercises";
 import { mountExercise } from "./viz/controller";
-import { parseIntegerArray } from "./validation/userInput";
+import { parseIntegerArray, parseIntegerMatrix } from "./validation/userInput";
 import { COPY_FEEDBACK_MS, CODE_BLOCK_DEFAULT_OPEN, InputKind } from "./constants";
 import type { VizInput } from "./viz/types";
 import { resolve } from "../i18n";
@@ -107,7 +107,12 @@ export async function initExercise(): Promise<void> {
   const inputKind = exercise?.inputKind ?? InputKind.NUMBERS;
 
   let defaultInput: VizInput;
-  if (inputKind !== InputKind.NUMBERS) {
+  if (inputKind === InputKind.MATRIX) {
+    const rawMatrix = root.dataset.defaultInput ?? "[]";
+    const parsed = parseIntegerMatrix(rawMatrix);
+    const matrix = parsed.ok ? parsed.value : [];
+    defaultInput = { values: [], matrix };
+  } else if (inputKind !== InputKind.NUMBERS) {
     const text = typeof exercise?.defaultInput === "string" ? exercise.defaultInput : "";
     defaultInput = { values: [], text };
   } else {

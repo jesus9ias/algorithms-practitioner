@@ -63,17 +63,35 @@ function isValidSavedInput(value: unknown): value is SavedInput {
     return false;
   }
   // Text exercises persist their input as a bounded string; numeric exercises
-  // persist a bounded array of integers.
+  // persist a bounded array of integers; matrix exercises persist a bounded 2D
+  // array of integers (an array whose elements are themselves arrays).
   if (typeof record.value === "string") {
     if (record.value.length > MAX_INPUT_LENGTH) {
       return false;
     }
   } else if (Array.isArray(record.value)) {
-    if (record.value.length < MIN_INPUT_LENGTH || record.value.length > MAX_INPUT_LENGTH) {
-      return false;
-    }
-    if (!record.value.every((n) => typeof n === "number" && Number.isInteger(n))) {
-      return false;
+    const value = record.value;
+    if (value.length > 0 && Array.isArray(value[0])) {
+      let cells = 0;
+      for (const row of value) {
+        if (!Array.isArray(row)) {
+          return false;
+        }
+        if (!row.every((n) => typeof n === "number" && Number.isInteger(n))) {
+          return false;
+        }
+        cells += row.length;
+      }
+      if (cells < MIN_INPUT_LENGTH || cells > MAX_INPUT_LENGTH) {
+        return false;
+      }
+    } else {
+      if (value.length < MIN_INPUT_LENGTH || value.length > MAX_INPUT_LENGTH) {
+        return false;
+      }
+      if (!value.every((n) => typeof n === "number" && Number.isInteger(n))) {
+        return false;
+      }
     }
   } else {
     return false;

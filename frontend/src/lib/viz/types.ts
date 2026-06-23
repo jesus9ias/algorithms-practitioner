@@ -1,10 +1,12 @@
 /** Normalized input handed to every exercise visualization. */
 export interface VizInput {
-  /** Integer values for numeric exercises (empty for text exercises). */
+  /** Integer values for numeric exercises (empty for text/matrix exercises). */
   readonly values: readonly number[];
   readonly target?: number;
-  /** Raw text for `STRING`-kind exercises; undefined for numeric ones. */
+  /** Raw text for `STRING`/`BRACKETS`-kind exercises; undefined otherwise. */
   readonly text?: string;
+  /** Rectangular integer matrix for `MATRIX`-kind exercises; undefined otherwise. */
+  readonly matrix?: readonly (readonly number[])[];
 }
 
 /**

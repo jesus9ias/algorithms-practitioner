@@ -402,5 +402,35 @@
         "es": "Listo: recolecté los {count} valores más frecuentes, de mayor a menor frecuencia."
       }
     }
+  },
+  {
+    "id": "matrix-spiral",
+    "slug": "matrix-spiral",
+    "serialCode": "TRAV-MAT-ORD-RCT",
+    "name": { "en": "Matrix Spiral", "es": "Matriz en Espiral" },
+    "description": {
+      "en": "Receives an N×M matrix of integers and returns all of its elements in clockwise spiral order, starting from the top-left corner. It keeps four boundary pointers — top, bottom, left and right — and on each lap walks the top row left to right, the right column top to bottom, the bottom row right to left, and the left column bottom to top, shrinking the matching boundary inward after each side. It repeats until the boundaries cross, so every cell is visited exactly once. Returns a new array with the values in spiral order; an empty matrix yields an empty array, a single row is returned left to right, and a single column top to bottom.",
+      "es": "Recibe una matriz de enteros de N×M y devuelve todos sus elementos en orden de espiral en sentido horario, comenzando por la esquina superior izquierda. Mantiene cuatro punteros de límite — superior, inferior, izquierdo y derecho — y en cada vuelta recorre la fila superior de izquierda a derecha, la columna derecha de arriba abajo, la fila inferior de derecha a izquierda y la columna izquierda de abajo arriba, encogiendo hacia adentro el límite correspondiente tras cada lado. Repite hasta que los límites se cruzan, de modo que cada celda se visita exactamente una vez. Devuelve un arreglo nuevo con los valores en orden de espiral; una matriz vacía produce un arreglo vacío, una sola fila se devuelve de izquierda a derecha y una sola columna de arriba abajo."
+    },
+    "category": "MATRICES",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-06-23",
+    "inputKind": "MATRIX",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/spiral-matrix/",
+        "label": { "en": "Spiral Matrix on LeetCode", "es": "Spiral Matrix en LeetCode" }
+      }
+    ],
+    "codeFile": "matrix-spiral/exercise.js",
+    "pseudoFile": "matrix-spiral/exercise.pseudo",
+    "defaultInput": [[1, 2, 3], [4, 5, 6], [7, 8, 9]],
+    "stepMessages": {
+      "visit": {
+        "en": "Append {value} from row {row}, column {col} — spiral position #{position}.",
+        "es": "Agrego {value} de la fila {row}, columna {col} — posición #{position} de la espiral."
+      }
+    }
   }
 ]

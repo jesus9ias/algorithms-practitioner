@@ -6,6 +6,7 @@ import {
   parseIntegerTarget,
   parseEncodedString,
   parseBracketString,
+  parseIntegerMatrix,
 } from "../validation/userInput";
 import {
   readLearned,
@@ -37,6 +38,7 @@ const I18N = {
   invalidInput: "exercise.invalidInput",
   invalidInputString: "exercise.invalidInputString",
   invalidInputBrackets: "exercise.invalidInputBrackets",
+  invalidInputMatrix: "exercise.invalidInputMatrix",
   currentStep: "exercise.currentStep",
   inputLabel: "exercise.inputLabel",
   resultLabel: "exercise.resultLabel",
@@ -55,9 +57,13 @@ function lang(): LanguageCode {
 export function mountExercise(deps: ExerciseControllerDeps): void {
   const { root, exerciseId, inputKind, createViz, defaultInput, stepMessages } =
     deps;
-  // Text exercises (decode-string, valid-parentheses) carry raw text in
-  // `VizInput.text`; only the numeric kind uses arrays + an optional target.
-  const isStringInput = inputKind !== InputKind.NUMBERS;
+  // Input comes in three shapes: numeric exercises use an integer array plus an
+  // optional target; text exercises (decode-string, valid-parentheses) carry raw
+  // text in `VizInput.text`; matrix exercises carry a 2D array in
+  // `VizInput.matrix`.
+  const isTextInput =
+    inputKind === InputKind.STRING || inputKind === InputKind.BRACKETS;
+  const isMatrixInput = inputKind === InputKind.MATRIX;
 
   const svg = root.querySelector<SVGSVGElement>('[data-role="viz-svg"]');
   const codeJs = root.querySelector<HTMLElement>('[data-role="code-js"]');
@@ -122,9 +128,17 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
     return Array.isArray(value) ? `[${value.join(", ")}]` : String(value);
   }
 
+  /** Display string for a 2D integer matrix, e.g. `[[1, 2], [3, 4]]`. */
+  function formatMatrix(matrix: readonly (readonly number[])[]): string {
+    return `[${matrix.map((row) => `[${row.join(", ")}]`).join(", ")}]`;
+  }
+
   /** Display string for the current input, by kind. */
   function formatInput(input: VizInput): string {
-    return isStringInput ? `"${input.text ?? ""}"` : formatValue(input.values);
+    if (isMatrixInput) {
+      return formatMatrix(input.matrix ?? []);
+    }
+    return isTextInput ? `"${input.text ?? ""}"` : formatValue(input.values);
   }
 
   function renderIo(): void {
@@ -300,7 +314,19 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
   function applyCustomInput(): void {
     if (!inputField || !inputError) return;
 
-    if (isStringInput) {
+    if (isMatrixInput) {
+      const matrixResult = parseIntegerMatrix(inputField.value);
+      if (!matrixResult.ok) {
+        inputError.textContent = resolve(I18N.invalidInputMatrix, lang());
+        inputError.hidden = false;
+        return;
+      }
+      inputError.hidden = true;
+      rebuild({ values: [], matrix: matrixResult.value });
+      return;
+    }
+
+    if (isTextInput) {
       const isBrackets = inputKind === InputKind.BRACKETS;
       const stringResult = isBrackets
         ? parseBracketString(inputField.value)
@@ -376,10 +402,12 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
       loadBtn.className = "btn btn-small";
       loadBtn.textContent = resolve(I18N.load, lang());
       loadBtn.addEventListener("click", () => {
-        if (typeof saved.value === "string") {
+        if (isMatrixInput) {
+          rebuild({ values: [], matrix: saved.value as readonly (readonly number[])[] });
+        } else if (typeof saved.value === "string") {
           rebuild({ values: [], text: saved.value });
         } else {
-          rebuild({ values: [...saved.value], target: saved.target });
+          rebuild({ values: [...(saved.value as readonly number[])], target: saved.target });
         }
       });
 
@@ -403,16 +431,26 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
   saveBtn?.addEventListener("click", () => {
     if (!saveLabel) return;
     const label = saveLabel.value.trim();
-    const isEmpty = isStringInput
-      ? (currentInput.text ?? "") === ""
-      : currentInput.values.length === 0;
+    const isEmpty = isMatrixInput
+      ? (currentInput.matrix ?? []).length === 0
+      : isTextInput
+        ? (currentInput.text ?? "") === ""
+        : currentInput.values.length === 0;
     if (label === "" || isEmpty) {
       return;
     }
     const list = getSaved();
+    let value: SavedInput["value"];
+    if (isMatrixInput) {
+      value = (currentInput.matrix ?? []).map((row) => [...row]);
+    } else if (isTextInput) {
+      value = currentInput.text ?? "";
+    } else {
+      value = [...currentInput.values];
+    }
     list.push({
       label,
-      value: isStringInput ? (currentInput.text ?? "") : [...currentInput.values],
+      value,
       target: currentInput.target,
     });
     persistSaved(list);

@@ -1,0 +1,31 @@
+FUNCTION spiralOrder(matrix):
+  result ← empty list
+
+  IF length(matrix) = 0 OR length(matrix[0]) = 0:
+    RETURN result
+
+  top ← 0
+  bottom ← length(matrix) - 1
+  left ← 0
+  right ← length(matrix[0]) - 1
+
+  WHILE top ≤ bottom AND left ≤ right:
+    FOR col FROM left TO right:
+      append matrix[top][col] to result
+    top ← top + 1
+
+    FOR row FROM top TO bottom:
+      append matrix[row][right] to result
+    right ← right - 1
+
+    IF top ≤ bottom:
+      FOR col FROM right DOWNTO left:
+        append matrix[bottom][col] to result
+      bottom ← bottom - 1
+
+    IF left ≤ right:
+      FOR row FROM bottom DOWNTO top:
+        append matrix[row][left] to result
+      left ← left + 1
+
+  RETURN result

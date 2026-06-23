@@ -40,6 +40,61 @@ export function parseIntegerArray(raw: string): Result<number[]> {
 }
 
 /**
+ * Parses a raw string into a validated rectangular matrix of integers, used by
+ * `MATRIX`-kind exercises (e.g. `matrix-spiral`).
+ *
+ * Accepts only a JSON array of arrays whose elements are all safe integers. The
+ * matrix must be non-empty, every row must be non-empty and all rows must share
+ * the same length (rectangular N×M), and the total cell count must stay within
+ * `MAX_INPUT_LENGTH`. Anything else (objects, jagged rows, floats, non-JSON
+ * payloads such as script injection) is rejected. No `eval`/`Function` is used —
+ * parsing goes exclusively through `JSON.parse`.
+ */
+export function parseIntegerMatrix(raw: string): Result<number[][]> {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return err("Input is not valid JSON.");
+  }
+
+  if (!Array.isArray(parsed)) {
+    return err("Input must be a 2D array.");
+  }
+  if (parsed.length < MIN_INPUT_LENGTH) {
+    return err("Matrix must have at least one row.");
+  }
+
+  let width: number | null = null;
+  let cells = 0;
+  for (const row of parsed) {
+    if (!Array.isArray(row)) {
+      return err("Each matrix row must be an array.");
+    }
+    if (row.length < MIN_INPUT_LENGTH) {
+      return err("Matrix rows must not be empty.");
+    }
+    if (width === null) {
+      width = row.length;
+    } else if (row.length !== width) {
+      return err("All matrix rows must have the same length.");
+    }
+    for (const element of row) {
+      if (typeof element !== "number" || !Number.isInteger(element)) {
+        return err("Matrix must contain integers only.");
+      }
+    }
+    cells += row.length;
+  }
+
+  if (cells > MAX_INPUT_LENGTH) {
+    return err(`Matrix must not exceed ${MAX_INPUT_LENGTH} elements.`);
+  }
+
+  return ok(parsed as number[][]);
+}
+
+/**
  * Validates a raw string for `STRING`-kind exercises in the `n[substring]`
  * run-length format used by `decode-string`. Accepts only ASCII letters,
  * digits and square brackets; the brackets must be balanced, every `[` must be

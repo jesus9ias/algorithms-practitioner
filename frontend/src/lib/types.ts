@@ -50,8 +50,11 @@ export interface Exercise {
    * (an integer-array exercise). Text exercises set `STRING`.
    */
   readonly inputKind?: InputKind;
-  /** Integer-array seed for numeric exercises, or raw text for `STRING` ones. */
-  readonly defaultInput: readonly number[] | string;
+  /**
+   * Integer-array seed for numeric exercises, raw text for `STRING`/`BRACKETS`
+   * ones, or a 2D integer matrix for `MATRIX` ones.
+   */
+  readonly defaultInput: readonly number[] | string | readonly (readonly number[])[];
   readonly defaultTarget?: number;
   /**
    * Bilingual templates for the step-detail log, keyed by the `key` a viz's
@@ -64,8 +67,11 @@ export interface Exercise {
 /** A user-saved custom input for an exercise. */
 export interface SavedInput {
   readonly label: string;
-  /** Integer array for numeric exercises, or raw text for `STRING` ones. */
-  readonly value: readonly number[] | string;
+  /**
+   * Integer array for numeric exercises, raw text for `STRING`/`BRACKETS` ones,
+   * or a 2D integer matrix for `MATRIX` ones.
+   */
+  readonly value: readonly number[] | string | readonly (readonly number[])[];
   readonly target?: number;
 }
 
