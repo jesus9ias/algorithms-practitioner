@@ -356,5 +356,51 @@
         "es": "Deslizo un paso: sumo {added}, quito {removed} → suma = {sum}, promedio = {avg}."
       }
     }
+  },
+  {
+    "id": "top-k-frequent",
+    "slug": "top-k-frequent",
+    "serialCode": "SORT-ARR-FREQ-STD",
+    "name": { "en": "Most Frequent Elements", "es": "Elementos Más Frecuentes" },
+    "description": {
+      "en": "Receives an array of integers and a number k, and returns the k most frequent values ordered from highest to lowest frequency. It runs in O(n) using bucket sort: first it counts every value's frequency in a hash map, then it scatters each value into a bucket indexed by its frequency (so all values that appear the same number of times share a bucket), and finally it reads the buckets from the highest frequency down, collecting values until it has k of them. Returns a new array with the k most frequent values, most frequent first; when several values tie in frequency any order between the tied ones is valid. If k is greater than or equal to the number of distinct values it returns every distinct value, and an empty input yields an empty array.",
+      "es": "Recibe un arreglo de enteros y un número k, y devuelve los k valores más frecuentes ordenados de mayor a menor frecuencia. Funciona en O(n) usando bucket sort: primero cuenta la frecuencia de cada valor en un mapa hash, luego reparte cada valor en un bucket indexado por su frecuencia (de modo que todos los valores que aparecen la misma cantidad de veces comparten bucket), y finalmente lee los buckets desde la frecuencia más alta hacia abajo, recolectando valores hasta tener k. Devuelve un arreglo nuevo con los k valores más frecuentes, el más frecuente primero; cuando varios valores empatan en frecuencia, cualquier orden entre los empatados es válido. Si k es mayor o igual al número de valores distintos devuelve todos los valores distintos, y una entrada vacía produce un arreglo vacío."
+    },
+    "category": "HASHING",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-06-23",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/top-k-frequent-elements/",
+        "label": { "en": "Top K Frequent Elements on LeetCode", "es": "Top K Frequent Elements en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Bucket_sort",
+        "label": { "en": "Bucket Sort on Wikipedia", "es": "Bucket Sort en Wikipedia" }
+      }
+    ],
+    "codeFile": "top-k-frequent/exercise.js",
+    "pseudoFile": "top-k-frequent/exercise.pseudo",
+    "defaultInput": [1, 1, 1, 2, 2, 3],
+    "defaultTarget": 2,
+    "stepMessages": {
+      "count": {
+        "en": "Count {value}: its frequency is now {count}.",
+        "es": "Cuento {value}: su frecuencia ahora es {count}."
+      },
+      "bucket": {
+        "en": "Value {value} appears {count} time(s) → place it in bucket {count}.",
+        "es": "El valor {value} aparece {count} vez/veces → lo coloco en el bucket {count}."
+      },
+      "collect": {
+        "en": "Bucket {freq} (highest remaining): take {value} as result #{position}.",
+        "es": "Bucket {freq} (el mayor restante): tomo {value} como resultado #{position}."
+      },
+      "done": {
+        "en": "Done: collected the {count} most frequent value(s), highest frequency first.",
+        "es": "Listo: recolecté los {count} valores más frecuentes, de mayor a menor frecuencia."
+      }
+    }
   }
 ]

@@ -1,0 +1,16 @@
+FUNCTION topKFrequent(arr, k):
+  counts ← empty map
+  FOR EACH value IN arr:
+    counts[value] ← counts[value] + 1
+
+  buckets ← array of (length(arr) + 1) empty lists
+  FOR EACH (value, count) IN counts:
+    append value TO buckets[count]
+
+  result ← empty list
+  FOR freq ← length(buckets) - 1 DOWN TO 1:
+    FOR EACH value IN buckets[freq]:
+      IF length(result) ≥ k:
+        RETURN result
+      append value TO result
+  RETURN result
