@@ -322,5 +322,39 @@
         "es": "'{char}' no es un corchete — lo ignoro y sigo recorriendo."
       }
     }
+  },
+  {
+    "id": "running-average",
+    "slug": "running-average",
+    "serialCode": "COMP-ARR-AVG-STD",
+    "name": { "en": "Running Average", "es": "Promedio Móvil" },
+    "description": {
+      "en": "Receives an array of integers and a window size w. It computes the average of every consecutive block of w elements: instead of re-adding each window from scratch, it keeps a running sum and slides the window one position at a time — adding the value that enters on the right and subtracting the one that leaves on the left — so the whole pass costs O(n). Each average is rounded to two decimals. Returns an array with one average per window, in order; if w is larger than the array (or not positive) it returns an empty array, and when w equals the array length it returns a single average.",
+      "es": "Recibe un arreglo de enteros y un tamaño de ventana w. Calcula el promedio de cada bloque consecutivo de w elementos: en lugar de volver a sumar cada ventana desde cero, mantiene una suma corriente y desliza la ventana una posición a la vez — agregando el valor que entra por la derecha y restando el que sale por la izquierda — de modo que todo el recorrido cuesta O(n). Cada promedio se redondea a dos decimales. Devuelve un arreglo con un promedio por ventana, en orden; si w es mayor que el arreglo (o no es positivo) devuelve un arreglo vacío, y cuando w es igual al tamaño del arreglo devuelve un solo promedio."
+    },
+    "category": "GENERAL",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-06-23",
+    "links": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Moving_average",
+        "label": { "en": "Moving Average on Wikipedia", "es": "Media Móvil en Wikipedia" }
+      }
+    ],
+    "codeFile": "running-average/exercise.js",
+    "pseudoFile": "running-average/exercise.pseudo",
+    "defaultInput": [1, 2, 3, 4, 5],
+    "defaultTarget": 3,
+    "stepMessages": {
+      "firstWindow": {
+        "en": "First window over indices {start}–{end}: sum = {sum}, average = {avg}.",
+        "es": "Primera ventana sobre los índices {start}–{end}: suma = {sum}, promedio = {avg}."
+      },
+      "slide": {
+        "en": "Slide one step: add {added}, drop {removed} → sum = {sum}, average = {avg}.",
+        "es": "Deslizo un paso: sumo {added}, quito {removed} → suma = {sum}, promedio = {avg}."
+      }
+    }
   }
 ]

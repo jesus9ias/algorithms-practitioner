@@ -1,0 +1,19 @@
+FUNCTION runningAverage(arr, w):
+  averages ← empty list
+
+  IF w ≤ 0 OR w > length(arr):
+    RETURN averages
+
+  sum ← 0
+  FOR i FROM 0 TO w - 1:
+    sum ← sum + arr[i]
+  append round2(sum / w) to averages
+
+  FOR i FROM w TO length(arr) - 1:
+    sum ← sum + arr[i] - arr[i - w]
+    append round2(sum / w) to averages
+
+  RETURN averages
+
+FUNCTION round2(value):
+  RETURN round(value * 100) / 100

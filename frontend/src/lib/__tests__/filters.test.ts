@@ -19,7 +19,7 @@ describe("filterExercises (T-FILT)", () => {
 
   it("T-FILT-02: filter by level returns correct subset", () => {
     const result = filterExercises(exercises, { levels: [ExerciseLevel.EASY] });
-    expect(ids(result)).toEqual(["binary-search", "linked-list", "remove-duplicates-dll", "remove-duplicates-sll", "valid-parentheses"]);
+    expect(ids(result)).toEqual(["binary-search", "linked-list", "remove-duplicates-dll", "remove-duplicates-sll", "running-average", "valid-parentheses"]);
   });
 
   it("T-FILT-03: filter by learned returns only learned IDs", () => {
