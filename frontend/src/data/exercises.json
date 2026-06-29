@@ -404,6 +404,47 @@
     }
   },
   {
+    "id": "bubble-sort",
+    "slug": "bubble-sort",
+    "serialCode": "SORT-ARR-ORD-STD",
+    "name": { "en": "Bubble Sort", "es": "Ordenamiento Burbuja" },
+    "description": {
+      "en": "Receives an array of integers and sorts it in ascending order using bubble sort. It makes repeated passes over the unsorted portion: on each pass it compares every adjacent pair — if the left value is greater than the right, they are swapped — so the largest unsorted value bubbles to its final position at the end. Each subsequent pass covers one fewer element because the last position of the previous pass is already settled; an early-exit check stops the algorithm as soon as a full pass makes no swaps, because the array is already in order. Returns a new array with the values in ascending order.",
+      "es": "Recibe un arreglo de enteros y lo ordena de forma ascendente usando bubble sort. Realiza pasadas repetidas sobre la parte sin ordenar: en cada pasada compara cada par adyacente — si el valor de la izquierda es mayor que el de la derecha los intercambia — de modo que el mayor valor sin ordenar burbujea hasta su posición final al final. Cada pasada siguiente cubre un elemento menos porque la última posición de la pasada anterior ya quedó en su sitio; una verificación de salida anticipada detiene el algoritmo en cuanto una pasada completa no hace ningún intercambio, ya que el arreglo ya está en orden. Devuelve un arreglo nuevo con los valores en orden ascendente."
+    },
+    "category": "SORTING",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-06-29",
+    "links": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Bubble_sort",
+        "label": { "en": "Bubble Sort on Wikipedia", "es": "Bubble Sort en Wikipedia" }
+      }
+    ],
+    "codeFile": "bubble-sort/exercise.js",
+    "pseudoFile": "bubble-sort/exercise.pseudo",
+    "defaultInput": [5, 3, 1, 4, 2],
+    "stepMessages": {
+      "compare": {
+        "en": "Compare {left} and {right}: already in order — no swap needed.",
+        "es": "Comparo {left} y {right}: ya están en orden — no es necesario intercambiar."
+      },
+      "swap": {
+        "en": "{left} > {right}: swap — the larger value bubbles one step to the right.",
+        "es": "{left} > {right}: intercambio — el valor mayor avanza un paso hacia la derecha."
+      },
+      "pass": {
+        "en": "Pass {passNum} complete — {value} settled into position {pos}.",
+        "es": "Vuelta {passNum} completada — {value} quedó en la posición {pos}."
+      },
+      "done": {
+        "en": "The array is fully sorted in ascending order.",
+        "es": "El arreglo queda completamente ordenado de forma ascendente."
+      }
+    }
+  },
+  {
     "id": "matrix-spiral",
     "slug": "matrix-spiral",
     "serialCode": "TRAV-MAT-ORD-RCT",

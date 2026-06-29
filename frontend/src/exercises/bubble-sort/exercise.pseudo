@@ -1,0 +1,12 @@
+FUNCTION bubbleSort(arr):
+  result ← copy(arr)
+  n ← length(result)
+  FOR i ← 0 TO n - 2:
+    swapped ← false
+    FOR j ← 0 TO n - 2 - i:
+      IF result[j] > result[j + 1]:
+        swap(result, j, j + 1)
+        swapped ← true
+    IF NOT swapped:
+      BREAK
+  RETURN result
