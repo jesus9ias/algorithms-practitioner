@@ -1,0 +1,21 @@
+FUNCTION mergeSort(arr):
+  IF length(arr) ≤ 1:
+    RETURN copy(arr)
+  mid ← floor(length(arr) / 2)
+  left ← mergeSort(arr[0..mid-1])
+  right ← mergeSort(arr[mid..end])
+  RETURN merge(left, right)
+
+FUNCTION merge(left, right):
+  result ← []
+  i ← 0, j ← 0
+  WHILE i < length(left) AND j < length(right):
+    IF left[i] ≤ right[j]:
+      APPEND left[i] TO result
+      i ← i + 1
+    ELSE:
+      APPEND right[j] TO result
+      j ← j + 1
+  APPEND left[i..] TO result
+  APPEND right[j..] TO result
+  RETURN result

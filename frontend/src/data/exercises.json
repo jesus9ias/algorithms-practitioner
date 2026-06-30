@@ -445,6 +445,51 @@
     }
   },
   {
+    "id": "merge-sort",
+    "slug": "merge-sort",
+    "serialCode": "SORT-ARR-ORD-STD",
+    "name": { "en": "Merge Sort", "es": "Ordenamiento por Fusión" },
+    "description": {
+      "en": "Receives an array of integers and returns a new array sorted in ascending order. It uses divide-and-conquer: it splits the array in half, recursively sorts each half, then merges the two sorted halves by comparing their front elements one at a time — always picking the smaller one — and appending any remainder. Guarantees O(n log n) time in all cases. Returns a new array; the original is not modified.",
+      "es": "Recibe un arreglo de enteros y devuelve un arreglo nuevo ordenado de forma ascendente. Usa divide y vencerás: divide el arreglo por la mitad, ordena cada mitad de forma recursiva y luego fusiona las dos mitades ordenadas comparando sus elementos frontales uno a la vez — siempre eligiendo el menor — y agregando el resto restante. Garantiza tiempo O(n log n) en todos los casos. Devuelve un arreglo nuevo; el original no se modifica."
+    },
+    "category": "SORTING",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-06-30",
+    "links": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Merge_sort",
+        "label": { "en": "Merge Sort on Wikipedia", "es": "Merge Sort en Wikipedia" }
+      }
+    ],
+    "codeFile": "merge-sort/exercise.js",
+    "pseudoFile": "merge-sort/exercise.pseudo",
+    "defaultInput": [5, 2, 8, 1, 9, 3],
+    "stepMessages": {
+      "takeLeft": {
+        "en": "Compare {leftVal} and {rightVal}: {leftVal} ≤ {rightVal} — place {leftVal} from the left half at position {pos}.",
+        "es": "Comparo {leftVal} y {rightVal}: {leftVal} ≤ {rightVal} — coloco {leftVal} de la mitad izquierda en la posición {pos}."
+      },
+      "takeRight": {
+        "en": "Compare {leftVal} and {rightVal}: {rightVal} < {leftVal} — place {rightVal} from the right half at position {pos}.",
+        "es": "Comparo {leftVal} y {rightVal}: {rightVal} < {leftVal} — coloco {rightVal} de la mitad derecha en la posición {pos}."
+      },
+      "flushLeft": {
+        "en": "Right half exhausted — place remaining {value} from the left half at position {pos}.",
+        "es": "Mitad derecha agotada — coloco el restante {value} de la mitad izquierda en la posición {pos}."
+      },
+      "flushRight": {
+        "en": "Left half exhausted — place remaining {value} from the right half at position {pos}.",
+        "es": "Mitad izquierda agotada — coloco el restante {value} de la mitad derecha en la posición {pos}."
+      },
+      "done": {
+        "en": "The array is fully sorted in ascending order.",
+        "es": "El arreglo queda completamente ordenado de forma ascendente."
+      }
+    }
+  },
+  {
     "id": "matrix-spiral",
     "slug": "matrix-spiral",
     "serialCode": "TRAV-MAT-ORD-RCT",
