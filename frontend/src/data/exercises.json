@@ -10,7 +10,7 @@
     },
     "category": "SEARCHING",
     "level": "EASY",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-17",
     "links": [
       {
@@ -48,7 +48,7 @@
     },
     "category": "LISTS",
     "level": "EASY",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-17",
     "links": [
       {
@@ -77,7 +77,7 @@
     },
     "category": "TREES",
     "level": "MEDIUM",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-17",
     "links": [
       {
@@ -106,7 +106,7 @@
     },
     "category": "LISTS",
     "level": "EASY",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-21",
     "links": [
       {
@@ -139,7 +139,7 @@
     },
     "category": "LISTS",
     "level": "EASY",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-21",
     "links": [
       {
@@ -172,7 +172,7 @@
     },
     "category": "LISTS",
     "level": "MEDIUM",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-21",
     "links": [
       {
@@ -205,7 +205,7 @@
     },
     "category": "TEXT",
     "level": "MEDIUM",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-19",
     "inputKind": "STRING",
     "links": [
@@ -247,7 +247,7 @@
     },
     "category": "SORTING",
     "level": "MEDIUM",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-22",
     "links": [
       {
