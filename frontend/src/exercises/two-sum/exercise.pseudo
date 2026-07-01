@@ -1,0 +1,8 @@
+FUNCTION twoSum(arr, target):
+  seen ← empty map
+  FOR i ← 0 TO length(arr) - 1:
+    complement ← target - arr[i]
+    IF seen HAS complement:
+      RETURN [seen[complement], i]
+    seen[arr[i]] ← i
+  RETURN []

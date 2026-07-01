@@ -518,5 +518,51 @@
         "es": "Agrego {value} de la fila {row}, columna {col} — posición #{position} de la espiral."
       }
     }
+  },
+  {
+    "id": "two-sum",
+    "slug": "two-sum",
+    "serialCode": "SRCH-HASH-FIND-STD",
+    "name": { "en": "Two Sum", "es": "Suma de Dos" },
+    "description": {
+      "en": "Receives an array of integers and a target value, and returns the indices of the two numbers that add up to the target. It scans the array once, keeping a hash map from each value seen so far to its index: at each element it computes the complement (target minus the current value) and checks whether that complement is already a key in the map — if so, the pair is found immediately; otherwise the current value is recorded in the map and the scan continues. This trades a little extra memory for speed, running in O(n) instead of the O(n²) of checking every pair. Returns a new array with the two matching indices in the order [earlier, later]; returns an empty array when no such pair exists.",
+      "es": "Recibe un arreglo de enteros y un valor objetivo, y devuelve los índices de los dos números que suman ese objetivo. Recorre el arreglo una sola vez, manteniendo un mapa hash de cada valor visto hasta el momento hacia su índice: en cada elemento calcula el complemento (el objetivo menos el valor actual) y verifica si ese complemento ya es una clave del mapa — si es así, el par se encuentra de inmediato; si no, registra el valor actual en el mapa y continúa el recorrido. Esto sacrifica un poco de memoria extra a cambio de velocidad, ejecutándose en O(n) en lugar del O(n²) de comparar cada par. Devuelve un arreglo nuevo con los dos índices coincidentes en el orden [anterior, posterior]; devuelve un arreglo vacío cuando no existe tal par."
+    },
+    "category": "HASHING",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-07-01",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/two-sum/",
+        "label": { "en": "Two Sum on LeetCode", "es": "Two Sum en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Hash_table",
+        "label": { "en": "Hash Table on Wikipedia", "es": "Tabla Hash en Wikipedia" }
+      }
+    ],
+    "codeFile": "two-sum/exercise.js",
+    "pseudoFile": "two-sum/exercise.pseudo",
+    "defaultInput": [2, 7, 11, 15],
+    "defaultTarget": 9,
+    "stepMessages": {
+      "check": {
+        "en": "Checking index {index} (value {value}): looking for complement {complement} in the hash map.",
+        "es": "Reviso el índice {index} (valor {value}): busco el complemento {complement} en el mapa hash."
+      },
+      "found": {
+        "en": "Found it: {complement} was already at index {matchIndex} → pair is [{matchIndex}, {index}].",
+        "es": "¡Lo encontré!: {complement} ya estaba en el índice {matchIndex} → el par es [{matchIndex}, {index}]."
+      },
+      "insert": {
+        "en": "No match yet — remember value {value} at index {index}.",
+        "es": "Aún no hay coincidencia — recuerdo el valor {value} en el índice {index}."
+      },
+      "done": {
+        "en": "Done: no pair in the array adds up to the target.",
+        "es": "Listo: ningún par del arreglo suma el objetivo."
+      }
+    }
   }
 ]
