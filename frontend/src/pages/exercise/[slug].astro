@@ -40,9 +40,11 @@ const inputPlaceholderKey =
     ? "exercise.inputPlaceholderBrackets"
     : exercise.inputKind === InputKind.STRING
       ? "exercise.inputPlaceholderString"
-      : exercise.inputKind === InputKind.MATRIX
-        ? "exercise.inputPlaceholderMatrix"
-        : "exercise.inputPlaceholder";
+      : exercise.inputKind === InputKind.TEXT
+        ? "exercise.inputPlaceholderText"
+        : exercise.inputKind === InputKind.MATRIX
+          ? "exercise.inputPlaceholderMatrix"
+          : "exercise.inputPlaceholder";
 const catKey = categoryKey(exercise.category);
 const lvlKey = levelKey(exercise.level);
 ---

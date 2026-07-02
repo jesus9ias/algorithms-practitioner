@@ -564,5 +564,47 @@
         "es": "Listo: ningún par del arreglo suma el objetivo."
       }
     }
+  },
+  {
+    "id": "reverse-string",
+    "slug": "reverse-string",
+    "serialCode": "XFRM-STR-REV-STD",
+    "name": { "en": "Reverse String", "es": "Invertir Cadena" },
+    "description": {
+      "en": "Receives a string of text and returns its characters in reverse order. It uses the classic two-pointer technique: one pointer starts at the beginning, the other at the end, and on each step they swap the characters they point to, then move one position toward each other. This continues until the pointers meet (an odd-length string leaves its middle character untouched) or cross (an even-length string has every character swapped). The whole string is reversed in place in O(n) time using only two extra variables. Returns a new string with the characters in reverse order; an empty or single-character string is returned unchanged.",
+      "es": "Recibe una cadena de texto y devuelve sus caracteres en orden inverso. Usa la técnica clásica de dos punteros: uno comienza al principio y el otro al final, y en cada paso intercambian los caracteres que señalan y luego avanzan una posición el uno hacia el otro. Esto continúa hasta que los punteros se encuentran (una cadena de longitud impar deja su carácter del medio sin tocar) o se cruzan (una cadena de longitud par intercambia todos sus caracteres). La cadena completa se invierte en O(n) usando solo dos variables extra. Devuelve una cadena nueva con los caracteres en orden inverso; una cadena vacía o de un solo carácter se devuelve sin cambios."
+    },
+    "category": "TEXT",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-07-02",
+    "inputKind": "TEXT",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/reverse-string/",
+        "label": { "en": "Reverse String on LeetCode", "es": "Reverse String en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Two-pointer_technique",
+        "label": { "en": "Two-pointer technique on Wikipedia", "es": "Técnica de dos punteros en Wikipedia" }
+      }
+    ],
+    "codeFile": "reverse-string/exercise.js",
+    "pseudoFile": "reverse-string/exercise.pseudo",
+    "defaultInput": "hello",
+    "stepMessages": {
+      "swap": {
+        "en": "Swap positions {left} ('{leftChar}') and {right} ('{rightChar}'): both are now in their final position. Pointers move one step inward.",
+        "es": "Intercambio las posiciones {left} ('{leftChar}') y {right} ('{rightChar}'): ambas quedan en su posición final. Los punteros avanzan un paso hacia el centro."
+      },
+      "doneMiddle": {
+        "en": "Pointers meet at position {index} ('{char}'): the middle character stays in place. Reversal complete.",
+        "es": "Los punteros se encuentran en la posición {index} ('{char}'): el carácter del medio queda igual. Reversión completa."
+      },
+      "doneCrossed": {
+        "en": "Pointers have crossed: every character has already been swapped. Reversal complete.",
+        "es": "Los punteros se han cruzado: todos los caracteres ya fueron intercambiados. Reversión completa."
+      }
+    }
   }
 ]

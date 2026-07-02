@@ -1,0 +1,13 @@
+FUNCTION reverseString(s):
+  chars ← characters of s
+  left ← 0
+  right ← length(chars) - 1
+
+  WHILE left < right:
+    temp ← chars[left]
+    chars[left] ← chars[right]
+    chars[right] ← temp
+    left ← left + 1
+    right ← right - 1
+
+  RETURN join(chars)

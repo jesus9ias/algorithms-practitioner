@@ -51,8 +51,8 @@ export interface Exercise {
    */
   readonly inputKind?: InputKind;
   /**
-   * Integer-array seed for numeric exercises, raw text for `STRING`/`BRACKETS`
-   * ones, or a 2D integer matrix for `MATRIX` ones.
+   * Integer-array seed for numeric exercises, raw text for `STRING`/`BRACKETS`/
+   * `TEXT` ones, or a 2D integer matrix for `MATRIX` ones.
    */
   readonly defaultInput: readonly number[] | string | readonly (readonly number[])[];
   readonly defaultTarget?: number;
@@ -68,8 +68,8 @@ export interface Exercise {
 export interface SavedInput {
   readonly label: string;
   /**
-   * Integer array for numeric exercises, raw text for `STRING`/`BRACKETS` ones,
-   * or a 2D integer matrix for `MATRIX` ones.
+   * Integer array for numeric exercises, raw text for `STRING`/`BRACKETS`/`TEXT`
+   * ones, or a 2D integer matrix for `MATRIX` ones.
    */
   readonly value: readonly number[] | string | readonly (readonly number[])[];
   readonly target?: number;

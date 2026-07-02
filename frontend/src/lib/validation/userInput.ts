@@ -182,6 +182,32 @@ export function parseBracketString(raw: string): Result<string> {
 }
 
 /**
+ * Validates a raw string for `TEXT`-kind exercises (unrestricted free-form
+ * text such as `reverse-string`). Accepts ASCII letters, digits, spaces and
+ * the common punctuation `.,!?'-`. Any other character (e.g. `<`, `>`, `"`,
+ * brackets) is rejected to keep the input on a safe whitelist. An empty
+ * string is valid. No `eval` is used — parsing is a single character scan.
+ */
+export function parseFreeText(raw: string): Result<string> {
+  if (raw.length > MAX_INPUT_LENGTH) {
+    return err(`Input must not exceed ${MAX_INPUT_LENGTH} characters.`);
+  }
+
+  const PUNCTUATION = ".,!?'-";
+  for (const ch of raw) {
+    const isLetter = (ch >= "a" && ch <= "z") || (ch >= "A" && ch <= "Z");
+    const isDigit = ch >= "0" && ch <= "9";
+    const isSpace = ch === " ";
+    if (isLetter || isDigit || isSpace || PUNCTUATION.includes(ch)) {
+      continue;
+    }
+    return err("Input may contain only letters, digits, spaces and basic punctuation (.,!?'-).");
+  }
+
+  return ok(raw);
+}
+
+/**
  * Parses an optional integer target (used by search-style exercises).
  * An empty string yields `undefined` (no target). Any non-integer is rejected.
  */

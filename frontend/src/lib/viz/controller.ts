@@ -6,6 +6,7 @@ import {
   parseIntegerTarget,
   parseEncodedString,
   parseBracketString,
+  parseFreeText,
   parseIntegerMatrix,
 } from "../validation/userInput";
 import {
@@ -38,6 +39,7 @@ const I18N = {
   invalidInput: "exercise.invalidInput",
   invalidInputString: "exercise.invalidInputString",
   invalidInputBrackets: "exercise.invalidInputBrackets",
+  invalidInputText: "exercise.invalidInputText",
   invalidInputMatrix: "exercise.invalidInputMatrix",
   currentStep: "exercise.currentStep",
   inputLabel: "exercise.inputLabel",
@@ -58,11 +60,13 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
   const { root, exerciseId, inputKind, createViz, defaultInput, stepMessages } =
     deps;
   // Input comes in three shapes: numeric exercises use an integer array plus an
-  // optional target; text exercises (decode-string, valid-parentheses) carry raw
-  // text in `VizInput.text`; matrix exercises carry a 2D array in
-  // `VizInput.matrix`.
+  // optional target; text exercises (decode-string, valid-parentheses,
+  // reverse-string) carry raw text in `VizInput.text`; matrix exercises carry a
+  // 2D array in `VizInput.matrix`.
   const isTextInput =
-    inputKind === InputKind.STRING || inputKind === InputKind.BRACKETS;
+    inputKind === InputKind.STRING ||
+    inputKind === InputKind.BRACKETS ||
+    inputKind === InputKind.TEXT;
   const isMatrixInput = inputKind === InputKind.MATRIX;
 
   const svg = root.querySelector<SVGSVGElement>('[data-role="viz-svg"]');
@@ -327,12 +331,19 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
     }
 
     if (isTextInput) {
-      const isBrackets = inputKind === InputKind.BRACKETS;
-      const stringResult = isBrackets
-        ? parseBracketString(inputField.value)
-        : parseEncodedString(inputField.value);
+      const stringResult =
+        inputKind === InputKind.BRACKETS
+          ? parseBracketString(inputField.value)
+          : inputKind === InputKind.TEXT
+            ? parseFreeText(inputField.value)
+            : parseEncodedString(inputField.value);
       if (!stringResult.ok) {
-        const msgKey = isBrackets ? I18N.invalidInputBrackets : I18N.invalidInputString;
+        const msgKey =
+          inputKind === InputKind.BRACKETS
+            ? I18N.invalidInputBrackets
+            : inputKind === InputKind.TEXT
+              ? I18N.invalidInputText
+              : I18N.invalidInputString;
         inputError.textContent = resolve(msgKey, lang());
         inputError.hidden = false;
         return;
