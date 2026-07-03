@@ -606,5 +606,51 @@
         "es": "Los punteros se han cruzado: todos los caracteres ya fueron intercambiados. Reversión completa."
       }
     }
+  },
+  {
+    "id": "palindrome-check",
+    "slug": "palindrome-check",
+    "serialCode": "COMP-STR-VAL-STD",
+    "name": { "en": "Palindrome Check", "es": "Verificar Palíndromo" },
+    "description": {
+      "en": "Receives a string of text and checks whether it reads the same forwards and backwards. It uses the classic two-pointer technique: one pointer starts at the beginning, the other at the end, and on each step they compare the characters they point to. As soon as a pair does not match, the string cannot be a palindrome and the check stops immediately; otherwise both pointers move one position toward each other until they meet (an odd-length string leaves its middle character unchecked) or cross (an even-length string has every pair compared). The comparison is case-sensitive and exact — no letters, spaces or punctuation are ignored. Returns true when every pair of characters matches, and false otherwise.",
+      "es": "Recibe una cadena de texto y comprueba si se lee igual de adelante hacia atrás y de atrás hacia adelante. Usa la técnica clásica de dos punteros: uno comienza al principio y el otro al final, y en cada paso comparan los caracteres que señalan. En cuanto un par no coincide, la cadena no puede ser un palíndromo y la verificación se detiene de inmediato; de lo contrario, ambos punteros avanzan una posición el uno hacia el otro hasta que se encuentran (una cadena de longitud impar deja su carácter del medio sin comparar) o se cruzan (una cadena de longitud par compara todos los pares). La comparación distingue mayúsculas de minúsculas y es exacta — no se ignoran letras, espacios ni puntuación. Devuelve true cuando todos los pares de caracteres coinciden, y false en caso contrario."
+    },
+    "category": "TEXT",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-07-03",
+    "inputKind": "TEXT",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/valid-palindrome/",
+        "label": { "en": "Valid Palindrome on LeetCode", "es": "Valid Palindrome en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Two-pointer_technique",
+        "label": { "en": "Two-pointer technique on Wikipedia", "es": "Técnica de dos punteros en Wikipedia" }
+      }
+    ],
+    "codeFile": "palindrome-check/exercise.js",
+    "pseudoFile": "palindrome-check/exercise.pseudo",
+    "defaultInput": "racecar",
+    "stepMessages": {
+      "match": {
+        "en": "Compare positions {left} ('{leftChar}') and {right} ('{rightChar}'): they match. Pointers move one step inward.",
+        "es": "Comparo las posiciones {left} ('{leftChar}') y {right} ('{rightChar}'): coinciden. Los punteros avanzan un paso hacia el centro."
+      },
+      "mismatch": {
+        "en": "Compare positions {left} ('{leftChar}') and {right} ('{rightChar}'): they differ — the string cannot be a palindrome. Check stops here.",
+        "es": "Comparo las posiciones {left} ('{leftChar}') y {right} ('{rightChar}'): son distintos — la cadena no puede ser un palíndromo. La verificación se detiene aquí."
+      },
+      "doneMiddle": {
+        "en": "Pointers meet at position {index} ('{char}'): the middle character needs no comparison. Palindrome confirmed.",
+        "es": "Los punteros se encuentran en la posición {index} ('{char}'): el carácter del medio no necesita comparación. Palíndromo confirmado."
+      },
+      "doneCrossed": {
+        "en": "Pointers have crossed: every pair of characters matched. Palindrome confirmed.",
+        "es": "Los punteros se han cruzado: todos los pares de caracteres coincidieron. Palíndromo confirmado."
+      }
+    }
   }
 ]

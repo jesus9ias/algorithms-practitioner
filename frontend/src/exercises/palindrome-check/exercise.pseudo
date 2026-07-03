@@ -1,0 +1,12 @@
+FUNCTION isPalindrome(s):
+  chars ← characters of s
+  left ← 0
+  right ← length(chars) - 1
+
+  WHILE left < right:
+    IF chars[left] != chars[right]:
+      RETURN false
+    left ← left + 1
+    right ← right - 1
+
+  RETURN true
