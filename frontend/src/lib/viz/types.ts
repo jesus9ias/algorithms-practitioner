@@ -7,6 +7,8 @@ export interface VizInput {
   readonly text?: string;
   /** Rectangular integer matrix for `MATRIX`-kind exercises; undefined otherwise. */
   readonly matrix?: readonly (readonly number[])[];
+  /** Single integer for `SCALAR`-kind exercises; undefined otherwise. */
+  readonly scalar?: number;
 }
 
 /**

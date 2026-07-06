@@ -64,9 +64,14 @@ function isValidSavedInput(value: unknown): value is SavedInput {
   }
   // Text exercises persist their input as a bounded string; numeric exercises
   // persist a bounded array of integers; matrix exercises persist a bounded 2D
-  // array of integers (an array whose elements are themselves arrays).
+  // array of integers (an array whose elements are themselves arrays); scalar
+  // exercises persist a single integer.
   if (typeof record.value === "string") {
     if (record.value.length > MAX_INPUT_LENGTH) {
+      return false;
+    }
+  } else if (typeof record.value === "number") {
+    if (!Number.isInteger(record.value)) {
       return false;
     }
   } else if (Array.isArray(record.value)) {

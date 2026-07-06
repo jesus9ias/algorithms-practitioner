@@ -229,3 +229,24 @@ export function parseIntegerTarget(raw: string): Result<number | undefined> {
 
   return ok(parsed);
 }
+
+/**
+ * Parses a raw string into a single validated integer, used by `SCALAR`-kind
+ * exercises (e.g. `fibonacci`) whose entire input is one number. Unlike
+ * `parseIntegerTarget`, the value is mandatory — an empty string is rejected.
+ * No `eval`/`Function` is used — parsing goes exclusively through `JSON.parse`.
+ */
+export function parseSingleInteger(raw: string): Result<number> {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(raw);
+  } catch {
+    return err("Input is not valid.");
+  }
+
+  if (typeof parsed !== "number" || !Number.isInteger(parsed)) {
+    return err("Input must be an integer.");
+  }
+
+  return ok(parsed);
+}

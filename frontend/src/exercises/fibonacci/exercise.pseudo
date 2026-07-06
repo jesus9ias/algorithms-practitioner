@@ -1,0 +1,13 @@
+FUNCTION fibonacci(n):
+  IF n <= 0:
+    RETURN 0
+  RETURN fib(n, empty map)
+
+FUNCTION fib(k, memo):
+  IF k <= 1:
+    RETURN k
+  IF memo HAS k:
+    RETURN memo[k]
+  value ← fib(k - 1, memo) + fib(k - 2, memo)
+  memo[k] ← value
+  RETURN value

@@ -8,6 +8,7 @@ import {
   parseBracketString,
   parseFreeText,
   parseIntegerMatrix,
+  parseSingleInteger,
 } from "../validation/userInput";
 import {
   readLearned,
@@ -41,6 +42,7 @@ const I18N = {
   invalidInputBrackets: "exercise.invalidInputBrackets",
   invalidInputText: "exercise.invalidInputText",
   invalidInputMatrix: "exercise.invalidInputMatrix",
+  invalidInputScalar: "exercise.invalidInputScalar",
   currentStep: "exercise.currentStep",
   inputLabel: "exercise.inputLabel",
   resultLabel: "exercise.resultLabel",
@@ -59,15 +61,17 @@ function lang(): LanguageCode {
 export function mountExercise(deps: ExerciseControllerDeps): void {
   const { root, exerciseId, inputKind, createViz, defaultInput, stepMessages } =
     deps;
-  // Input comes in three shapes: numeric exercises use an integer array plus an
+  // Input comes in four shapes: numeric exercises use an integer array plus an
   // optional target; text exercises (decode-string, valid-parentheses,
   // reverse-string) carry raw text in `VizInput.text`; matrix exercises carry a
-  // 2D array in `VizInput.matrix`.
+  // 2D array in `VizInput.matrix`; scalar exercises (fibonacci) carry a single
+  // integer in `VizInput.scalar`.
   const isTextInput =
     inputKind === InputKind.STRING ||
     inputKind === InputKind.BRACKETS ||
     inputKind === InputKind.TEXT;
   const isMatrixInput = inputKind === InputKind.MATRIX;
+  const isScalarInput = inputKind === InputKind.SCALAR;
 
   const svg = root.querySelector<SVGSVGElement>('[data-role="viz-svg"]');
   const codeJs = root.querySelector<HTMLElement>('[data-role="code-js"]');
@@ -141,6 +145,9 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
   function formatInput(input: VizInput): string {
     if (isMatrixInput) {
       return formatMatrix(input.matrix ?? []);
+    }
+    if (isScalarInput) {
+      return String(input.scalar ?? 0);
     }
     return isTextInput ? `"${input.text ?? ""}"` : formatValue(input.values);
   }
@@ -318,6 +325,18 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
   function applyCustomInput(): void {
     if (!inputField || !inputError) return;
 
+    if (isScalarInput) {
+      const scalarResult = parseSingleInteger(inputField.value);
+      if (!scalarResult.ok) {
+        inputError.textContent = resolve(I18N.invalidInputScalar, lang());
+        inputError.hidden = false;
+        return;
+      }
+      inputError.hidden = true;
+      rebuild({ values: [], scalar: scalarResult.value });
+      return;
+    }
+
     if (isMatrixInput) {
       const matrixResult = parseIntegerMatrix(inputField.value);
       if (!matrixResult.ok) {
@@ -417,6 +436,8 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
           rebuild({ values: [], matrix: saved.value as readonly (readonly number[])[] });
         } else if (typeof saved.value === "string") {
           rebuild({ values: [], text: saved.value });
+        } else if (typeof saved.value === "number") {
+          rebuild({ values: [], scalar: saved.value });
         } else {
           rebuild({ values: [...(saved.value as readonly number[])], target: saved.target });
         }
@@ -446,7 +467,9 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
       ? (currentInput.matrix ?? []).length === 0
       : isTextInput
         ? (currentInput.text ?? "") === ""
-        : currentInput.values.length === 0;
+        : isScalarInput
+          ? false
+          : currentInput.values.length === 0;
     if (label === "" || isEmpty) {
       return;
     }
@@ -456,6 +479,8 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
       value = (currentInput.matrix ?? []).map((row) => [...row]);
     } else if (isTextInput) {
       value = currentInput.text ?? "";
+    } else if (isScalarInput) {
+      value = currentInput.scalar ?? 0;
     } else {
       value = [...currentInput.values];
     }

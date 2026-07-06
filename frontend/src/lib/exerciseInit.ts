@@ -112,6 +112,9 @@ export async function initExercise(): Promise<void> {
     const parsed = parseIntegerMatrix(rawMatrix);
     const matrix = parsed.ok ? parsed.value : [];
     defaultInput = { values: [], matrix };
+  } else if (inputKind === InputKind.SCALAR) {
+    const scalar = typeof exercise?.defaultInput === "number" ? exercise.defaultInput : 0;
+    defaultInput = { values: [], scalar };
   } else if (inputKind !== InputKind.NUMBERS) {
     const text = typeof exercise?.defaultInput === "string" ? exercise.defaultInput : "";
     defaultInput = { values: [], text };

@@ -652,5 +652,55 @@
         "es": "Los punteros se han cruzado: todos los pares de caracteres coincidieron. Palíndromo confirmado."
       }
     }
+  },
+  {
+    "id": "fibonacci",
+    "slug": "fibonacci",
+    "serialCode": "RECR-NUM-NTH-STD",
+    "name": { "en": "Fibonacci", "es": "Fibonacci" },
+    "description": {
+      "en": "Receives a non-negative integer n and returns the n-th Fibonacci number, where fib(0) = 0, fib(1) = 1, and every later term is the sum of the two before it (fib(k) = fib(k-1) + fib(k-2)). It computes the answer via top-down recursion: fib(n) calls fib(n-1) and fib(n-2), which in turn call their own smaller sub-problems, down to the base cases 0 and 1. A memo (a map from index to its already-solved value) records every sub-problem's result the first time it is solved, so a later call for the same index returns instantly instead of recomputing it — turning the naive exponential recursion into O(n) time and space. Returns the single integer fib(n); n ≤ 0 returns 0 directly, with no recursion.",
+      "es": "Recibe un entero no negativo n y devuelve el n-ésimo número de Fibonacci, donde fib(0) = 0, fib(1) = 1, y cada término posterior es la suma de los dos anteriores (fib(k) = fib(k-1) + fib(k-2)). Calcula la respuesta mediante recursión descendente: fib(n) llama a fib(n-1) y fib(n-2), que a su vez llaman a sus propios subproblemas más pequeños, hasta llegar a los casos base 0 y 1. Una memoria (un mapa de índice a su valor ya resuelto) registra el resultado de cada subproblema la primera vez que se resuelve, de modo que una llamada posterior para el mismo índice devuelve el valor de inmediato en lugar de recalcularlo — convirtiendo la recursión ingenua de tiempo exponencial en O(n) de tiempo y espacio. Devuelve el entero fib(n); n ≤ 0 devuelve 0 directamente, sin recursión."
+    },
+    "category": "RECURSION",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-07-06",
+    "inputKind": "SCALAR",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/fibonacci-number/",
+        "label": { "en": "Fibonacci Number on LeetCode", "es": "Fibonacci Number en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Memoization",
+        "label": { "en": "Memoization on Wikipedia", "es": "Memoización en Wikipedia" }
+      }
+    ],
+    "codeFile": "fibonacci/exercise.js",
+    "pseudoFile": "fibonacci/exercise.pseudo",
+    "defaultInput": 10,
+    "stepMessages": {
+      "shortCircuit": {
+        "en": "n is 0 or negative, so the result is 0 with no recursion needed.",
+        "es": "n es 0 o negativo, así que el resultado es 0 sin necesidad de recursión."
+      },
+      "call": {
+        "en": "Calling fib({index}): checking whether it's a base case or already cached.",
+        "es": "Llamando a fib({index}): reviso si es un caso base o si ya está en caché."
+      },
+      "base": {
+        "en": "fib({index}) is a base case: fib({index}) = {value}.",
+        "es": "fib({index}) es un caso base: fib({index}) = {value}."
+      },
+      "cacheHit": {
+        "en": "fib({index}) was already computed — reusing the cached value {value} instead of recomputing.",
+        "es": "fib({index}) ya se había calculado — reutilizo el valor en caché {value} en lugar de recalcularlo."
+      },
+      "compute": {
+        "en": "fib({index}) = fib({leftIndex}) + fib({rightIndex}) = {left} + {right} = {value}.",
+        "es": "fib({index}) = fib({leftIndex}) + fib({rightIndex}) = {left} + {right} = {value}."
+      }
+    }
   }
 ]

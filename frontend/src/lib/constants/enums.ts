@@ -32,6 +32,7 @@ export enum InputKind {
   BRACKETS = "BRACKETS",
   MATRIX = "MATRIX",
   TEXT = "TEXT",
+  SCALAR = "SCALAR",
 }
 
 /** Exercise difficulty (LeetCode-style, 3 tiers). */

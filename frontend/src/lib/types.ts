@@ -52,9 +52,10 @@ export interface Exercise {
   readonly inputKind?: InputKind;
   /**
    * Integer-array seed for numeric exercises, raw text for `STRING`/`BRACKETS`/
-   * `TEXT` ones, or a 2D integer matrix for `MATRIX` ones.
+   * `TEXT` ones, a 2D integer matrix for `MATRIX` ones, or a bare integer for
+   * `SCALAR` ones.
    */
-  readonly defaultInput: readonly number[] | string | readonly (readonly number[])[];
+  readonly defaultInput: readonly number[] | string | readonly (readonly number[])[] | number;
   readonly defaultTarget?: number;
   /**
    * Bilingual templates for the step-detail log, keyed by the `key` a viz's
@@ -69,9 +70,10 @@ export interface SavedInput {
   readonly label: string;
   /**
    * Integer array for numeric exercises, raw text for `STRING`/`BRACKETS`/`TEXT`
-   * ones, or a 2D integer matrix for `MATRIX` ones.
+   * ones, a 2D integer matrix for `MATRIX` ones, or a bare integer for `SCALAR`
+   * ones.
    */
-  readonly value: readonly number[] | string | readonly (readonly number[])[];
+  readonly value: readonly number[] | string | readonly (readonly number[])[] | number;
   readonly target?: number;
 }
 
