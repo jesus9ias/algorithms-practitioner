@@ -748,5 +748,51 @@
         "es": "El espacio de búsqueda se agotó: el objetivo {target} no está en el arreglo — devuelvo -1."
       }
     }
+  },
+  {
+    "id": "climbing-stairs",
+    "slug": "climbing-stairs",
+    "serialCode": "DYNA-NUM-WAYS-STD",
+    "name": { "en": "Climbing Stairs", "es": "Subir Escaleras" },
+    "description": {
+      "en": "Receives a non-negative integer n, the number of stairs in a staircase, and returns the number of distinct ways to reach the top when each move is either 1 or 2 steps. It computes the answer with bottom-up dynamic programming: the number of ways to reach step k is the sum of the ways to reach the two steps before it (ways(k) = ways(k-1) + ways(k-2)), so it fills that recurrence iteratively from the base cases ways(0) = ways(1) = 1 up to n, using two rolling variables instead of recursion. Returns the single integer ways(n); n ≤ 1 returns 1 directly (a staircase of zero or one step has exactly one trivial way to climb it).",
+      "es": "Recibe un entero no negativo n, el número de escalones de una escalera, y devuelve la cantidad de formas distintas de llegar arriba cuando cada movimiento es de 1 o 2 escalones. Calcula la respuesta con programación dinámica ascendente: el número de formas de llegar al escalón k es la suma de las formas de llegar a los dos escalones anteriores (formas(k) = formas(k-1) + formas(k-2)), así que resuelve esa recurrencia de forma iterativa desde los casos base formas(0) = formas(1) = 1 hasta n, usando dos variables que se van actualizando en vez de recursión. Devuelve el entero formas(n); n ≤ 1 devuelve 1 directamente (una escalera de cero o un escalón tiene exactamente una forma trivial de subirla)."
+    },
+    "category": "DYNAMIC_PROGRAMMING",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-07-07",
+    "inputKind": "SCALAR",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/climbing-stairs/",
+        "label": { "en": "Climbing Stairs on LeetCode", "es": "Climbing Stairs en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Dynamic_programming",
+        "label": { "en": "Dynamic Programming on Wikipedia", "es": "Programación Dinámica en Wikipedia" }
+      }
+    ],
+    "codeFile": "climbing-stairs/exercise.js",
+    "pseudoFile": "climbing-stairs/exercise.pseudo",
+    "defaultInput": 10,
+    "stepMessages": {
+      "trivial": {
+        "en": "n = {index} is 0 or 1, so there's exactly {value} trivial way to climb it — no loop needed.",
+        "es": "n = {index} es 0 o 1, así que hay exactamente {value} forma trivial de subirla — sin necesidad de bucle."
+      },
+      "base": {
+        "en": "Seeding ways({index}) = {value}, the base case the loop builds on.",
+        "es": "Sembrando formas({index}) = {value}, el caso base sobre el que se construye el bucle."
+      },
+      "compute": {
+        "en": "ways({index}) = ways({leftIndex}) + ways({rightIndex}) = {left} + {right} = {value}.",
+        "es": "formas({index}) = formas({leftIndex}) + formas({rightIndex}) = {left} + {right} = {value}."
+      },
+      "done": {
+        "en": "Loop finished: there are {value} distinct ways to reach the top.",
+        "es": "Bucle terminado: hay {value} formas distintas de llegar arriba."
+      }
+    }
   }
 ]
