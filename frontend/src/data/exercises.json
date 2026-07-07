@@ -702,5 +702,51 @@
         "es": "fib({index}) = fib({leftIndex}) + fib({rightIndex}) = {left} + {right} = {value}."
       }
     }
+  },
+  {
+    "id": "binary-search-rotated",
+    "slug": "binary-search-rotated",
+    "serialCode": "SRCH-ARR-FIND-BIN",
+    "name": { "en": "Binary Search on a Rotated Array", "es": "Búsqueda Binaria en Arreglo Rotado" },
+    "description": {
+      "en": "Receives an array of integers that was sorted in ascending order and then rotated at an unknown pivot (e.g. [4,5,6,7,0,1,2]), plus a target value. At each step it looks at the middle element and first figures out which half of the current range — left or right — is still contiguously sorted by comparing the boundary values; then it checks whether the target falls inside that sorted half's value range to decide whether to keep searching there or move to the other half, halving the range each step. Returns the index (position) where the target is found, or -1 if it is not present.",
+      "es": "Recibe un arreglo de enteros que estaba ordenado ascendentemente y luego fue rotado en un punto desconocido (p. ej. [4,5,6,7,0,1,2]), junto con un valor objetivo. En cada paso mira el elemento central y primero determina cuál mitad del rango actual — izquierda o derecha — sigue ordenada de forma contigua comparando los valores de los extremos; luego revisa si el objetivo cae dentro del rango de esa mitad ordenada para decidir si sigue buscando ahí o pasa a la otra mitad, reduciendo el rango a la mitad en cada paso. Devuelve el índice (posición) donde encuentra el objetivo, o -1 si no está."
+    },
+    "category": "SEARCHING",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-07-07",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/search-in-rotated-sorted-array/",
+        "label": { "en": "Search in Rotated Sorted Array on LeetCode", "es": "Search in Rotated Sorted Array en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Binary_search_algorithm",
+        "label": { "en": "Binary Search on Wikipedia", "es": "Búsqueda Binaria en Wikipedia" }
+      }
+    ],
+    "codeFile": "binary-search-rotated/exercise.js",
+    "pseudoFile": "binary-search-rotated/exercise.pseudo",
+    "defaultInput": [4, 5, 6, 7, 0, 1, 2],
+    "defaultTarget": 0,
+    "stepMessages": {
+      "searchSortedHalf": {
+        "en": "The sorted half runs from {from} to {to}: the target {target} falls inside it, so I narrow the search there.",
+        "es": "La mitad ordenada va de {from} a {to}: el objetivo {target} cae dentro, así que reduzco la búsqueda a esa mitad."
+      },
+      "skipSortedHalf": {
+        "en": "The sorted half runs from {from} to {to}: the target {target} isn't in it, so I move to the other half.",
+        "es": "La mitad ordenada va de {from} a {to}: el objetivo {target} no está ahí, así que paso a la otra mitad."
+      },
+      "found": {
+        "en": "Middle value is {mid}: it equals the target — found at index {index}.",
+        "es": "El valor medio es {mid}: es igual al objetivo, encontrado en el índice {index}."
+      },
+      "notFound": {
+        "en": "The search space is exhausted: target {target} is not in the array — returning -1.",
+        "es": "El espacio de búsqueda se agotó: el objetivo {target} no está en el arreglo — devuelvo -1."
+      }
+    }
   }
 ]

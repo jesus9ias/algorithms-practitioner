@@ -14,7 +14,7 @@ describe("filterExercises (T-FILT)", () => {
     const result = filterExercises(exercises, {
       categories: [ExerciseCategory.SEARCHING],
     });
-    expect(ids(result)).toEqual(["binary-search"]);
+    expect(ids(result)).toEqual(["binary-search", "binary-search-rotated"]);
   });
 
   it("T-FILT-02: filter by level returns correct subset", () => {
@@ -49,7 +49,7 @@ describe("filterExercises (T-FILT)", () => {
 describe("searchExercises (T-SEARCH)", () => {
   it("T-SEARCH-01: search matches name substring", () => {
     const result = searchExercises(exercises, "binary", "en");
-    expect(ids(result)).toEqual(["binary-search", "binary-tree"]);
+    expect(ids(result)).toEqual(["binary-search", "binary-search-rotated", "binary-tree"]);
   });
 
   it("T-SEARCH-02: search is case-insensitive", () => {
