@@ -794,5 +794,62 @@
         "es": "Bucle terminado: hay {value} formas distintas de llegar arriba."
       }
     }
+  },
+  {
+    "id": "max-subarray",
+    "slug": "max-subarray",
+    "serialCode": "DYNA-ARR-MAX-STD",
+    "name": { "en": "Maximum Subarray", "es": "Subarreglo Máximo" },
+    "description": {
+      "en": "Receives an array of integers and returns the sum of the contiguous subarray with the largest sum. It solves this with Kadane's algorithm — a single dynamic-programming pass that, at each index, decides whether extending the running subarray from the previous index is better than starting a new one at the current element (currentSum = max(arr[i], currentSum + arr[i])), while separately tracking the best sum seen so far. Returns that single integer, the largest sum of any contiguous subarray; an empty array returns 0.",
+      "es": "Recibe un arreglo de enteros y devuelve la suma del subarreglo contiguo con la suma más grande. Lo resuelve con el algoritmo de Kadane — un único recorrido de programación dinámica que, en cada índice, decide si conviene más extender el subarreglo en curso desde el índice anterior o empezar uno nuevo en el elemento actual (currentSum = max(arr[i], currentSum + arr[i])), mientras lleva por separado la mejor suma vista hasta el momento. Devuelve ese entero, la suma más grande de cualquier subarreglo contiguo; un arreglo vacío devuelve 0."
+    },
+    "category": "DYNAMIC_PROGRAMMING",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-07-08",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/maximum-subarray/",
+        "label": { "en": "Maximum Subarray on LeetCode", "es": "Maximum Subarray en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Maximum_subarray_problem",
+        "label": { "en": "Maximum Subarray Problem on Wikipedia", "es": "Problema del Subarreglo Máximo en Wikipedia" }
+      }
+    ],
+    "codeFile": "max-subarray/exercise.js",
+    "pseudoFile": "max-subarray/exercise.pseudo",
+    "defaultInput": [-2, 1, -3, 4, -1, 2, 1, -5, 4],
+    "stepMessages": {
+      "empty": {
+        "en": "The array is empty, so the maximum subarray sum is 0 by definition — no loop runs.",
+        "es": "El arreglo está vacío, así que la suma máxima del subarreglo es 0 por definición — no se ejecuta ningún bucle."
+      },
+      "init": {
+        "en": "Start with the first element: currentSum = maxSum = {value}.",
+        "es": "Empiezo con el primer elemento: currentSum = maxSum = {value}."
+      },
+      "extend": {
+        "en": "arr[{index}] = {value} extends the running subarray: currentSum = {sum}.",
+        "es": "arr[{index}] = {value} extiende el subarreglo en curso: currentSum = {sum}."
+      },
+      "extendNewMax": {
+        "en": "arr[{index}] = {value} extends the running subarray: currentSum = {sum} — a new best so far.",
+        "es": "arr[{index}] = {value} extiende el subarreglo en curso: currentSum = {sum} — el mejor resultado hasta ahora."
+      },
+      "reset": {
+        "en": "arr[{index}] = {value} is bigger on its own than continuing the running subarray, so it restarts here: currentSum = {sum}.",
+        "es": "arr[{index}] = {value} es mayor por sí solo que continuar el subarreglo en curso, así que reinicia aquí: currentSum = {sum}."
+      },
+      "resetNewMax": {
+        "en": "arr[{index}] = {value} restarts the running subarray here: currentSum = {sum} — a new best so far.",
+        "es": "arr[{index}] = {value} reinicia el subarreglo en curso aquí: currentSum = {sum} — el mejor resultado hasta ahora."
+      },
+      "done": {
+        "en": "Done: the maximum subarray sum is {value}, achieved by arr[{start}..{end}].",
+        "es": "Listo: la suma máxima del subarreglo es {value}, lograda por arr[{start}..{end}]."
+      }
+    }
   }
 ]
