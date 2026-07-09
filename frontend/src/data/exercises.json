@@ -851,5 +851,55 @@
         "es": "Listo: la suma máxima del subarreglo es {value}, lograda por arr[{start}..{end}]."
       }
     }
+  },
+  {
+    "id": "coin-change",
+    "slug": "coin-change",
+    "serialCode": "DYNA-ARR-MAX-STD",
+    "name": { "en": "Coin Change", "es": "Cambio de Monedas" },
+    "description": {
+      "en": "Receives an array of coin denominations and a target amount, and returns the minimum number of coins needed to make that amount, or -1 if it cannot be made with the given coins. It solves this with bottom-up dynamic programming: a table dp[0..amount] tracks the minimum coins needed for every amount from 0 up to the target, seeded with the base case dp[0] = 0. For each amount i from 1 to the target, it tries every coin denomination no larger than i — if using that coin (dp[i - coin] + 1) needs fewer coins than the best found so far for i, dp[i] is updated. Returns dp[amount], or -1 if it stayed unreachable (no combination of the given coins sums exactly to the target).",
+      "es": "Recibe un arreglo de denominaciones de monedas y un monto objetivo, y devuelve el número mínimo de monedas necesarias para formar ese monto, o -1 si no se puede formar con esas monedas. Lo resuelve con programación dinámica ascendente: una tabla dp[0..monto] guarda el mínimo de monedas necesarias para cada monto desde 0 hasta el objetivo, sembrada con el caso base dp[0] = 0. Para cada monto i desde 1 hasta el objetivo, prueba cada denominación no mayor que i — si usar esa moneda (dp[i - moneda] + 1) necesita menos monedas que la mejor encontrada hasta ahora para i, se actualiza dp[i]. Devuelve dp[monto], o -1 si quedó inalcanzable (ninguna combinación de las monedas dadas suma exactamente el objetivo)."
+    },
+    "category": "DYNAMIC_PROGRAMMING",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-07-09",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/coin-change/",
+        "label": { "en": "Coin Change on LeetCode", "es": "Coin Change en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Change-making_problem",
+        "label": { "en": "Change-Making Problem on Wikipedia", "es": "Problema del Cambio de Monedas en Wikipedia" }
+      }
+    ],
+    "codeFile": "coin-change/exercise.js",
+    "pseudoFile": "coin-change/exercise.pseudo",
+    "defaultInput": [1, 2, 5],
+    "defaultTarget": 11,
+    "stepMessages": {
+      "init": {
+        "en": "Base case: dp[0] = {value} — zero coins are needed to make amount 0.",
+        "es": "Caso base: dp[0] = {value} — se necesitan cero monedas para el monto 0."
+      },
+      "update": {
+        "en": "Try coin {coin} for amount {index}: dp[{subIndex}] + 1 = {candidate} improves dp[{index}] (was {before}) → {after}.",
+        "es": "Pruebo la moneda {coin} para el monto {index}: dp[{subIndex}] + 1 = {candidate} mejora dp[{index}] (era {before}) → {after}."
+      },
+      "noChange": {
+        "en": "Try coin {coin} for amount {index}: dp[{subIndex}] + 1 = {candidate} does not improve dp[{index}] (stays {before}).",
+        "es": "Pruebo la moneda {coin} para el monto {index}: dp[{subIndex}] + 1 = {candidate} no mejora dp[{index}] (se queda en {before})."
+      },
+      "doneFound": {
+        "en": "Done: the minimum number of coins to make {amount} is {result}.",
+        "es": "Listo: el número mínimo de monedas para hacer {amount} es {result}."
+      },
+      "doneImpossible": {
+        "en": "Done: amount {amount} cannot be made with these coins.",
+        "es": "Listo: el monto {amount} no se puede formar con estas monedas."
+      }
+    }
   }
 ]

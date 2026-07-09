@@ -1,0 +1,15 @@
+FUNCTION coinChange(coins, amount):
+  dp ← array of size (amount + 1) filled with INFINITY
+  dp[0] ← 0
+
+  FOR i FROM 1 TO amount:
+    FOR EACH coin IN coins:
+      IF coin > i:
+        CONTINUE
+      candidate ← dp[i - coin] + 1
+      IF candidate < dp[i]:
+        dp[i] ← candidate
+
+  IF dp[amount] == INFINITY:
+    RETURN -1
+  RETURN dp[amount]
