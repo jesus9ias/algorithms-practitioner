@@ -321,7 +321,7 @@
     },
     "category": "TEXT",
     "level": "EASY",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-23",
     "inputKind": "BRACKETS",
     "links": [
@@ -363,7 +363,7 @@
     },
     "category": "GENERAL",
     "level": "EASY",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-23",
     "links": [
       {
@@ -397,7 +397,7 @@
     },
     "category": "HASHING",
     "level": "MEDIUM",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-23",
     "links": [
       {
@@ -443,7 +443,7 @@
     },
     "category": "SORTING",
     "level": "EASY",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-29",
     "links": [
       {
@@ -484,7 +484,7 @@
     },
     "category": "SORTING",
     "level": "MEDIUM",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-30",
     "links": [
       {
@@ -529,7 +529,7 @@
     },
     "category": "MATRICES",
     "level": "MEDIUM",
-    "isNew": true,
+    "isNew": false,
     "addedAt": "2026-06-23",
     "inputKind": "MATRIX",
     "links": [
