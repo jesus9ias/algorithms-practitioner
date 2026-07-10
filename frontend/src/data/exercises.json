@@ -96,6 +96,35 @@
     }
   },
   {
+    "id": "inorder-traversal",
+    "slug": "inorder-traversal",
+    "serialCode": "TRAV-TREE-ORD-BIN",
+    "name": { "en": "In-order Traversal", "es": "Recorrido en Orden" },
+    "description": {
+      "en": "Receives an array of integers and interprets it as a binary tree laid out level-order — index i's children live at 2i+1 and 2i+2, the same indexing scheme used by binary heaps. It then walks the tree recursively in-order: fully visit the left subtree, process the current node, then fully visit the right subtree. Returns a new array with the values in the order they were visited. Unlike a binary search tree, this tree has no ordering property, so the result is not necessarily sorted — it reflects the tree's shape, not the values themselves.",
+      "es": "Recibe un arreglo de enteros y lo interpreta como un árbol binario en orden de niveles — los hijos del índice i están en 2i+1 y 2i+2, el mismo esquema de indexado que usan los montículos binarios. Luego recorre el árbol recursivamente en orden: visita por completo el subárbol izquierdo, procesa el nodo actual y luego visita por completo el subárbol derecho. Devuelve un arreglo nuevo con los valores en el orden en que fueron visitados. A diferencia de un árbol binario de búsqueda, este árbol no tiene ninguna propiedad de orden, así que el resultado no queda necesariamente ordenado — refleja la forma del árbol, no los valores."
+    },
+    "category": "TREES",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-07-10",
+    "links": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Tree_traversal#In-order,_LNR",
+        "label": { "en": "Tree Traversal (In-order) on Wikipedia", "es": "Recorrido de Árboles (En Orden) en Wikipedia" }
+      }
+    ],
+    "codeFile": "inorder-traversal/exercise.js",
+    "pseudoFile": "inorder-traversal/exercise.pseudo",
+    "defaultInput": [1, 2, 3, 4, 5, 6, 7],
+    "stepMessages": {
+      "visit": {
+        "en": "Visit node {value} in order — left subtree done, now this node.",
+        "es": "Visito el nodo {value} en orden — subárbol izquierdo listo, ahora este nodo."
+      }
+    }
+  },
+  {
     "id": "remove-duplicates-sll",
     "slug": "remove-duplicates-sll",
     "serialCode": "XFRM-LIST-DEDUP-SMP",

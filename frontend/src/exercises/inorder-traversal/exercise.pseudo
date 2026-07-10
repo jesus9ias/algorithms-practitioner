@@ -1,0 +1,11 @@
+FUNCTION inorderTraversal(values):
+  out ← []
+  walk(0, values, out)
+  RETURN out
+
+
+FUNCTION walk(index, values, out):
+  IF index >= LENGTH(values): RETURN
+  walk(2 * index + 1, values, out)
+  APPEND values[index] TO out
+  walk(2 * index + 2, values, out)
