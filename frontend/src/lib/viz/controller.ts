@@ -129,11 +129,16 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
     autoBtn?.classList.toggle("is-playing", playing);
   }
 
-  function formatValue(value: number | readonly number[] | string | boolean): string {
+  function formatValue(
+    value: number | readonly number[] | readonly (readonly number[])[] | string | boolean
+  ): string {
     if (typeof value === "string") {
       return `"${value}"`;
     }
-    return Array.isArray(value) ? `[${value.join(", ")}]` : String(value);
+    if (Array.isArray(value)) {
+      return `[${value.map((entry) => (Array.isArray(entry) ? `[${entry.join(", ")}]` : entry)).join(", ")}]`;
+    }
+    return String(value);
   }
 
   /** Display string for a 2D integer matrix, e.g. `[[1, 2], [3, 4]]`. */

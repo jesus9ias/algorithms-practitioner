@@ -125,6 +125,35 @@
     }
   },
   {
+    "id": "level-order-traversal",
+    "slug": "level-order-traversal",
+    "serialCode": "TRAV-TREE-ORD-BIN",
+    "name": { "en": "Level-order Traversal", "es": "Recorrido por Niveles" },
+    "description": {
+      "en": "Receives an array of integers and interprets it as a binary tree laid out level-order — index i's children live at 2i+1 and 2i+2, the same indexing scheme used by binary heaps. It then walks the tree breadth-first with a queue: starting from the root, each pass drains every node currently in the queue into one result row while enqueuing their children for the next pass. Returns an array of arrays, one per depth level (shallowest first), each holding that level's node values left to right.",
+      "es": "Recibe un arreglo de enteros y lo interpreta como un árbol binario en orden de niveles — los hijos del índice i están en 2i+1 y 2i+2, el mismo esquema de indexado que usan los montículos binarios. Luego recorre el árbol en anchura con una cola: partiendo de la raíz, cada pasada vacía todos los nodos que hay en la cola hacia una fila del resultado, mientras encola sus hijos para la siguiente pasada. Devuelve un arreglo de arreglos, uno por nivel de profundidad (el más superficial primero), cada uno con los valores de ese nivel de izquierda a derecha."
+    },
+    "category": "TREES",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-07-13",
+    "links": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Breadth-first_search",
+        "label": { "en": "Breadth-first Search on Wikipedia", "es": "Búsqueda en Anchura en Wikipedia" }
+      }
+    ],
+    "codeFile": "level-order-traversal/exercise.js",
+    "pseudoFile": "level-order-traversal/exercise.pseudo",
+    "defaultInput": [1, 2, 3, 4, 5, 6, 7],
+    "stepMessages": {
+      "visit": {
+        "en": "Dequeue node {value} at level {level} — add it to the current row and enqueue its children.",
+        "es": "Desencolo el nodo {value} en el nivel {level} — lo agrego a la fila actual y encolo sus hijos."
+      }
+    }
+  },
+  {
     "id": "remove-duplicates-sll",
     "slug": "remove-duplicates-sll",
     "serialCode": "XFRM-LIST-DEDUP-SMP",

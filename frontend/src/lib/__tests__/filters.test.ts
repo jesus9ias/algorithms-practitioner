@@ -35,7 +35,7 @@ describe("filterExercises (T-FILT)", () => {
       categories: [ExerciseCategory.TREES],
       levels: [ExerciseLevel.MEDIUM],
     });
-    expect(ids(result)).toEqual(["binary-tree"]);
+    expect(ids(result)).toEqual(["binary-tree", "level-order-traversal"]);
   });
 
   it("T-FILT-05: no-match filter returns empty array", () => {
@@ -49,7 +49,7 @@ describe("filterExercises (T-FILT)", () => {
 describe("searchExercises (T-SEARCH)", () => {
   it("T-SEARCH-01: search matches name substring", () => {
     const result = searchExercises(exercises, "binary", "en");
-    expect(ids(result)).toEqual(["binary-search", "binary-search-rotated", "binary-tree", "inorder-traversal"]);
+    expect(ids(result)).toEqual(["binary-search", "binary-search-rotated", "binary-tree", "inorder-traversal", "level-order-traversal"]);
   });
 
   it("T-SEARCH-02: search is case-insensitive", () => {

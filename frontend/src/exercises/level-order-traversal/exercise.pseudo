@@ -1,0 +1,22 @@
+FUNCTION levelOrderTraversal(values):
+  IF LENGTH(values) = 0:
+    RETURN []
+
+  levels ← []
+  queue ← [0]
+
+  WHILE LENGTH(queue) > 0:
+    level ← []
+    nextQueue ← []
+    FOR EACH index IN queue:
+      APPEND values[index] TO level
+      left ← 2 * index + 1
+      right ← 2 * index + 2
+      IF left < LENGTH(values):
+        APPEND left TO nextQueue
+      IF right < LENGTH(values):
+        APPEND right TO nextQueue
+    APPEND level TO levels
+    queue ← nextQueue
+
+  RETURN levels
