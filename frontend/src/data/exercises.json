@@ -959,5 +959,39 @@
         "es": "Listo: el monto {amount} no se puede formar con estas monedas."
       }
     }
+  },
+  {
+    "id": "bfs-graph",
+    "slug": "bfs-graph",
+    "serialCode": "TRAV-GRPH-ORD-STD",
+    "name": { "en": "BFS Graph", "es": "BFS en Grafo" },
+    "description": {
+      "en": "Traverses a graph breadth-first starting from node 0, using an explicit FIFO queue: it visits the start node, then all of its direct neighbors, then their unvisited neighbors, expanding outward one ring at a time — the same building block used to find shortest paths in unweighted graphs. Receives the graph as a square adjacency matrix, where a nonzero value at row i, column j marks an edge between nodes i and j (0 means no edge). Returns the node indices in the order they were visited; nodes unreachable from node 0 are never visited.",
+      "es": "Recorre un grafo en anchura (BFS) comenzando desde el nodo 0, usando una cola FIFO explícita: visita el nodo inicial, luego todos sus vecinos directos, luego los vecinos no visitados de estos, expandiéndose hacia afuera anillo por anillo — la misma pieza que se usa para encontrar caminos más cortos en grafos no ponderados. Recibe el grafo como una matriz de adyacencia cuadrada, donde un valor distinto de cero en la fila i, columna j marca una arista entre los nodos i y j (0 significa que no hay arista). Devuelve los índices de los nodos en el orden en que fueron visitados; los nodos inaccesibles desde el nodo 0 nunca se visitan."
+    },
+    "category": "GRAPHS",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-07-14",
+    "inputKind": "MATRIX",
+    "links": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Breadth-first_search",
+        "label": { "en": "Breadth-first Search on Wikipedia", "es": "Búsqueda en Anchura en Wikipedia" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Adjacency_matrix",
+        "label": { "en": "Adjacency Matrix on Wikipedia", "es": "Matriz de Adyacencia en Wikipedia" }
+      }
+    ],
+    "codeFile": "bfs-graph/exercise.js",
+    "pseudoFile": "bfs-graph/exercise.pseudo",
+    "defaultInput": [[0, 1, 1, 0, 0, 0], [1, 0, 0, 1, 1, 0], [1, 0, 0, 0, 0, 1], [0, 1, 0, 0, 0, 0], [0, 1, 0, 0, 0, 1], [0, 0, 1, 0, 1, 0]],
+    "stepMessages": {
+      "visit": {
+        "en": "Visiting node {node}: enqueue neighbors {enqueued}.",
+        "es": "Visito el nodo {node}: encolo los vecinos {enqueued}."
+      }
+    }
   }
 ]

@@ -1,0 +1,21 @@
+FUNCTION bfsGraph(adjacencyMatrix):
+  nodeCount ← length(adjacencyMatrix)
+  order ← empty list
+
+  IF nodeCount = 0:
+    RETURN order
+
+  visited ← array of nodeCount false values
+  queue ← [0]
+  visited[0] ← true
+
+  WHILE queue is not empty:
+    node ← dequeue from queue
+    append node to order
+
+    FOR neighbor FROM 0 TO nodeCount - 1:
+      IF adjacencyMatrix[node][neighbor] AND NOT visited[neighbor]:
+        visited[neighbor] ← true
+        enqueue neighbor to queue
+
+  RETURN order
