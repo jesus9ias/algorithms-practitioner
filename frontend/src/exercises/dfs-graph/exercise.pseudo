@@ -1,0 +1,22 @@
+FUNCTION dfsGraph(adjacencyMatrix):
+  nodeCount ← length(adjacencyMatrix)
+  order ← empty list
+
+  IF nodeCount = 0:
+    RETURN order
+
+  visited ← array of nodeCount false values
+  stack ← [0]
+
+  WHILE stack is not empty:
+    node ← pop from stack
+    IF visited[node]:
+      CONTINUE
+    visited[node] ← true
+    append node to order
+
+    FOR neighbor FROM nodeCount - 1 DOWNTO 0:
+      IF adjacencyMatrix[node][neighbor] AND NOT visited[neighbor]:
+        push neighbor to stack
+
+  RETURN order

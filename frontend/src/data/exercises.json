@@ -993,5 +993,39 @@
         "es": "Visito el nodo {node}: encolo los vecinos {enqueued}."
       }
     }
+  },
+  {
+    "id": "dfs-graph",
+    "slug": "dfs-graph",
+    "serialCode": "TRAV-GRPH-ORD-STD",
+    "name": { "en": "DFS Graph", "es": "DFS en Grafo" },
+    "description": {
+      "en": "Traverses a graph depth-first starting from node 0, using an explicit LIFO stack: it visits the start node, dives into one unvisited neighbor as deep as possible, then backtracks to explore the next one — the same building block used to detect cycles and find connected components. Receives the graph as a square adjacency matrix, where a nonzero value at row i, column j marks an edge between nodes i and j (0 means no edge). Returns the node indices in the order they were visited; nodes unreachable from node 0 are never visited.",
+      "es": "Recorre un grafo en profundidad (DFS) comenzando desde el nodo 0, usando una pila LIFO explícita: visita el nodo inicial, se sumerge en un vecino no visitado tan profundo como sea posible, y luego retrocede para explorar el siguiente — la misma pieza que se usa para detectar ciclos y encontrar componentes conexos. Recibe el grafo como una matriz de adyacencia cuadrada, donde un valor distinto de cero en la fila i, columna j marca una arista entre los nodos i y j (0 significa que no hay arista). Devuelve los índices de los nodos en el orden en que fueron visitados; los nodos inaccesibles desde el nodo 0 nunca se visitan."
+    },
+    "category": "GRAPHS",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-07-15",
+    "inputKind": "MATRIX",
+    "links": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Depth-first_search",
+        "label": { "en": "Depth-first Search on Wikipedia", "es": "Búsqueda en Profundidad en Wikipedia" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Adjacency_matrix",
+        "label": { "en": "Adjacency Matrix on Wikipedia", "es": "Matriz de Adyacencia en Wikipedia" }
+      }
+    ],
+    "codeFile": "dfs-graph/exercise.js",
+    "pseudoFile": "dfs-graph/exercise.pseudo",
+    "defaultInput": [[0, 1, 1, 0, 0, 0], [1, 0, 0, 1, 1, 0], [1, 0, 0, 0, 0, 1], [0, 1, 0, 0, 0, 0], [0, 1, 0, 0, 0, 1], [0, 0, 1, 0, 1, 0]],
+    "stepMessages": {
+      "visit": {
+        "en": "Visiting node {node}: push neighbors {pushed}.",
+        "es": "Visito el nodo {node}: apilo los vecinos {pushed}."
+      }
+    }
   }
 ]
