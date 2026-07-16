@@ -49,7 +49,7 @@ describe("filterExercises (T-FILT)", () => {
 describe("searchExercises (T-SEARCH)", () => {
   it("T-SEARCH-01: search matches name substring", () => {
     const result = searchExercises(exercises, "binary", "en");
-    expect(ids(result)).toEqual(["binary-search", "binary-search-rotated", "binary-tree", "inorder-traversal", "level-order-traversal"]);
+    expect(ids(result)).toEqual(["binary-search", "binary-search-rotated", "binary-tree", "inorder-traversal", "level-order-traversal", "min-heap"]);
   });
 
   it("T-SEARCH-02: search is case-insensitive", () => {

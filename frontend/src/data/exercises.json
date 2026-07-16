@@ -1027,5 +1027,50 @@
         "es": "Visito el nodo {node}: apilo los vecinos {pushed}."
       }
     }
+  },
+  {
+    "id": "min-heap",
+    "slug": "min-heap",
+    "serialCode": "BUILD-HEAP-ORD-STD",
+    "name": { "en": "Min-Heap", "es": "Montículo Mínimo" },
+    "description": {
+      "en": "Rearranges an array of integers into min-heap order using Floyd's bottom-up build-heap algorithm: the array is read as a complete binary tree, where the value at index i has children at 2i + 1 and 2i + 2, and every parent must be less than or equal to both of its children. Starting from the last parent node and working back to the root, each subtree is sifted down — swapping a parent with its smallest child until the property holds or a leaf is reached. Returns a new array satisfying the min-heap property, the structure behind priority queues and efficient min/max retrieval.",
+      "es": "Reordena un arreglo de enteros en orden de montículo mínimo usando el algoritmo de construcción ascendente de Floyd: el arreglo se interpreta como un árbol binario completo, donde el valor en el índice i tiene hijos en 2i + 1 y 2i + 2, y todo padre debe ser menor o igual que sus dos hijos. Comenzando desde el último nodo padre y retrocediendo hasta la raíz, cada subárbol se hunde (sift-down) intercambiando el padre con su hijo menor hasta que se cumple la propiedad o se llega a una hoja. Devuelve un arreglo nuevo que satisface la propiedad de montículo mínimo, la estructura detrás de las colas de prioridad y la obtención eficiente del mínimo/máximo."
+    },
+    "category": "HEAPS",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-07-16",
+    "links": [
+      {
+        "url": "https://en.wikipedia.org/wiki/Binary_heap",
+        "label": { "en": "Binary Heap on Wikipedia", "es": "Montículo Binario en Wikipedia" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Heapsort#Building_a_heap",
+        "label": { "en": "Building a Heap on Wikipedia", "es": "Construcción de un Montículo en Wikipedia" }
+      }
+    ],
+    "codeFile": "min-heap/exercise.js",
+    "pseudoFile": "min-heap/exercise.pseudo",
+    "defaultInput": [9, 4, 7, 1, 8, 5, 2, 3],
+    "stepMessages": {
+      "start": {
+        "en": "Begin sifting down {value} at index {index} to restore the heap property in its subtree.",
+        "es": "Empiezo a hundir {value} en el índice {index} para restaurar la propiedad de montículo en su subárbol."
+      },
+      "swap": {
+        "en": "{parentValue} at index {parentIndex} is greater than its smallest child {childValue} at index {childIndex}: swap them.",
+        "es": "{parentValue} en el índice {parentIndex} es mayor que su hijo menor {childValue} en el índice {childIndex}: los intercambio."
+      },
+      "settle": {
+        "en": "{value} at index {index} is not greater than its children: the heap property holds here.",
+        "es": "{value} en el índice {index} no es mayor que sus hijos: la propiedad de montículo se cumple aquí."
+      },
+      "done": {
+        "en": "The array is fully rearranged into min-heap order.",
+        "es": "El arreglo queda completamente reordenado en un montículo mínimo."
+      }
+    }
   }
 ]

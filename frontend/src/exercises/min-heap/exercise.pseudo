@@ -1,0 +1,26 @@
+FUNCTION buildMinHeap(arr):
+  heap ← copy(arr)
+  n ← length(heap)
+  FOR start ← floor(n / 2) - 1 DOWNTO 0:
+    siftDown(heap, start, n)
+  RETURN heap
+
+FUNCTION siftDown(heap, start, size):
+  parent ← start
+  WHILE true:
+    smallest ← parent
+    left ← 2 * parent + 1
+    right ← 2 * parent + 2
+    IF left < size AND heap[left] < heap[smallest]:
+      smallest ← left
+    IF right < size AND heap[right] < heap[smallest]:
+      smallest ← right
+    IF smallest = parent:
+      RETURN
+    swap(heap, parent, smallest)
+    parent ← smallest
+
+FUNCTION swap(heap, a, b):
+  temp ← heap[a]
+  heap[a] ← heap[b]
+  heap[b] ← temp
