@@ -1072,5 +1072,47 @@
         "es": "El arreglo queda completamente reordenado en un montículo mínimo."
       }
     }
+  },
+  {
+    "id": "top-k-elements",
+    "slug": "top-k-elements",
+    "serialCode": "COMP-HEAP-TOPK-STD",
+    "name": { "en": "Top-K Elements", "es": "K Elementos Máximos" },
+    "description": {
+      "en": "Finds the k largest values in an array using a min-heap bounded to size k: each value is pushed onto the heap, and once the heap holds more than k elements the smallest is popped off, so by the end the heap holds exactly the k largest values seen. Runs in O(n log k), much faster than sorting the whole array when k is small. Receives an array of integers and a target k, and returns the k largest values in descending order.",
+      "es": "Encuentra los k valores más grandes de un arreglo usando un montículo mínimo acotado a tamaño k: cada valor se inserta en el montículo, y en cuanto el montículo supera k elementos se extrae el menor, de modo que al final el montículo contiene exactamente los k valores más grandes vistos. Se ejecuta en O(n log k), mucho más rápido que ordenar todo el arreglo cuando k es pequeño. Recibe un arreglo de enteros y un objetivo k, y devuelve los k valores más grandes en orden descendente."
+    },
+    "category": "HEAPS",
+    "level": "MEDIUM",
+    "isNew": true,
+    "addedAt": "2026-07-17",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/kth-largest-element-in-an-array/",
+        "label": { "en": "Kth Largest Element in an Array on LeetCode", "es": "Kth Largest Element in an Array en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Heap_(data_structure)",
+        "label": { "en": "Heap (data structure) on Wikipedia", "es": "Montículo (estructura de datos) en Wikipedia" }
+      }
+    ],
+    "codeFile": "top-k-elements/exercise.js",
+    "pseudoFile": "top-k-elements/exercise.pseudo",
+    "defaultInput": [3, 10, 12, 2, 8, 15, 1, 7],
+    "defaultTarget": 3,
+    "stepMessages": {
+      "insert": {
+        "en": "Push {value} onto the heap (size now {size}/{k}).",
+        "es": "Inserto {value} en el montículo (tamaño ahora {size}/{k})."
+      },
+      "evict": {
+        "en": "Push {value} onto the heap; size exceeds {k}, so evict the smallest value {evicted}.",
+        "es": "Inserto {value} en el montículo; el tamaño supera {k}, así que extraigo el valor menor {evicted}."
+      },
+      "done": {
+        "en": "Done: the heap holds the {k} largest value(s) seen.",
+        "es": "Listo: el montículo contiene los {k} valor(es) más grande(s) vistos."
+      }
+    }
   }
 ]

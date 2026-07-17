@@ -1,0 +1,49 @@
+FUNCTION topKElements(arr, k):
+  heap ← []
+  FOR EACH value IN arr:
+    heapPush(heap, value)
+    IF length(heap) > k:
+      heapPop(heap)
+  result ← []
+  WHILE length(heap) > 0:
+    result.push(heapPop(heap))
+  RETURN reverse(result)
+
+FUNCTION heapPush(heap, value):
+  heap.push(value)
+  child ← length(heap) - 1
+  WHILE child > 0:
+    parent ← floor((child - 1) / 2)
+    IF heap[parent] <= heap[child]:
+      BREAK
+    swap(heap, parent, child)
+    child ← parent
+
+FUNCTION heapPop(heap):
+  top ← heap[0]
+  last ← heap.pop()
+  IF length(heap) > 0:
+    heap[0] ← last
+    siftDown(heap, 0)
+  RETURN top
+
+FUNCTION siftDown(heap, start):
+  parent ← start
+  size ← length(heap)
+  WHILE true:
+    smallest ← parent
+    left ← 2 * parent + 1
+    right ← 2 * parent + 2
+    IF left < size AND heap[left] < heap[smallest]:
+      smallest ← left
+    IF right < size AND heap[right] < heap[smallest]:
+      smallest ← right
+    IF smallest = parent:
+      RETURN
+    swap(heap, parent, smallest)
+    parent ← smallest
+
+FUNCTION swap(heap, a, b):
+  temp ← heap[a]
+  heap[a] ← heap[b]
+  heap[b] ← temp
