@@ -1,0 +1,7 @@
+FUNCTION singleNumber(arr):
+  result ← 0
+
+  FOR EACH value IN arr:
+    result ← result XOR value
+
+  RETURN result

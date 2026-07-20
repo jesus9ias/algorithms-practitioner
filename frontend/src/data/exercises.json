@@ -1114,5 +1114,46 @@
         "es": "Listo: el montículo contiene los {k} valor(es) más grande(s) vistos."
       }
     }
+  },
+  {
+    "id": "single-number",
+    "slug": "single-number",
+    "serialCode": "COMP-ARR-FIND-STD",
+    "name": { "en": "Single Number", "es": "Número Único" },
+    "description": {
+      "en": "Receives an array of integers in which every value appears exactly twice except one, and returns that single unpaired value. It solves this with a single O(n) pass that XORs every element together: XOR is commutative and associative, and a value XORed with itself cancels to 0, so every duplicate pair cancels out and only the unpaired value survives in the running result. Returns that integer using no extra data structure — O(n) time, O(1) extra space.",
+      "es": "Recibe un arreglo de enteros en el que todos los valores aparecen exactamente dos veces excepto uno, y devuelve ese valor sin pareja. Lo resuelve con un único recorrido O(n) que combina todos los elementos con XOR: el XOR es conmutativo y asociativo, y un valor combinado consigo mismo se cancela a 0, así que cada par duplicado se cancela y solo sobrevive el valor sin pareja en el resultado acumulado. Devuelve ese entero sin usar ninguna estructura de datos adicional — tiempo O(n), espacio adicional O(1)."
+    },
+    "category": "BIT_MANIPULATION",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-07-20",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/single-number/",
+        "label": { "en": "Single Number on LeetCode", "es": "Single Number en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Exclusive_or",
+        "label": { "en": "Exclusive Or (XOR) on Wikipedia", "es": "O Exclusivo (XOR) en Wikipedia" }
+      }
+    ],
+    "codeFile": "single-number/exercise.js",
+    "pseudoFile": "single-number/exercise.pseudo",
+    "defaultInput": [4, 1, 2, 1, 2],
+    "stepMessages": {
+      "empty": {
+        "en": "The array is empty, so the XOR of nothing is 0 by definition — no loop runs.",
+        "es": "El arreglo está vacío, así que el XOR de nada es 0 por definición — no se ejecuta ningún bucle."
+      },
+      "scan": {
+        "en": "arr[{index}] = {value} is XORed in: result = {result}.",
+        "es": "arr[{index}] = {value} se combina con XOR: result = {result}."
+      },
+      "done": {
+        "en": "Every value has been XORed together — the single number is {result}.",
+        "es": "Todos los valores fueron combinados con XOR — el número único es {result}."
+      }
+    }
   }
 ]
