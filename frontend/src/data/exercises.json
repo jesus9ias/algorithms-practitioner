@@ -1155,5 +1155,47 @@
         "es": "Todos los valores fueron combinados con XOR — el número único es {result}."
       }
     }
+  },
+  {
+    "id": "count-bits",
+    "slug": "count-bits",
+    "serialCode": "COMP-NUM-CNT-STD",
+    "name": { "en": "Count Bits", "es": "Contar Bits" },
+    "description": {
+      "en": "Receives a non-negative integer n and returns the number of 1 bits (its population count, or Hamming weight) in n's binary representation. It applies Brian Kernighan's trick: repeatedly AND the running value with itself minus one, which clears exactly its current lowest set bit on every pass, so the loop runs once per set bit instead of once per bit position. Returns that count as a single integer — O(popcount) time, O(1) extra space; n ≤ 0 returns 0 directly, with no iterations.",
+      "es": "Recibe un entero no negativo n y devuelve el número de bits en 1 (su population count, o peso de Hamming) en la representación binaria de n. Aplica el truco de Brian Kernighan: combina repetidamente el valor actual con AND consigo mismo menos uno, lo que borra exactamente su bit en 1 de menor orden en cada pasada, así que el bucle se ejecuta una vez por cada bit en 1 en lugar de una vez por cada posición de bit. Devuelve ese conteo como un único entero — tiempo O(popcount), espacio adicional O(1); n ≤ 0 devuelve 0 directamente, sin iteraciones."
+    },
+    "category": "BIT_MANIPULATION",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-07-21",
+    "inputKind": "SCALAR",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/number-of-1-bits/",
+        "label": { "en": "Number of 1 Bits on LeetCode", "es": "Number of 1 Bits en LeetCode" }
+      },
+      {
+        "url": "https://en.wikipedia.org/wiki/Hamming_weight",
+        "label": { "en": "Hamming Weight on Wikipedia", "es": "Peso de Hamming en Wikipedia" }
+      }
+    ],
+    "codeFile": "count-bits/exercise.js",
+    "pseudoFile": "count-bits/exercise.pseudo",
+    "defaultInput": 11,
+    "stepMessages": {
+      "empty": {
+        "en": "n is 0 or negative, so it has no set bits — no loop runs.",
+        "es": "n es 0 o negativo, así que no tiene bits en 1 — no se ejecuta ningún bucle."
+      },
+      "clear": {
+        "en": "Cleared bit {index} — count is now {count}.",
+        "es": "Se limpió el bit {index} — el conteo ahora es {count}."
+      },
+      "done": {
+        "en": "No set bits remain — the population count is {count}.",
+        "es": "No quedan bits en 1 — el population count es {count}."
+      }
+    }
   }
 ]

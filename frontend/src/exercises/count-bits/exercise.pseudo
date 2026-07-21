@@ -1,0 +1,12 @@
+FUNCTION countBits(n):
+  IF n <= 0:
+    RETURN 0
+
+  count ← 0
+  remaining ← n
+
+  WHILE remaining ≠ 0:
+    remaining ← remaining AND (remaining - 1)
+    count ← count + 1
+
+  RETURN count
