@@ -19,7 +19,7 @@ describe("filterExercises (T-FILT)", () => {
 
   it("T-FILT-02: filter by level returns correct subset", () => {
     const result = filterExercises(exercises, { levels: [ExerciseLevel.EASY] });
-    expect(ids(result)).toEqual(["binary-search", "bubble-sort", "climbing-stairs", "count-bits", "fibonacci", "inorder-traversal", "linked-list", "palindrome-check", "remove-duplicates-dll", "remove-duplicates-sll", "reverse-string", "running-average", "single-number", "two-sum", "valid-parentheses"]);
+    expect(ids(result)).toEqual(["binary-search", "bubble-sort", "climbing-stairs", "count-bits", "date-difference", "fibonacci", "inorder-traversal", "linked-list", "palindrome-check", "remove-duplicates-dll", "remove-duplicates-sll", "reverse-string", "running-average", "single-number", "two-sum", "valid-parentheses"]);
   });
 
   it("T-FILT-03: filter by learned returns only learned IDs", () => {
@@ -41,6 +41,7 @@ describe("filterExercises (T-FILT)", () => {
   it("T-FILT-05: no-match filter returns empty array", () => {
     const result = filterExercises(exercises, {
       categories: [ExerciseCategory.DATES],
+      levels: [ExerciseLevel.HARD],
     });
     expect(result).toEqual([]);
   });

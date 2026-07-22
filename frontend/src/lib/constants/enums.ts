@@ -33,6 +33,7 @@ export enum InputKind {
   MATRIX = "MATRIX",
   TEXT = "TEXT",
   SCALAR = "SCALAR",
+  DATES = "DATES",
 }
 
 /** Exercise difficulty (LeetCode-style, 3 tiers). */

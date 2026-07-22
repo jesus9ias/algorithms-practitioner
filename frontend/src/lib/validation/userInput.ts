@@ -230,6 +230,51 @@ export function parseIntegerTarget(raw: string): Result<number | undefined> {
   return ok(parsed);
 }
 
+const DATE_PAIR_PATTERN = /^(\d{4})-(\d{2})-(\d{2}),(\d{4})-(\d{2})-(\d{2})$/;
+
+/** True if year/month/day form a real calendar date (rejects e.g. 2024-02-30, which `Date.UTC` would silently roll into March). */
+function isValidCalendarDate(year: number, month: number, day: number): boolean {
+  const date = new Date(Date.UTC(year, month - 1, day));
+  return (
+    date.getUTCFullYear() === year &&
+    date.getUTCMonth() === month - 1 &&
+    date.getUTCDate() === day
+  );
+}
+
+/**
+ * Validates a raw string for `DATES`-kind exercises (e.g. `date-difference`):
+ * two ISO 8601 dates in `YYYY-MM-DD` format separated by a single comma, with
+ * no surrounding whitespace. Accepts only strings matching that exact shape,
+ * and additionally rejects calendar-invalid dates (e.g. `2024-02-30`) that the
+ * regex alone would let through. No `eval` is used — parsing is a single regex
+ * match plus a `Date.UTC` round-trip check.
+ */
+export function parseDatePair(raw: string): Result<string> {
+  if (raw.length > MAX_INPUT_LENGTH) {
+    return err(`Input must not exceed ${MAX_INPUT_LENGTH} characters.`);
+  }
+
+  const match = DATE_PAIR_PATTERN.exec(raw);
+  if (!match) {
+    return err("Input must be two dates in YYYY-MM-DD format separated by a comma.");
+  }
+
+  const [, y1, mo1, d1, y2, mo2, d2] = match;
+  const year1 = Number(y1);
+  const month1 = Number(mo1);
+  const day1 = Number(d1);
+  const year2 = Number(y2);
+  const month2 = Number(mo2);
+  const day2 = Number(d2);
+
+  if (!isValidCalendarDate(year1, month1, day1) || !isValidCalendarDate(year2, month2, day2)) {
+    return err("Both dates must be valid calendar dates.");
+  }
+
+  return ok(raw);
+}
+
 /**
  * Parses a raw string into a single validated integer, used by `SCALAR`-kind
  * exercises (e.g. `fibonacci`) whose entire input is one number. Unlike

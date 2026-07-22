@@ -1,0 +1,9 @@
+FUNCTION dateDifference(input):
+  firstDate, secondDate ← split input by ","
+  firstMs ← parseIsoDate(firstDate)
+  secondMs ← parseIsoDate(secondDate)
+  RETURN round(abs(secondMs - firstMs) / MS_PER_DAY)
+
+FUNCTION parseIsoDate(isoDate):
+  year, month, day ← split isoDate by "-"
+  RETURN UTC epoch ms for (year, month, day)

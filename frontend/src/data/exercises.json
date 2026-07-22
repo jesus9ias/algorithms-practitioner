@@ -1197,5 +1197,43 @@
         "es": "No quedan bits en 1 — el population count es {count}."
       }
     }
+  },
+  {
+    "id": "date-difference",
+    "slug": "date-difference",
+    "serialCode": "COMP-NUM-DIFF-STD",
+    "name": { "en": "Date Difference", "es": "Diferencia de Fechas" },
+    "description": {
+      "en": "Receives two calendar dates as one comma-separated ISO 8601 (YYYY-MM-DD) string and returns the number of whole days between them. It converts each date to its UTC epoch-millisecond instant, then takes the rounded absolute difference divided by the milliseconds in a day. Returns that count as a single non-negative integer, regardless of which date comes first.",
+      "es": "Recibe dos fechas del calendario como una sola cadena en formato ISO 8601 (AAAA-MM-DD) separadas por una coma y devuelve el número de días completos entre ellas. Convierte cada fecha a su instante en milisegundos desde la época UTC, y luego calcula la diferencia absoluta redondeada dividida entre los milisegundos de un día. Devuelve ese conteo como un único entero no negativo, sin importar cuál fecha es anterior."
+    },
+    "category": "DATES",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-07-22",
+    "inputKind": "DATES",
+    "links": [
+      {
+        "url": "https://leetcode.com/problems/number-of-days-between-two-dates/",
+        "label": { "en": "Number of Days Between Two Dates on LeetCode", "es": "Number of Days Between Two Dates en LeetCode" }
+      }
+    ],
+    "codeFile": "date-difference/exercise.js",
+    "pseudoFile": "date-difference/exercise.pseudo",
+    "defaultInput": "2024-01-15,2024-03-22",
+    "stepMessages": {
+      "parseFirst": {
+        "en": "Parsing the first date {date} into its epoch-millisecond instant.",
+        "es": "Analizando la primera fecha {date} en su instante en milisegundos desde la época."
+      },
+      "parseSecond": {
+        "en": "Parsing the second date {date} into its epoch-millisecond instant.",
+        "es": "Analizando la segunda fecha {date} en su instante en milisegundos desde la época."
+      },
+      "done": {
+        "en": "Computing the absolute difference — {days} days apart.",
+        "es": "Calculando la diferencia absoluta — {days} días de diferencia."
+      }
+    }
   }
 ]
