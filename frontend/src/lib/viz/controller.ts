@@ -10,6 +10,7 @@ import {
   parseIntegerMatrix,
   parseSingleInteger,
   parseDatePair,
+  parseDateOffset,
 } from "../validation/userInput";
 import {
   readLearned,
@@ -45,6 +46,7 @@ const I18N = {
   invalidInputMatrix: "exercise.invalidInputMatrix",
   invalidInputScalar: "exercise.invalidInputScalar",
   invalidInputDates: "exercise.invalidInputDates",
+  invalidInputDateOffset: "exercise.invalidInputDateOffset",
   currentStep: "exercise.currentStep",
   inputLabel: "exercise.inputLabel",
   resultLabel: "exercise.resultLabel",
@@ -65,14 +67,15 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
     deps;
   // Input comes in four shapes: numeric exercises use an integer array plus an
   // optional target; text exercises (decode-string, valid-parentheses,
-  // reverse-string, date-difference) carry raw text in `VizInput.text`; matrix
-  // exercises carry a 2D array in `VizInput.matrix`; scalar exercises
-  // (fibonacci) carry a single integer in `VizInput.scalar`.
+  // reverse-string, date-difference, add-days) carry raw text in
+  // `VizInput.text`; matrix exercises carry a 2D array in `VizInput.matrix`;
+  // scalar exercises (fibonacci) carry a single integer in `VizInput.scalar`.
   const isTextInput =
     inputKind === InputKind.STRING ||
     inputKind === InputKind.BRACKETS ||
     inputKind === InputKind.TEXT ||
-    inputKind === InputKind.DATES;
+    inputKind === InputKind.DATES ||
+    inputKind === InputKind.DATE_OFFSET;
   const isMatrixInput = inputKind === InputKind.MATRIX;
   const isScalarInput = inputKind === InputKind.SCALAR;
 
@@ -365,7 +368,9 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
             ? parseFreeText(inputField.value)
             : inputKind === InputKind.DATES
               ? parseDatePair(inputField.value)
-              : parseEncodedString(inputField.value);
+              : inputKind === InputKind.DATE_OFFSET
+                ? parseDateOffset(inputField.value)
+                : parseEncodedString(inputField.value);
       if (!stringResult.ok) {
         const msgKey =
           inputKind === InputKind.BRACKETS
@@ -374,7 +379,9 @@ export function mountExercise(deps: ExerciseControllerDeps): void {
               ? I18N.invalidInputText
               : inputKind === InputKind.DATES
                 ? I18N.invalidInputDates
-                : I18N.invalidInputString;
+                : inputKind === InputKind.DATE_OFFSET
+                  ? I18N.invalidInputDateOffset
+                  : I18N.invalidInputString;
         inputError.textContent = resolve(msgKey, lang());
         inputError.hidden = false;
         return;

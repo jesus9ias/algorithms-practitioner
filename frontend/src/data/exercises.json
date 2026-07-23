@@ -1235,5 +1235,43 @@
         "es": "Calculando la diferencia absoluta — {days} días de diferencia."
       }
     }
+  },
+  {
+    "id": "add-days",
+    "slug": "add-days",
+    "serialCode": "XFRM-NUM-SHFT-STD",
+    "name": { "en": "Add Days", "es": "Sumar Días" },
+    "description": {
+      "en": "Receives one calendar date and a signed day count as one comma-separated string (YYYY-MM-DD,±N) and returns the resulting date. It converts the start date to its UTC epoch-millisecond instant, shifts it by the given number of days, and formats the shifted instant back to ISO 8601. Handles day, month and year rollover automatically, including leap years — adding or subtracting enough days can cross February 29th, month-end, or a year boundary.",
+      "es": "Recibe una fecha del calendario y un número de días con signo como una sola cadena separada por coma (AAAA-MM-DD,±N) y devuelve la fecha resultante. Convierte la fecha inicial a su instante en milisegundos desde la época UTC, la desplaza el número de días indicado y formatea el instante desplazado de vuelta a ISO 8601. Maneja automáticamente el desbordamiento de día, mes y año, incluyendo años bisiestos — sumar o restar suficientes días puede cruzar el 29 de febrero, el fin de mes o un límite de año."
+    },
+    "category": "DATES",
+    "level": "EASY",
+    "isNew": true,
+    "addedAt": "2026-07-23",
+    "inputKind": "DATE_OFFSET",
+    "links": [
+      {
+        "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Date/UTC",
+        "label": { "en": "Date.UTC() on MDN", "es": "Date.UTC() en MDN" }
+      }
+    ],
+    "codeFile": "add-days/exercise.js",
+    "pseudoFile": "add-days/exercise.pseudo",
+    "defaultInput": "2024-02-25,10",
+    "stepMessages": {
+      "parse": {
+        "en": "Parsing the start date {date} into its epoch-millisecond instant.",
+        "es": "Analizando la fecha inicial {date} en su instante en milisegundos desde la época."
+      },
+      "shift": {
+        "en": "Shifting by {offset} days.",
+        "es": "Desplazando {offset} días."
+      },
+      "done": {
+        "en": "Formatting the shifted date — {date}.",
+        "es": "Formateando la fecha desplazada — {date}."
+      }
+    }
   }
 ]

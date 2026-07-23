@@ -34,6 +34,7 @@ export enum InputKind {
   TEXT = "TEXT",
   SCALAR = "SCALAR",
   DATES = "DATES",
+  DATE_OFFSET = "DATE_OFFSET",
 }
 
 /** Exercise difficulty (LeetCode-style, 3 tiers). */

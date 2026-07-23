@@ -1,0 +1,14 @@
+FUNCTION addDays(input):
+  isoDate, offsetStr ← split input by ","
+  startMs ← parseIsoDate(isoDate)
+  offsetDays ← toNumber(offsetStr)
+  shiftedMs ← startMs + offsetDays × MS_PER_DAY
+  RETURN formatIsoDate(shiftedMs)
+
+FUNCTION parseIsoDate(isoDate):
+  year, month, day ← split isoDate by "-"
+  RETURN UTC epoch ms for (year, month, day)
+
+FUNCTION formatIsoDate(ms):
+  date ← UTC date from ms
+  RETURN year-month-day formatted as YYYY-MM-DD

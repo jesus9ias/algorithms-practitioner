@@ -48,7 +48,9 @@ const inputPlaceholderKey =
             ? "exercise.inputPlaceholderScalar"
             : exercise.inputKind === InputKind.DATES
               ? "exercise.inputPlaceholderDates"
-              : "exercise.inputPlaceholder";
+              : exercise.inputKind === InputKind.DATE_OFFSET
+                ? "exercise.inputPlaceholderDateOffset"
+                : "exercise.inputPlaceholder";
 const catKey = categoryKey(exercise.category);
 const lvlKey = levelKey(exercise.level);
 ---

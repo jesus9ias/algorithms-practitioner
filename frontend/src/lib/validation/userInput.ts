@@ -275,6 +275,38 @@ export function parseDatePair(raw: string): Result<string> {
   return ok(raw);
 }
 
+const DATE_OFFSET_PATTERN = /^(\d{4})-(\d{2})-(\d{2}),(-?\d{1,5})$/;
+
+/**
+ * Validates a raw string for `DATE_OFFSET`-kind exercises (e.g. `add-days`):
+ * one ISO 8601 date in `YYYY-MM-DD` format, a comma, and a signed day count of
+ * up to 5 digits, with no surrounding whitespace. Accepts only strings
+ * matching that exact shape, and additionally rejects calendar-invalid dates
+ * (e.g. `2024-02-30`) that the regex alone would let through. No `eval` is
+ * used — parsing is a single regex match plus a `Date.UTC` round-trip check.
+ */
+export function parseDateOffset(raw: string): Result<string> {
+  if (raw.length > MAX_INPUT_LENGTH) {
+    return err(`Input must not exceed ${MAX_INPUT_LENGTH} characters.`);
+  }
+
+  const match = DATE_OFFSET_PATTERN.exec(raw);
+  if (!match) {
+    return err("Input must be a date in YYYY-MM-DD format and a signed day count separated by a comma.");
+  }
+
+  const [, y, mo, d] = match;
+  const year = Number(y);
+  const month = Number(mo);
+  const day = Number(d);
+
+  if (!isValidCalendarDate(year, month, day)) {
+    return err("Date must be a valid calendar date.");
+  }
+
+  return ok(raw);
+}
+
 /**
  * Parses a raw string into a single validated integer, used by `SCALAR`-kind
  * exercises (e.g. `fibonacci`) whose entire input is one number. Unlike
